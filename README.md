@@ -17,8 +17,7 @@ Example Usage
 
 TODO: more useful examples
 
-`
-// must use a valid iso4217 currency code (with the exception of BTC for Bitcoin, as specified in the override configuration)
+`// must use a valid iso4217 currency code (with the exception of BTC for Bitcoin, as specified in the override configuration)
 $usd = new Currency('USD', 5, 2);
 
 $usdAmount1 = new Money($usd);
@@ -27,6 +26,5 @@ $usdAmount1->setAmountFloat(1.2345);
 $usdAmount2 = new Money($usd);
 $usdAmount2->setAmountFloat(1.2345);
 
-$usdAmount1->isEqual($usdAmount2); // true(
-`
+$usdAmount1->isEqual($usdAmount2); // true`
 
