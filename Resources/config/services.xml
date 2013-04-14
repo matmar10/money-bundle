@@ -5,8 +5,8 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="lmh_money.currency_manager.currency_configuration_filename">%kernel.root_dir%/../vendor/lmh/money-bundle/Lmh/Bundle/MoneyBundle/Resources/config/currency-configuration.yml</parameter>
         <parameter key="lmh_money.currency_manager.class">Lmh\Bundle\MoneyBundle\Service\CurrencyManager</parameter>
-        <parameter key="lmh_money.currency_manager.currency_configuration_filename">%kernel.root_dir%/../src/Lmh/Bundle/MoneyBundle/Resources/config/currency-configuration.yml</parameter>
         <parameter key="lmh_money.currency_code_validator.class">Lmh\Bundle\MoneyBundle\Service\CurrencyCodeValidator</parameter>
     </parameters>
 
