@@ -1,0 +1,20 @@
+##
+# Overrides suplementalData.xml, used for integer-based math and display
+##
+# Example:
+#
+# ABC:
+#    display: 2
+#    calculation: 5
+#
+# results in:
+#
+# $19.812
+#
+# value as int: 1981200
+# value as float: 19.812
+# display: 19.81
+
+BTC:
+    display: 8
+    calculation: 8

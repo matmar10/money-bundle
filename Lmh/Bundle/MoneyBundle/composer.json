@@ -1,0 +1,21 @@
+{
+    "name": "lmh/money-bundle",
+    "description": "A series of money related utility classes wrapping integer math, currency codes, and currency code validation",
+    "keywords": ["currency", "money", "currency code", "integer math", "iso4217", "validator"],
+    "type": "symfony-bundle",
+    "license": "Apache",
+    "authors": [
+        {
+            "name": "Matthew J. Martin",
+            "email": "matthew.mar10@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/framework-bundle": "2.2.*",
+        "jms/serializer": "0.12.*"
+    },
+    "autoload": {
+        "psr-0": { "Lmh\\Bundle\\MoneyBundle": "" }
+    },
+    "target-dir": "Lmh/Bundle/MoneyBundle"
+}
