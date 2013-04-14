@@ -7,7 +7,7 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\ReadOnly;
 use JMS\Serializer\Annotation\SerializedName;
 use JMS\Serializer\Annotation\Type;
-use Lmh\Bundle\MoneyBundle\Exception\InvalidCurrencyCodeException;
+use Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException;
 
 /**
  * @AccessType("public_method")
@@ -40,16 +40,17 @@ class Currency
      */
     protected $symbol;
 
-    public function __construct($currencyCode, $precision, $displayPrecision) {
+    public function __construct($currencyCode, $precision, $displayPrecision, $symbol = null) {
         $this->setCurrencyCode($currencyCode);
         $this->precision = $precision;
         $this->displayPrecision = $displayPrecision;
+        $this->symbol = $symbol;
     }
 
     public function setCurrencyCode($currencyCode)
     {
         if(strlen($currencyCode) !== self::CURRENCY_CODE_LENGTH) {
-            throw new InvalidCurrencyCodeException("Invalid currency code '$currencyCode' specified: currency codes must be " . self::CURRENCY_CODE_LENGTH .  "characters in length.");
+            throw new InvalidArgumentException("Invalid currency code '$currencyCode' specified: currency codes must be " . self::CURRENCY_CODE_LENGTH .  "characters in length.");
         }
         $this->currencyCode = $currencyCode;
     }

@@ -33,7 +33,7 @@ class CurrencyTest extends TestCase
     }
     
     /**
-     * @expectedException Lmh\Bundle\MoneyBundle\Exception\InvalidCurrencyCodeException
+     * @expectedException Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException
      */
     public function testException()
     {

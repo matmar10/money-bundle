@@ -4,10 +4,9 @@ namespace Lmh\Bundle\MoneyBundle\Service;
 
 use Symfony\Component\Yaml\Parser;
 use Lmh\Bundle\MoneyBundle\Entity\Currency;
-use Lmh\Bundle\MoneyBundle\Entity\ConversionRate;
+use Lmh\Bundle\MoneyBundle\Entity\CurrencyPair;
 use Lmh\Bundle\MoneyBundle\Entity\Money;
-use Lmh\Bundle\MoneyBundle\Exception\UnsupportedCountryException;
-use Lmh\Bundle\MoneyBundle\Exception\UnsupportedCurrencyException;
+use Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException;
 
 class CurrencyManager
 {
@@ -27,6 +26,13 @@ class CurrencyManager
         self::$currencyData = $parser->parse(file_get_contents($configurationFilename));
     }
 
+    public function getCurrencyPair($fromCurrencyOrCountryCode, $toCurrencyOrCountryCode, $multiplier)
+    {
+        $from = $this->getCurrency($fromCurrencyOrCountryCode);
+        $to = $this->getCurrency($toCurrencyOrCountryCode);
+        return new CurrencyPair($from, $to, $multiplier);
+    }
+
     public function getMoney($currencyOrCountryCode)
     {
         $currency = $this->getCurrency($currencyOrCountryCode);
@@ -37,13 +43,17 @@ class CurrencyManager
     {
         $currencyCode = $this->lookupCurrencyCode($currencyOrCountryCode);
 
-        if(false === array_key_exists($currencyCode, self::$currencyData)) {
-            throw new UnsupportedCurrencyException("Currency '$currencyCode' is not supported: no currency precision settings found.");
+        if(false === array_key_exists($currencyCode, self::$currencyData['precision'])) {
+            throw new InvalidArgumentException("Currency '$currencyCode' is not supported: no currency precision settings found.");
         }
-        
-        $precisionData = self::$currencyData[$currencyCode];
+
+        $precisionData = self::$currencyData['precision'][$currencyCode];
         $code = $this->getCode($currencyCode);
-        $currency = new Currency($code, $precisionData['calculation'], $precisionData['display']);
+        $currency = new Currency(
+            $code,
+            $precisionData['calculation'],
+            $precisionData['display']
+        );
         $symbol = $this->lookupCurrencySymbol($currencyCode);
         $currency->setSymbol($symbol);
 
@@ -60,13 +70,13 @@ class CurrencyManager
     {
         if(2 === strlen($currencyOrCountryCode)) {
             if(false === array_key_exists($currencyOrCountryCode, self::$currencyData['region'])) {
-                throw new UnsupportedCountryException("Currency for '$currencyOrCountryCode' is not supported: no country to currency mapping information found in '" . self::$configurationFilename . "'.");
+                throw new InvalidArgumentException("Currency for '$currencyOrCountryCode' is not supported: no country to currency mapping information found in '" . self::$configurationFilename . "'.");
             }
             return self::$currencyData['region'][$currencyOrCountryCode];
         }
 
         if(false === array_key_exists($currencyOrCountryCode, self::$currencyData['precision'])) {
-            throw new UnsupportedCurrencyException("Currency '$currencyOrCountryCode' is not supported: no currency precision information found in '" . self::$configurationFilename . "'.");
+            throw new InvalidArgumentException("Currency '$currencyOrCountryCode' is not supported: no currency precision information found in '" . self::$configurationFilename . "'.");
         }
 
         return $currencyOrCountryCode;

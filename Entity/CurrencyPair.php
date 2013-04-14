@@ -8,12 +8,14 @@ use JMS\Serializer\Annotation\ReadOnly;
 use JMS\Serializer\Annotation\SerializedName;
 use JMS\Serializer\Annotation\Type;
 use Lmh\Bundle\MoneyBundle\Entity\Currency;
+use Lmh\Bundle\MoneyBundle\Entity\Money;
+use Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException;
 
 /**
  * @AccessType("public_method")
  * @ExclusionPolicy("none")
  */
-class ConversionRate
+class CurrencyPair
 {
 
     /**
@@ -67,5 +69,32 @@ class ConversionRate
     public function getToCurrency()
     {
         return $this->toCurrency;
+    }
+    
+    public function convert(Money $amount)
+    {
+
+        if($amount->getCurrency()->equals($this->getFromCurrency())) {
+            $newAmount = $amount->multiply($this->getMultiplier());
+            $newMoney = new Money($this->toCurrency);
+            $newMoney->setAmountFloat($newAmount->getAmountFloat());
+            return $newMoney;
+        }
+
+        if($amount->getCurrency()->equals($this->getToCurrency())) {
+            $newAmount = $amount->divide($this->getMultiplier());
+            $newMoney = new Money($this->fromCurrency);
+            $newMoney->setAmountFloat($newAmount->getAmountFloat());
+            return $newMoney;
+        }
+
+        throw new InvalidArgumentException("Cannot convert from " . $amount->getCurrency()->getCurrencyCode() .
+            " using CurrencyRate of " .
+            $this->getFromCurrency()->getCurrencyCode() .
+            " to " .
+            $this->getToCurrency()->getCurrencyCode() .
+            ": CurrencyRate must include the base currency " .
+            $amount->getCurrency()->getCurrencyCode()
+        );
     }
 }

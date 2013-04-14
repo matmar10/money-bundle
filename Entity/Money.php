@@ -117,7 +117,7 @@ class Money
     public function add(Money $money)
     {
         if(!$this->getCurrency()->equals($money->getCurrency())) {
-            throw new \Exception("Cannot add Money of Currency " . $money->getCurrency() .
+            throw new InvalidArgumentException("Cannot add Money of Currency " . $money->getCurrency() .
                                  " to Money of Currency " . $this->getCurrency() . ".");
         }
         $newMoney = new Money($this->getCurrency());
@@ -129,7 +129,7 @@ class Money
     public function subtract(Money $money)
     {
         if(!$this->getCurrency()->equals($money->getCurrency())) {
-            throw new \Exception("Cannot subtract Money of Currency " . $money->getCurrency() .
+            throw new InvalidArgumentException("Cannot subtract Money of Currency " . $money->getCurrency() .
                                  " to Money of Currency " . $this->getCurrency() . ".");
         }
         $newMoney = new Money($this->getCurrency());
@@ -192,32 +192,5 @@ class Money
             return false;
         }
         return $this->amountInteger >= $rightHandValue->getAmountInteger();
-    }
-
-    public function convert(ConversionRate $currencyRate)
-    {
-
-        if($this->getCurrency()->equals($currencyRate->getFromCurrency())) {
-            $resultFloat = ($this->amountInteger * $currencyRate->getMultiplier()) / $this->scale;
-            $newMoney = new Money($currencyRate->getToCurrency());
-            $newMoney->setAmountFloat($resultFloat);
-            return $newMoney;
-        }
-
-        if($this->getCurrency()->equals($currencyRate->getToCurrency())) {
-            $resultFloat = ($this->amountInteger / $currencyRate->getMultiplier()) / $this->scale;
-            $newMoney = new Money($currencyRate->getFromCurrency());
-            $newMoney->setAmountFloat($resultFloat);
-            return $newMoney;
-        }
-
-        throw new \Exception("Cannot convert from " . $this->getCurrency()->getCurrencyCode() .
-            " using CurrencyRate of " .
-            $currencyRate->getFromCurrency()->getCurrencyCode() .
-            " to " .
-            $currencyRate->getToCurrency()->getCurrencyCode() .
-            ": CurrencyRate must include the base currency " .
-            $this->getCurrency()->getCurrencyCode()
-        );
     }
 }

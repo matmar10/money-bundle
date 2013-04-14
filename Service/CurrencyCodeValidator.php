@@ -2,7 +2,7 @@
 
 namespace Lmh\Bundle\MoneyBundle\Service;
 
-use Lmh\Bundle\MoneyBundle\Exception\UnsupportedCurrencyException;
+use Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException;
 use Lmh\Bundle\MoneyBundle\Service\CurrencyManager;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -29,7 +29,7 @@ class CurrencyCodeValidator extends ConstraintValidator {
 
         try {
             $code = self::$currencyManager->getCode($value);
-        } catch(UnsupportedCurrencyException $e) {
+        } catch(InvalidArgumentException $e) {
             $this->context->addViolation($constraint->unsupportedMessage, array(
                 '%code%' => $value
             ));
