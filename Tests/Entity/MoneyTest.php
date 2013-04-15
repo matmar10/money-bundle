@@ -129,6 +129,16 @@ class MoneyTest extends TestCase
         $this->assertEquals('19.999', $sum2->getAmountDisplay());
     }
 
+    /**
+     * @expectedException Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException
+     */
+    public function testAddMismatchedCurrencies()
+    {
+        $usd = clone $this->usdMoney;
+        $eur = clone $this->eurMoney;
+        $usd->add($eur);
+    }
+
     public function testSubtract()
     {
 
@@ -166,6 +176,16 @@ class MoneyTest extends TestCase
         $this->assertEquals(12345, $difference3->getAmountInteger());
         $this->assertEquals(0.12345, $difference3->getamountFloat());
         $this->assertEquals('0.12345', $difference3->getAmountDisplay());
+    }
+
+    /**
+     * @expectedException Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException
+     */
+    public function testSubtractMismatchedCurrencies()
+    {
+        $usd = clone $this->usdMoney;
+        $eur = clone $this->eurMoney;
+        $usd->subtract($eur);
     }
 
     public function testMultiply()
@@ -242,6 +262,18 @@ class MoneyTest extends TestCase
         $this->assertTrue($usd1->isLess($usd2));
     }
 
+    /**
+     * @expectedException Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException
+     */
+    public function testIsLessMismatchedCurrencies()
+    {
+        $usd = clone $this->usdMoney;
+        $usd->setAmountFloat(1);
+        $eur = clone $this->eurMoney;
+        $eur->setAmountFloat(2);        
+        $usd->isLess($eur);
+    }
+
     public function testIsLessOrEqual()
     {
 
@@ -266,6 +298,18 @@ class MoneyTest extends TestCase
         $this->assertTrue($usd1->isLessOrEqual($usd2));
     }
 
+    /**
+     * @expectedException Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException
+     */
+    public function testIsLessOrEqualMismatchedCurrencies()
+    {
+        $usd = clone $this->usdMoney;
+        $usd->setAmountFloat(1);
+        $eur = clone $this->eurMoney;
+        $eur->setAmountFloat(2);
+        $usd->isLessOrEqual($eur);
+    }
+
     public function testIsGreater()
     {
 
@@ -284,6 +328,18 @@ class MoneyTest extends TestCase
         $usd1->setAmountFloat(9);
         $usd2->setAmountFloat(10);
         $this->assertTrue($usd2->isGreater($usd1));
+    }
+
+    /**
+     * @expectedException Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException
+     */
+    public function testIsGreaterMismatchedCurrencies()
+    {
+        $usd = clone $this->usdMoney;
+        $usd->setAmountFloat(1);
+        $eur = clone $this->eurMoney;
+        $eur->setAmountFloat(2);
+        $usd->isGreater($eur);
     }
 
     public function testIsGreaterOrEqual()
@@ -308,6 +364,18 @@ class MoneyTest extends TestCase
         $this->assertTrue($usd2->isGreaterOrEqual($usd1));
         $usd2->setAmountFloat(9);
         $this->assertTrue($usd2->isGreaterOrEqual($usd1));
+    }
+
+    /**
+     * @expectedException Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException
+     */
+    public function testIsGreaterOrEqualMismatchedCurrencies()
+    {
+        $usd = clone $this->usdMoney;
+        $usd->setAmountFloat(1);
+        $eur = clone $this->eurMoney;
+        $eur->setAmountFloat(2);
+        $usd->isGreaterOrEqual($eur);
     }
 
     public function testSerialize()
@@ -345,5 +413,99 @@ class MoneyTest extends TestCase
         $json = '{"currency":{"currencyCode":"CAD","precision":8,"displayPrecision":8},"amountInteger":0,"amountFloat":0,"amountDisplay":"0.00000000"}';
         $cadResult = $serializer->deserialize($json, 'Lmh\Bundle\MoneyBundle\Entity\Money', 'json');
         $this->assertEquals($cadMoney, $cadResult);
+    }
+
+    public function testAllocation()
+    {
+        $eur = new Currency('USD', 5, 2);
+        $usdMoney = new Money($eur);
+        $usdMoney->setAmountFloat(100);
+        $shares = $usdMoney->allocate(array(1, 1, 1));
+
+        $this->assertCount(3, $shares);
+
+        $part1Expected = new Money($eur);
+        $part1Expected->setAmountFloat(33.33334);
+        $part2Expected = new Money($eur);
+        $part2Expected->setAmountFloat(33.33333);
+        $part3Expected = new Money($eur);
+        $part3Expected->setAmountFloat(33.33333);
+
+        $this->assertEquals($part1Expected, $shares[0]);
+        $this->assertEquals($part2Expected, $shares[1]);
+        $this->assertEquals($part3Expected, $shares[2]);
+
+        $eur = new Currency('EUR', 5, 2);
+        $eurMoney = new Money($eur);
+        $eurMoney->setAmountFloat(100);
+        $shares = $eurMoney->allocate(array(1, 1, 1), Money::ROUND_TO_DISPLAY);
+
+        $this->assertCount(3, $shares);
+
+        $part1Expected = new Money($eur);
+        $part1Expected->setAmountFloat(33.34);
+        $part2Expected = new Money($eur);
+        $part2Expected->setAmountFloat(33.33);
+        $part3Expected = new Money($eur);
+        $part3Expected->setAmountFloat(33.33);
+
+        $this->assertEquals($part1Expected, $shares[0]);
+        $this->assertEquals($part2Expected, $shares[1]);
+        $this->assertEquals($part3Expected, $shares[2]);
+
+        // get a little fancy with some totally random calculations
+        for($i = 0; $i < 100; $i++) {
+            $originalAmount = rand(1, 1000000);
+            $btc = new Currency('BTC', 8, 8);
+            $btcMoney = new Money($btc);
+            $btcMoney->setAmountFloat($originalAmount);
+
+            $ratios = array();
+            for($j = 0; $j < 5; $j++) {
+                $ratios[$j] = rand(1, 10);
+            }
+
+            $shares = $btcMoney->allocate($ratios);
+            $this->assertCount(count($ratios), $shares);
+            $total = new Money($btc);
+            foreach($shares as $share) {
+                $total = $total->add($share);
+            }
+            $this->assertEquals($btcMoney, $total);
+        }
+    }
+
+
+    /**
+     * @expectedException Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException
+     */
+    public function testAllocationEmptyArray()
+    {
+        $eur = new Currency('USD', 5, 2);
+        $usdMoney = new Money($eur);
+        $usdMoney->setAmountFloat(100);
+        $shares = $usdMoney->allocate(array());
+    }
+
+    /**
+     * @expectedException Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException
+     */
+    public function testAllocationZeroSumArray()
+    {
+        $eur = new Currency('USD', 5, 2);
+        $usdMoney = new Money($eur);
+        $usdMoney->setAmountFloat(100);
+        $shares = $usdMoney->allocate(array(1, -1));
+    }
+
+    /**
+     * @expectedException Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException
+     */
+    public function testAllocationNegativeValuesArray()
+    {
+        $eur = new Currency('USD', 5, 2);
+        $usdMoney = new Money($eur);
+        $usdMoney->setAmountFloat(100);
+        $shares = $usdMoney->allocate(array(1, -0.5));
     }
 }
