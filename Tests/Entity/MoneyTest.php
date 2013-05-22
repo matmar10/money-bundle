@@ -453,6 +453,19 @@ class MoneyTest extends TestCase
         $this->assertEquals($part2Expected, $shares[1]);
         $this->assertEquals($part3Expected, $shares[2]);
 
+        $eur = new Currency('EUR', 5, 2);
+        $eurMoney = new Money($eur);
+        $eurMoney->setAmountFloat(0.29);
+        $shares = $eurMoney->allocate(array(0.5, 0.5), Money::ROUND_TO_DISPLAY);
+
+        $part1Expected = new Money($eur);
+        $part1Expected->setAmountFloat(0.15);
+        $part2Expected = new Money($eur);
+        $part2Expected->setAmountFloat(0.14);
+
+        $this->assertEquals($part1Expected, $shares[0]);
+        $this->assertEquals($part2Expected, $shares[1]);
+
         // get a little fancy with some totally random calculations
         for($i = 0; $i < 100; $i++) {
             $originalAmount = rand(1, 1000000);
@@ -473,6 +486,7 @@ class MoneyTest extends TestCase
             }
             $this->assertEquals($btcMoney, $total);
         }
+
     }
 
 

@@ -157,8 +157,8 @@ class Money
     public function assertSameCurrency(Money $rightHandValue)
     {
         if(!$this->isSameCurrency($rightHandValue)) {
-            throw new InvalidArgumentException("Different currencies provided: Money object of Currency type '" .
-                        $this->currency->getCurrencyCode() . "' expected.");
+            $msg = "Different currencies provided: Money object of Currency type %s with precision %n and display precision %n expected.";
+            throw new InvalidArgumentException(sprintf($msg, $this->currency->getCurrencyCode(), $this->currency->getPrecision(), $this->currency->getDisplayPrecision()));
         }
     }
 
@@ -229,41 +229,50 @@ class Money
         if(!count($ratios) || !$total) {
             throw new InvalidArgumentException('Invalid ratios specified: at least one ore more positive ratios must be provided.');
         }
-        $remainder = clone $this;
-        $results = array();
-        if(self::ROUND_TO_DISPLAY === $roundToPrecision) {
-            $increment = $this->scale / pow(10, $this->currency->getDisplayPrecision());
-        } elseif(self::ROUND_TO_DEFAULT === $roundToPrecision) {
-            $increment = $this->scale / pow(10, $this->currency->getPrecision());
+
+        if(is_integer($roundToPrecision)) {
+            $precision = $roundToPrecision;
         } else {
-            throw new InvalidArgumentException("Invalid roundToPrecision argument '" . $roundToPrecision . "' specified (valid options are: '" . self::ROUND_TO_DISPLAY . "', '" . self::ROUND_TO_DEFAULT . "').");
+            $precision = (self::ROUND_TO_DEFAULT === $roundToPrecision) ?
+                $this->currency->getPrecision() : $this->currency->getDisplayPrecision();
         }
+
+        $currency = clone $this->currency;
+        $currency->setPrecision($precision);
+        $currency->setDisplayPrecision($this->currency->getDisplayPrecision());
+
+        $amount = new Money($currency);
+        $amount->setAmountFloat($this->getAmountFloat());
+        $remainder = clone $amount;
+
+        $results = array();
+        $increment = $amount->getScale() / pow(10, $currency->getPrecision());
 
         foreach ($ratios as $ratio) {
             if($ratio < 0) {
                 throw new InvalidArgumentException("Invalid share ratio '" . $ratio . "' supplied: ratios may not be negative amounts.");
             }
-            $share = $this->multiply($ratio)->divide($total);
+            $share = $amount->multiply($ratio)->divide($total);
             $results[] = $share;
             $remainder = $remainder->subtract($share);
         }
-        
+
         for ($i = 0; $remainder->isPositive(); $i++) {
             $amountInteger = $results[$i]->getAmountInteger();
             $results[$i]->setAmountInteger($amountInteger + $increment);
-            $increment = $this->scale / pow(10, $this->currency->getPrecision());
+            $increment = $amount->scale / pow(10, $amount->currency->getPrecision());
             $remainderAmountInteger = $remainder->getAmountInteger();
             $remainder->setAmountInteger($remainderAmountInteger - $increment);
         }
 
-        foreach($results as &$result) {
-            if(self::ROUND_TO_DISPLAY === $roundToPrecision) {
-                $result->setAmountFloat($result->getAmountDisplay());
-                continue;
-            }
+        $convertedResults = array();
+        foreach($results as $result) {
+            $converted = new Money($this->currency);
+            $converted->setAmountFloat($result->getAmountFloat());
+            $convertedResults[] = $converted;
         }
 
-        return $results;
+        return $convertedResults;
     }
     
 }
