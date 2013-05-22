@@ -1,6 +1,6 @@
 {
-    "name": "lmh/money-bundle",
-    "description": "A series of money related utility classes wrapping integer math, currency codes, and currency code validation",
+    "name": "matmar10/money-bundle",
+    "description": "A series of money related utility classes wrapping integer math and money fractional allocation.",
     "keywords": ["currency", "money", "currency code", "integer math", "iso4217", "validator"],
     "type": "symfony-bundle",
     "license": "Apache",
