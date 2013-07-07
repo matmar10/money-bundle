@@ -1,3 +1,8 @@
 
 #IDE
 .idea/
+
+composer.lock
+vendor/
+test-results.xml
+

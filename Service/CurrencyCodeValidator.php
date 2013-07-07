@@ -19,7 +19,7 @@ class CurrencyCodeValidator extends ConstraintValidator {
         self::$currencyManager = $currencyManager;
     }
 
-    public function isValid($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint)
     {
         if(3 !== strlen($value)) {
             $this->context->addViolation($constraint->invalidLengthMessage, array(
