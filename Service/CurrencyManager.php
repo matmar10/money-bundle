@@ -11,19 +11,24 @@ use Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException;
 class CurrencyManager
 {
 
-    protected static $configurationFilename;
-    protected static $currencyData = array();
+    protected static $precision;
+    protected static $regions;
+    protected static $symbols;
 
     /**
      * Construct a new service builder
      *
      * @param string $configurationFilename The filename of the configuration file
      */
-    public function __construct($configurationFilename)
+    public function __construct(
+        array $precision,
+        array $regions,
+        array $symbols
+    )
     {
-        self::$configurationFilename = $configurationFilename;
-        $parser = new Parser();
-        self::$currencyData = $parser->parse(file_get_contents($configurationFilename));
+        self::$precision = $precision;
+        self::$regions = $regions;
+        self::$symbols = $symbols;
     }
 
     public function getCurrencyPair($fromCurrencyOrCountryCode, $toCurrencyOrCountryCode, $multiplier)
@@ -43,11 +48,11 @@ class CurrencyManager
     {
         $currencyCode = $this->lookupCurrencyCode($currencyOrCountryCode);
 
-        if(false === array_key_exists($currencyCode, self::$currencyData['precision'])) {
+        if(false === array_key_exists($currencyCode, self::$precision)) {
             throw new InvalidArgumentException("Currency '$currencyCode' is not supported: no currency precision settings found.");
         }
 
-        $precisionData = self::$currencyData['precision'][$currencyCode];
+        $precisionData = self::$precision[$currencyCode];
         $code = $this->getCode($currencyCode);
         $currency = new Currency(
             $code,
@@ -69,14 +74,14 @@ class CurrencyManager
     protected function lookupCurrencyCode($currencyOrCountryCode)
     {
         if(2 === strlen($currencyOrCountryCode)) {
-            if(false === array_key_exists($currencyOrCountryCode, self::$currencyData['region'])) {
-                throw new InvalidArgumentException("Currency for '$currencyOrCountryCode' is not supported: no country to currency mapping information found in '" . self::$configurationFilename . "'.");
+            if(false === array_key_exists($currencyOrCountryCode, self::$regions)) {
+                throw new InvalidArgumentException("Currency for '$currencyOrCountryCode' is not supported: no country to currency mapping information found.");
             }
-            return self::$currencyData['region'][$currencyOrCountryCode];
+            return self::$regions[$currencyOrCountryCode];
         }
 
-        if(false === array_key_exists($currencyOrCountryCode, self::$currencyData['precision'])) {
-            throw new InvalidArgumentException("Currency '$currencyOrCountryCode' is not supported: no currency precision information found in '" . self::$configurationFilename . "'.");
+        if(false === array_key_exists($currencyOrCountryCode, self::$precision)) {
+            throw new InvalidArgumentException("Currency '$currencyOrCountryCode' is not supported: no currency precision information found.");
         }
 
         return $currencyOrCountryCode;
@@ -84,9 +89,9 @@ class CurrencyManager
 
     protected function lookupCurrencySymbol($currencyCode)
     {
-        if(false === array_key_exists($currencyCode, self::$currencyData['symbol'])) {
+        if(false === array_key_exists($currencyCode, self::$symbols)) {
             return '';
         }
-        return self::$currencyData['symbol'][$currencyCode];
+        return self::$symbols[$currencyCode];
     }
 }

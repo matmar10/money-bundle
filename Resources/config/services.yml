@@ -1,0 +1,21 @@
+
+parameters:
+
+    lmh_money.currency_manager.class: Lmh\Bundle\MoneyBundle\Service\CurrencyManager
+    lmh_money.currency_code_validator.class: Lmh\Bundle\MoneyBundle\Service\CurrencyCodeValidator
+
+services:
+
+    lmh_money.currency_manager:
+        class: "%lmh_money.currency_manager.class%"
+        arguments:
+            - "%lmh_money.precision%"
+            - "%lmh_money.regions%"
+            - "%lmh_money.symbols%"
+
+    validator.unique.currency_code_validator:
+        class: "%lmh_money.currency_code_validator.class%"
+        arguments: [ @lmh_money.currency_manager ]
+        tags:
+            - { name: validator.constraint_validator, alias: currency_code_validator }
+
