@@ -1,0 +1,8 @@
+
+# this file is used by the Lmh\Bundle\MoneyBundle\GenerateCurrencyDataCommand
+# non-sovereign currencies are picked up here
+# and added to the configurations
+
+BTC: 
+    display: 8
+    calculation: 8

@@ -23,7 +23,7 @@ class GenerateCurrencyDataCommand extends ContainerAwareCommand
             ->addOption('output', null, InputOption::VALUE_OPTIONAL, 'The output filename.', dirname(__FILE__).'/../Resources/config/currency-configuration.yml')
             ->addOption('currency-precision-input', null, InputOption::VALUE_OPTIONAL, 'The output filename.', dirname(__FILE__).'/../Resources/config/currency-precision-overrides.yml')
             ->addOption('default-display-precision', null, InputOption::VALUE_OPTIONAL, 'The default display precision where none is specified for the currency.', 2)
-            ->addOption('default-calculation-precision', null, InputOption::VALUE_OPTIONAL, 'The default calculation precision where none is specified for the currency.', 5);
+            ->addOption('default-calculation-precision', null, InputOption::VALUE_OPTIONAL, 'The default calculation precision where none is specified for the currency.', 2);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -70,7 +70,7 @@ class GenerateCurrencyDataCommand extends ContainerAwareCommand
                 $currencies[$region] = $latestCurrency;
 
                 // reset the language stat for the new country
-                $latestDate = strtotime("-500    years");
+                $latestDate = strtotime("-500 years");
                 $latestCurrency = null;
 
                 // grab the new country
@@ -78,6 +78,12 @@ class GenerateCurrencyDataCommand extends ContainerAwareCommand
             }
 
             if('currency' === $xml->name) {
+
+                $xml->moveToAttribute('tender');
+                $isTender = $xml->value;
+                if('false' === $isTender) {
+                    continue;
+                }
 
                 $xml->moveToAttribute('iso4217');
                 $currency = $xml->value;
