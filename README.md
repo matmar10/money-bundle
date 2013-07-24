@@ -1,11 +1,11 @@
-matmar10/money-bundle
-================
+Money Bundle
+============
 
+[![Build Status](http://ci.asedik.com/buildStatus/icon?job=money-bundle)](http://ci.asedik.com/job/money-bundle/)
+
+Overview
+--------
 Symfony2 Bundle wrapping common Money and Currency related needs such as integer-based math, currency codes, and money conversion.
-
-Build Status
-------------
-[![Build Status](http://ci.asedik.com:8080/buildStatus/icon?job=money-bundle)](http://ci.asedik.com:8080/job/money-bundle/)
 
 Installation
 ------------
@@ -178,33 +178,43 @@ Currency Validator
 ------------------
 
 The Bundle also includes a Symfony validator for use in validating an entity's attribute is a valid currency code
-using Symfony's Validator component.
+using (Symfony's Validator component)[https://github.com/symfony/Validator].
 
-TODO: example usage
+Example use of the annotation:
 
 ```php
 <?php
 
 // inside an entity file, such as src/Bundle/AcmeBundle/Entity/Purchase.php
 
-namespace Lmh\Bundle\AcmeBundle\Entity;
+namespace Acme\Bundle\AcmeBundle\Entity;
 
-use @Lmh\Bundle\MoneyBundle\Validator\Constraints\CurrencyCode as CurrencyCodeConstraint;
+use Lmh\Bundle\MoneyBundle\Validator\Constraints as Assert;
 
 class Purchase
 {
     /**
-     * @CurrencyCodeConstraint()
+     * @Assert\CurrencyCode()
      */
     public $currency;
 
 }
 
+```
+
+Using in the validator (see (Validator Component docs for details)[https://github.com/symfony/Validator] ):
 
 
+```php
+<?php
 
+use Acme\Bundle\AcmeBundle;
+use Symfony\Component\Validator\Validation;
 
+$validator = Validation::createValidatorBuilder()
+    ->enableAnnotationMapping()
+    ->getValidator();
 
-
-
-
+$purchase = new Purchase()
+$purchase->currency = 'invalid-this-is-not-a-code';
+$violations = $validator->validate($purchase);
