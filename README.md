@@ -3,6 +3,9 @@ matmar10/money-bundle
 
 Symfony2 Bundle wrapping common Money and Currency related needs such as integer-based math, currency codes, and money conversion.
 
+Build Status
+------------
+[![Build Status](http://ci.asedik.com:8080/buildStatus/icon?job=money-bundle)](http://ci.asedik.com:8080/job/money-bundle/)
 
 Installation
 ------------
