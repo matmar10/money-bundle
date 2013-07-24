@@ -3,6 +3,9 @@
 namespace Lmh\Bundle\MoneyBundle\Command;
 
 use Doctrine\ORM\Mapping as ORM;
+use DOMDocument;
+use RuntimeException;
+use SimpleXMLElement;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -86,14 +89,14 @@ class GenerateCurrencyDataCommand extends ContainerAwareCommand
                 }
 
                 $xml->moveToAttribute('iso4217');
-                $currency = $xml->value;
+                $currencyNode = $xml->value;
 
                 $xml->moveToAttribute('from');
                 $currencyStartDate = strtotime($xml->value);
 
                 if($currencyStartDate > $latestDate) {
                     $latestDate = $currencyStartDate;
-                    $latestCurrency = $currency;
+                    $latestCurrency = $currencyNode;
                 }
             }
 
@@ -103,9 +106,9 @@ class GenerateCurrencyDataCommand extends ContainerAwareCommand
         unset($currencies['']);
 
         $currencyPrecision = array_merge($currencyPrecision, $currencyPrecisionOverrides);
-        foreach($currencies as $country => $currency) {
-            if(false === array_key_exists($currency, $currencyPrecision)) {
-                $currencyPrecision[$currency] = array(
+        foreach($currencies as $country => $currencyNode) {
+            if(false === array_key_exists($currencyNode, $currencyPrecision)) {
+                $currencyPrecision[$currencyNode] = array(
                     'display' => $defaultDisplayPrecision,
                     'calculation' => $defaultCalculationPrecision,
                 );
@@ -136,6 +139,38 @@ class GenerateCurrencyDataCommand extends ContainerAwareCommand
         }
         fwrite($handle, $yml);
         fclose($handle);
+
+        $outputXmlFilename = __DIR__.'/../Resources/config/currency-configuration.xml';
+        $outputXmlElement = new SimpleXMLElement('<currency-configuration/>');
+        foreach($currencyData['precision'] as $code => $precisionData) {
+            $currencyNode = $outputXmlElement->addChild('currency');
+            $currencyNode->addAttribute('code', $code);
+            $currencyNode->addAttribute('calculationPrecision', $precisionData['calculation']);
+            $currencyNode->addAttribute('displayPrecision', $precisionData['display']);
+            if(false !== array_key_exists($code, $currencyData['symbol'])) {
+                $currencyNode->addAttribute('symbol', $currencyData['symbol'][$code]);
+            }
+            $regions = array_filter($currencyData['region'], function($regionCurrencyCode) use ($code) {
+                 return $code === $regionCurrencyCode;
+            });
+            if(count($regions)) {
+                $regionsNode = $currencyNode->children('regions');
+                if(!$regionsNode) {
+                    $regionsNode = $currencyNode->addChild('regions');
+                }
+                foreach($regions as $regionCode => $currencyCode) {
+                    $regionNode = $regionsNode->addChild('region');
+                    $regionNode->addAttribute('code', $regionCode);
+                }
+            }
+        }
+        $dom = new DOMDocument('1.0');
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        $dom->loadXML($outputXmlElement->asXML());
+        if(!$dom->save($outputXmlFilename)) {
+            throw new RuntimeException("Could not save output file: '$outputXmlFilename'");
+        }
         
     }
 

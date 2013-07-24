@@ -2,33 +2,31 @@
 
 namespace Lmh\Bundle\MoneyBundle\Service;
 
-use Symfony\Component\Yaml\Parser;
 use Lmh\Bundle\MoneyBundle\Entity\Currency;
 use Lmh\Bundle\MoneyBundle\Entity\CurrencyPair;
 use Lmh\Bundle\MoneyBundle\Entity\Money;
+use Lmh\Bundle\MoneyBundle\Exception\ConfigurationException;
 use Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException;
+use Symfony\Component\Yaml\Parser;
+use XmlReader;
 
 class CurrencyManager
 {
 
-    protected static $precision;
-    protected static $regions;
-    protected static $symbols;
+    const CURRENCY_CODE_STRING_LENGTH = 3;
+
+    protected $currencyConfigurationFilename;
+
+    protected $extraCurrencyConfig;
 
     /**
      * Construct a new service builder
      *
      * @param string $configurationFilename The filename of the configuration file
      */
-    public function __construct(
-        array $precision,
-        array $regions,
-        array $symbols
-    )
+    public function __construct($currencyConfigurationFilename, array $extraCurrencyConfig = array())
     {
-        self::$precision = $precision;
-        self::$regions = $regions;
-        self::$symbols = $symbols;
+        $this->currencyConfigurationFilename = $currencyConfigurationFilename;
     }
 
     public function getCurrencyPair($fromCurrencyOrCountryCode, $toCurrencyOrCountryCode, $multiplier)
@@ -46,20 +44,19 @@ class CurrencyManager
 
     public function getCurrency($currencyOrCountryCode)
     {
-        $currencyCode = $this->lookupCurrencyCode($currencyOrCountryCode);
-
-        if(false === array_key_exists($currencyCode, self::$precision)) {
-            throw new InvalidArgumentException("Currency '$currencyCode' is not supported: no currency precision settings found.");
+        $currencyNode = $this->getCurrencyNodeData($currencyOrCountryCode);
+        if(!$currencyNode) {
+            throw new InvalidArgumentException("Currency or country code '$currencyOrCountryCode' is not supported: no matching code found in file '{$this->currencyConfigurationFilename}'.");
         }
-
-        $precisionData = self::$precision[$currencyCode];
-        $code = $this->getCode($currencyCode);
         $currency = new Currency(
-            $code,
-            $precisionData['calculation'],
-            $precisionData['display']
+            $currencyNode->getAttribute('code'),
+            (int)$currencyNode->getAttribute('calculationPrecision'),
+            (int)$currencyNode->getAttribute('displayPrecision')
         );
-        $symbol = $this->lookupCurrencySymbol($currencyCode);
+        $symbol = $currencyNode->getAttribute('symbol');
+        if($symbol) {
+            $currency->setSymbol($symbol);
+        }
         $currency->setSymbol($symbol);
 
         return $currency;
@@ -67,31 +64,52 @@ class CurrencyManager
 
     public function getCode($currencyOrCountryCode)
     {
-        return $this->lookupCurrencyCode($currencyOrCountryCode);
+        $currencyNode = $this->getCurrencyNodeData($currencyOrCountryCode);
+        if(!$currencyNode) {
+            throw new InvalidArgumentException("Currency or country code '$currencyOrCountryCode' is not supported: no matching code found in file '{$this->currencyConfigurationFilename}'.");
+        }
+        return $currencyNode->getAttribute('code');
     }
 
-
-    protected function lookupCurrencyCode($currencyOrCountryCode)
+    protected function getCurrencyNodeData($currencyCodeOrCountryCode)
     {
-        if(2 === strlen($currencyOrCountryCode)) {
-            if(false === array_key_exists($currencyOrCountryCode, self::$regions)) {
-                throw new InvalidArgumentException("Currency for '$currencyOrCountryCode' is not supported: no country to currency mapping information found.");
+        $missingAttributeErrorMsg = "Invalid schema for configuration file '{$this->currencyConfigurationFilename}': missing attribute '%s'";
+        $xml = new XmlReader();
+        $xml->open($this->currencyConfigurationFilename);
+        $lastCurrencyNode = null;
+        while($xml->read()) {
+
+            if(XmlReader::ELEMENT !== $xml->nodeType) {
+                continue;
             }
-            return self::$regions[$currencyOrCountryCode];
+
+            if('currency' === $xml->name) {
+                if(!$xml->moveToAttribute('code')) {
+                    throw new ConfigurationException(sprintf($missingAttributeErrorMsg, 'code'));
+                }
+                $lastCurrencyNode = $xml->expand();
+                if($currencyCodeOrCountryCode === $xml->value) {
+                    $xml->close();
+                    return $lastCurrencyNode;
+                }
+            }
+
+            if(self::CURRENCY_CODE_STRING_LENGTH === strlen($currencyCodeOrCountryCode)) {
+                continue;
+            }
+
+            if('region' === $xml->name) {
+                if(!$xml->moveToAttribute('code')) {
+                    throw new ConfigurationException(sprintf($missingAttributeErrorMsg, 'region'));
+                }
+                if($currencyCodeOrCountryCode === $xml->value) {
+                    $xml->close();
+                    return $lastCurrencyNode;
+                }
+            }
         }
 
-        if(false === array_key_exists($currencyOrCountryCode, self::$precision)) {
-            throw new InvalidArgumentException("Currency '$currencyOrCountryCode' is not supported: no currency precision information found.");
-        }
-
-        return $currencyOrCountryCode;
-    }
-
-    protected function lookupCurrencySymbol($currencyCode)
-    {
-        if(false === array_key_exists($currencyCode, self::$symbols)) {
-            return '';
-        }
-        return self::$symbols[$currencyCode];
+        $xml->close();
+        return false;
     }
 }

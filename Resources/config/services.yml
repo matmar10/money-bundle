@@ -9,9 +9,8 @@ services:
     lmh_money.currency_manager:
         class: "%lmh_money.currency_manager.class%"
         arguments:
-            - "%lmh_money.precision%"
-            - "%lmh_money.regions%"
-            - "%lmh_money.symbols%"
+            - "%lmh_money.currency_configuration_filename%"
+            - "%lmh_money.currencies%"
 
     validator.unique.currency_code_validator:
         class: "%lmh_money.currency_code_validator.class%"

@@ -97,6 +97,6 @@ class Currency
     }
 
     public function __toString() {
-        return json_encode($this);
+        return $this->getCurrencyCode();
     }
 }

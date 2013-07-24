@@ -14,11 +14,15 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->scalarNode('currency_configuration_filename')
+            ->end();
 
-                ->arrayNode('precision')
-                    ->info('Configures the display and calculation precision for each currency')
-                    ->isRequired()
-                    ->requiresAtLeastOneElement()
+/*
+        $rootNode
+            ->children()
+
+                ->arrayNode('currencies')
+                    ->info('Adds additional currencies.')
                     ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->children()
@@ -53,7 +57,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
 
             ->end();
-
+*/
         return $treeBuilder;
     }
 }

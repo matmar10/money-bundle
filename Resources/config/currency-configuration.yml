@@ -1,799 +1,787 @@
-
-lmh_money:
-
-    precision:
-
-        # crypto currencies
-        BTC:
-            display: 8
-            calculation: 8
-
-        # sovereign currencies
-        ADP:
-            display: 0
-            calculation: 5
-        AED:
-            display: 2
-            calculation: 5
-        AFN:
-            display: 0
-            calculation: 5
-        ALL:
-            display: 0
-            calculation: 5
-        AMD:
-            display: 0
-            calculation: 5
-        ANG:
-            display: 2
-            calculation: 5
-        AOA:
-            display: 2
-            calculation: 5
-        ARS:
-            display: 2
-            calculation: 5
-        AUD:
-            display: 2
-            calculation: 5
-        AWG:
-            display: 2
-            calculation: 5
-        AZN:
-            display: 2
-            calculation: 5
-        BAM:
-            display: 2
-            calculation: 5
-        BBD:
-            display: 2
-            calculation: 5
-        BDT:
-            display: 2
-            calculation: 5
-        BGN:
-            display: 2
-            calculation: 5
-        BHD:
-            display: 3
-            calculation: 5
-        BIF:
-            display: 0
-            calculation: 5
-        BMD:
-            display: 2
-            calculation: 5
-        BND:
-            display: 2
-            calculation: 5
-        BOB:
-            display: 2
-            calculation: 5
-        BRL:
-            display: 2
-            calculation: 5
-        BSD:
-            display: 2
-            calculation: 5
-        BTC:
-            display: 8
-            calculation: 8
-        BTN:
-            display: 2
-            calculation: 5
-        BUK:
-            display: 2
-            calculation: 5
-        BWP:
-            display: 2
-            calculation: 5
-        BYR:
-            display: 0
-            calculation: 5
-        BZD:
-            display: 2
-            calculation: 5
-        CAD:
-            display: 2
-            calculation: 5
-        CDF:
-            display: 2
-            calculation: 5
-        CHF:
-            display: 2
-            calculation: 5
-        CLF:
-            display: 0
-            calculation: 5
-        CLP:
-            display: 0
-            calculation: 5
-        CNX:
-            display: 2
-            calculation: 5
-        COP:
-            display: 0
-            calculation: 5
-        CRC:
-            display: 0
-            calculation: 5
-        CUC:
-            display: 2
-            calculation: 5
-        CVE:
-            display: 2
-            calculation: 5
-        CZK:
-            display: 2
-            calculation: 5
-        DDM:
-            display: 2
-            calculation: 5
-        DEFAULT:
-            display: 2
-            calculation: 5
-        DJF:
-            display: 0
-            calculation: 5
-        DKK:
-            display: 2
-            calculation: 5
-        DOP:
-            display: 2
-            calculation: 5
-        DZD:
-            display: 2
-            calculation: 5
-        EGP:
-            display: 2
-            calculation: 5
-        ERN:
-            display: 2
-            calculation: 5
-        ESP:
-            display: 0
-            calculation: 5
-        ETB:
-            display: 2
-            calculation: 5
-        EUR:
-            display: 2
-            calculation: 5
-        FJD:
-            display: 2
-            calculation: 5
-        FKP:
-            display: 2
-            calculation: 5
-        GBP:
-            display: 2
-            calculation: 5
-        GEL:
-            display: 2
-            calculation: 5
-        GHS:
-            display: 2
-            calculation: 5
-        GIP:
-            display: 2
-            calculation: 5
-        GMD:
-            display: 2
-            calculation: 5
-        GNF:
-            display: 0
-            calculation: 5
-        GTQ:
-            display: 2
-            calculation: 5
-        GYD:
-            display: 0
-            calculation: 5
-        HKD:
-            display: 2
-            calculation: 5
-        HNL:
-            display: 2
-            calculation: 5
-        HRK:
-            display: 2
-            calculation: 5
-        HUF:
-            display: 0
-            calculation: 5
-        IDR:
-            display: 0
-            calculation: 5
-        ILS:
-            display: 2
-            calculation: 5
-        INR:
-            display: 2
-            calculation: 5
-        IQD:
-            display: 0
-            calculation: 5
-        IRR:
-            display: 0
-            calculation: 5
-        ISK:
-            display: 0
-            calculation: 5
-        ITL:
-            display: 0
-            calculation: 5
-        JMD:
-            display: 2
-            calculation: 5
-        JOD:
-            display: 3
-            calculation: 5
-        JPY:
-            display: 0
-            calculation: 5
-        KES:
-            display: 2
-            calculation: 5
-        KGS:
-            display: 2
-            calculation: 5
-        KHR:
-            display: 2
-            calculation: 5
-        KMF:
-            display: 0
-            calculation: 5
-        KPW:
-            display: 0
-            calculation: 5
-        KRW:
-            display: 0
-            calculation: 5
-        KWD:
-            display: 3
-            calculation: 5
-        KYD:
-            display: 2
-            calculation: 5
-        KZT:
-            display: 2
-            calculation: 5
-        LAK:
-            display: 0
-            calculation: 5
-        LBP:
-            display: 0
-            calculation: 5
-        LKR:
-            display: 2
-            calculation: 5
-        LRD:
-            display: 2
-            calculation: 5
-        LSL:
-            display: 2
-            calculation: 5
-        LTL:
-            display: 2
-            calculation: 5
-        LUF:
-            display: 0
-            calculation: 5
-        LVL:
-            display: 2
-            calculation: 5
-        LYD:
-            display: 3
-            calculation: 5
-        MAD:
-            display: 2
-            calculation: 5
-        MDL:
-            display: 2
-            calculation: 5
-        MGA:
-            display: 0
-            calculation: 5
-        MGF:
-            display: 0
-            calculation: 5
-        MKD:
-            display: 2
-            calculation: 5
-        MMK:
-            display: 0
-            calculation: 5
-        MNT:
-            display: 0
-            calculation: 5
-        MOP:
-            display: 2
-            calculation: 5
-        MRO:
-            display: 0
-            calculation: 5
-        MUR:
-            display: 0
-            calculation: 5
-        MVR:
-            display: 2
-            calculation: 5
-        MWK:
-            display: 2
-            calculation: 5
-        MXN:
-            display: 2
-            calculation: 5
-        MYR:
-            display: 2
-            calculation: 5
-        MZN:
-            display: 2
-            calculation: 5
-        NAD:
-            display: 2
-            calculation: 5
-        NGN:
-            display: 2
-            calculation: 5
-        NIO:
-            display: 2
-            calculation: 5
-        NOK:
-            display: 2
-            calculation: 5
-        NPR:
-            display: 2
-            calculation: 5
-        NZD:
-            display: 2
-            calculation: 5
-        OMR:
-            display: 3
-            calculation: 5
-        PEN:
-            display: 2
-            calculation: 5
-        PGK:
-            display: 2
-            calculation: 5
-        PHP:
-            display: 2
-            calculation: 5
-        PKR:
-            display: 0
-            calculation: 5
-        PLN:
-            display: 2
-            calculation: 5
-        PYG:
-            display: 0
-            calculation: 5
-        QAR:
-            display: 2
-            calculation: 5
-        RON:
-            display: 2
-            calculation: 5
-        RSD:
-            display: 0
-            calculation: 5
-        RUB:
-            display: 2
-            calculation: 5
-        RWF:
-            display: 0
-            calculation: 5
-        SAR:
-            display: 2
-            calculation: 5
-        SBD:
-            display: 2
-            calculation: 5
-        SCR:
-            display: 2
-            calculation: 5
-        SDG:
-            display: 2
-            calculation: 5
-        SEK:
-            display: 2
-            calculation: 5
-        SGD:
-            display: 2
-            calculation: 5
-        SHP:
-            display: 2
-            calculation: 5
-        SLL:
-            display: 0
-            calculation: 5
-        SOS:
-            display: 0
-            calculation: 5
-        SRD:
-            display: 2
-            calculation: 5
-        SSP:
-            display: 2
-            calculation: 5
-        STD:
-            display: 0
-            calculation: 5
-        SUR:
-            display: 2
-            calculation: 5
-        SYP:
-            display: 0
-            calculation: 5
-        SZL:
-            display: 2
-            calculation: 5
-        THB:
-            display: 2
-            calculation: 5
-        TJS:
-            display: 2
-            calculation: 5
-        TMM:
-            display: 0
-            calculation: 5
-        TMT:
-            display: 2
-            calculation: 5
-        TND:
-            display: 3
-            calculation: 5
-        TOP:
-            display: 2
-            calculation: 5
-        TRL:
-            display: 0
-            calculation: 5
-        TRY:
-            display: 2
-            calculation: 5
-        TTD:
-            display: 2
-            calculation: 5
-        TWD:
-            display: 2
-            calculation: 5
-        TZS:
-            display: 0
-            calculation: 5
-        UAH:
-            display: 2
-            calculation: 5
-        UGX:
-            display: 0
-            calculation: 5
-        USD:
-            display: 2
-            calculation: 5
-        UYU:
-            display: 2
-            calculation: 5
-        UZS:
-            display: 0
-            calculation: 5
-        VEF:
-            display: 2
-            calculation: 5
-        VND:
-            display: 0
-            calculation: 5
-        VUV:
-            display: 0
-            calculation: 5
-        WST:
-            display: 2
-            calculation: 5
-        XAF:
-            display: 0
-            calculation: 5
-        XCD:
-            display: 2
-            calculation: 5
-        XOF:
-            display: 0
-            calculation: 5
-        XPF:
-            display: 0
-            calculation: 5
-        YDD:
-            display: 2
-            calculation: 5
-        YER:
-            display: 0
-            calculation: 5
-        YUM:
-            display: 2
-            calculation: 5
-        ZAL:
-            display: 2
-            calculation: 5
-        ZMK:
-            display: 0
-            calculation: 5
-        ZMW:
-            display: 2
-            calculation: 5
-        ZRN:
-            display: 2
-            calculation: 5
-        ZWD:
-            display: 0
-            calculation: 5
-
-    regions:
-        150: EUR
-        AC: SHP
-        AD: EUR
-        AE: AED
-        AF: AFN
-        AG: XCD
-        AI: XCD
-        AL: ALL
-        AM: AMD
-        AO: AOA
-        AQ: null
-        AR: ARS
-        AS: USD
-        AT: EUR
-        AU: AUD
-        AW: AWG
-        AX: EUR
-        AZ: AZN
-        BA: BAM
-        BB: BBD
-        BD: BDT
-        BE: EUR
-        BF: XOF
-        BG: BGN
-        BH: BHD
-        BI: BIF
-        BJ: XOF
-        BL: EUR
-        BM: BMD
-        BN: BND
-        BO: BOB
-        BQ: USD
-        BR: BRL
-        BS: BSD
-        BT: BTN
-        BU: BUK
-        BV: NOK
-        BW: BWP
-        BY: BYR
-        BZ: BZD
-        CA: CAD
-        CC: AUD
-        CD: CDF
-        CF: XAF
-        CG: XAF
-        CH: CHF
-        CI: XOF
-        CK: NZD
-        CL: CLP
-        CM: XAF
-        CN: CNX
-        CO: COP
-        CP: null
-        CR: CRC
-        CS: EUR
-        CU: CUC
-        CV: CVE
-        CW: ANG
-        CX: AUD
-        CY: EUR
-        CZ: CZK
-        DD: DDM
-        DE: EUR
-        DG: USD
-        DJ: DJF
-        DK: DKK
-        DM: XCD
-        DO: DOP
-        DZ: DZD
-        EA: EUR
-        EC: USD
-        EE: EUR
-        EG: EGP
-        EH: MAD
-        ER: ERN
-        ES: EUR
-        EU: EUR
-        ET: ETB
-        FI: EUR
-        FJ: FJD
-        FK: FKP
-        FM: USD
-        FO: DKK
-        FR: EUR
-        GA: XAF
-        GB: GBP
-        GD: XCD
-        GE: GEL
-        GF: EUR
-        GG: GBP
-        GH: GHS
-        GI: GIP
-        GL: DKK
-        GM: GMD
-        GN: GNF
-        GP: EUR
-        GQ: XAF
-        GR: EUR
-        GS: GBP
-        GT: GTQ
-        GU: USD
-        GW: XOF
-        GY: GYD
-        HK: HKD
-        HM: AUD
-        HN: HNL
-        HR: HRK
-        HT: USD
-        HU: HUF
-        IC: EUR
-        ID: IDR
-        IE: EUR
-        IL: ILS
-        IM: GBP
-        IN: INR
-        IO: USD
-        IQ: IQD
-        IR: IRR
-        IS: ISK
-        IT: EUR
-        JE: GBP
-        JM: JMD
-        JO: JOD
-        JP: JPY
-        KE: KES
-        KG: KGS
-        KH: KHR
-        KI: AUD
-        KM: KMF
-        KN: XCD
-        KP: KPW
-        KR: KRW
-        KW: KWD
-        KY: KYD
-        KZ: KZT
-        LA: LAK
-        LB: LBP
-        LC: XCD
-        LI: CHF
-        LK: LKR
-        LR: LRD
-        LS: LSL
-        LT: LTL
-        LU: EUR
-        LV: LVL
-        LY: LYD
-        MA: MAD
-        MC: EUR
-        MD: MDL
-        ME: EUR
-        MF: EUR
-        MG: MGA
-        MH: USD
-        MK: MKD
-        ML: XOF
-        MM: MMK
-        MN: MNT
-        MO: MOP
-        MP: USD
-        MQ: EUR
-        MR: MRO
-        MS: XCD
-        MT: EUR
-        MU: MUR
-        MV: MVR
-        MW: MWK
-        MX: MXN
-        MY: MYR
-        MZ: MZN
-        NA: NAD
-        NC: XPF
-        NE: XOF
-        NF: AUD
-        NG: NGN
-        NI: NIO
-        NL: EUR
-        NO: NOK
-        NP: NPR
-        NR: AUD
-        NU: NZD
-        NZ: NZD
-        OM: OMR
-        PA: USD
-        PE: PEN
-        PF: XPF
-        PG: PGK
-        PH: PHP
-        PK: PKR
-        PL: PLN
-        PM: EUR
-        PN: NZD
-        PR: USD
-        PS: JOD
-        PT: EUR
-        PW: USD
-        PY: PYG
-        QA: QAR
-        RE: EUR
-        RO: RON
-        RS: RSD
-        RU: RUB
-        RW: RWF
-        SA: SAR
-        SB: SBD
-        SC: SCR
-        SD: SDG
-        SE: SEK
-        SG: SGD
-        SH: SHP
-        SI: EUR
-        SJ: NOK
-        SK: EUR
-        SL: SLL
-        SM: EUR
-        SN: XOF
-        SO: SOS
-        SR: SRD
-        SS: SSP
-        ST: STD
-        SU: SUR
-        SV: USD
-        SX: ANG
-        SY: SYP
-        SZ: SZL
-        TA: GBP
-        TC: USD
-        TD: XAF
-        TF: EUR
-        TG: XOF
-        TH: THB
-        TJ: TJS
-        TK: NZD
-        TL: USD
-        TM: TMT
-        TN: TND
-        TO: TOP
-        TP: IDR
-        TR: TRY
-        TT: TTD
-        TV: AUD
-        TW: TWD
-        TZ: TZS
-        UA: UAH
-        UG: UGX
-        UM: USD
-        US: USD
-        UY: UYU
-        UZ: UZS
-        VA: EUR
-        VC: XCD
-        VE: VEF
-        VG: USD
-        VI: USD
-        VN: VND
-        VU: VUV
-        WF: XPF
-        WS: WST
-        YE: YER
-        YD: YDD
-        YT: EUR
-        YU: YUM
-        ZA: ZAL
-        ZM: ZMW
-        ZR: ZRN
-        ZW: USD
-
-    symbols:
-        EUR: '&#8364;'
-        GBP: '&#163;'
-        USD: '&#36;'
+precision:
+    ADP:
+        display: 0
+        calculation: 2
+    AED:
+        display: 2
+        calculation: 2
+    AFN:
+        display: 0
+        calculation: 2
+    ALL:
+        display: 0
+        calculation: 2
+    AMD:
+        display: 0
+        calculation: 2
+    ANG:
+        display: 2
+        calculation: 2
+    AOA:
+        display: 2
+        calculation: 2
+    ARS:
+        display: 2
+        calculation: 2
+    AUD:
+        display: 2
+        calculation: 2
+    AWG:
+        display: 2
+        calculation: 2
+    AZN:
+        display: 2
+        calculation: 2
+    BAM:
+        display: 2
+        calculation: 2
+    BBD:
+        display: 2
+        calculation: 2
+    BDT:
+        display: 2
+        calculation: 2
+    BGN:
+        display: 2
+        calculation: 2
+    BHD:
+        display: 3
+        calculation: 2
+    BIF:
+        display: 0
+        calculation: 2
+    BMD:
+        display: 2
+        calculation: 2
+    BND:
+        display: 2
+        calculation: 2
+    BOB:
+        display: 2
+        calculation: 2
+    BRL:
+        display: 2
+        calculation: 2
+    BSD:
+        display: 2
+        calculation: 2
+    BTC:
+        display: 8
+        calculation: 8
+    BTN:
+        display: 2
+        calculation: 2
+    BUK:
+        display: 2
+        calculation: 2
+    BWP:
+        display: 2
+        calculation: 2
+    BYR:
+        display: 0
+        calculation: 2
+    BZD:
+        display: 2
+        calculation: 2
+    CAD:
+        display: 2
+        calculation: 2
+    CDF:
+        display: 2
+        calculation: 2
+    CHF:
+        display: 2
+        calculation: 2
+    CLF:
+        display: 0
+        calculation: 2
+    CLP:
+        display: 0
+        calculation: 2
+    CNY:
+        display: 2
+        calculation: 2
+    COP:
+        display: 0
+        calculation: 2
+    CRC:
+        display: 0
+        calculation: 2
+    CUC:
+        display: 2
+        calculation: 2
+    CVE:
+        display: 2
+        calculation: 2
+    CZK:
+        display: 2
+        calculation: 2
+    DDM:
+        display: 2
+        calculation: 2
+    DEFAULT:
+        display: 2
+        calculation: 2
+    DJF:
+        display: 0
+        calculation: 2
+    DKK:
+        display: 2
+        calculation: 2
+    DOP:
+        display: 2
+        calculation: 2
+    DZD:
+        display: 2
+        calculation: 2
+    EGP:
+        display: 2
+        calculation: 2
+    ERN:
+        display: 2
+        calculation: 2
+    ESP:
+        display: 0
+        calculation: 2
+    ETB:
+        display: 2
+        calculation: 2
+    EUR:
+        display: 2
+        calculation: 2
+    FJD:
+        display: 2
+        calculation: 2
+    FKP:
+        display: 2
+        calculation: 2
+    GBP:
+        display: 2
+        calculation: 2
+    GEL:
+        display: 2
+        calculation: 2
+    GHS:
+        display: 2
+        calculation: 2
+    GIP:
+        display: 2
+        calculation: 2
+    GMD:
+        display: 2
+        calculation: 2
+    GNF:
+        display: 0
+        calculation: 2
+    GTQ:
+        display: 2
+        calculation: 2
+    GYD:
+        display: 0
+        calculation: 2
+    HKD:
+        display: 2
+        calculation: 2
+    HNL:
+        display: 2
+        calculation: 2
+    HRK:
+        display: 2
+        calculation: 2
+    HUF:
+        display: 0
+        calculation: 2
+    IDR:
+        display: 0
+        calculation: 2
+    ILS:
+        display: 2
+        calculation: 2
+    INR:
+        display: 2
+        calculation: 2
+    IQD:
+        display: 0
+        calculation: 2
+    IRR:
+        display: 0
+        calculation: 2
+    ISK:
+        display: 0
+        calculation: 2
+    ITL:
+        display: 0
+        calculation: 2
+    JMD:
+        display: 2
+        calculation: 2
+    JOD:
+        display: 3
+        calculation: 2
+    JPY:
+        display: 0
+        calculation: 2
+    KES:
+        display: 2
+        calculation: 2
+    KGS:
+        display: 2
+        calculation: 2
+    KHR:
+        display: 2
+        calculation: 2
+    KMF:
+        display: 0
+        calculation: 2
+    KPW:
+        display: 0
+        calculation: 2
+    KRW:
+        display: 0
+        calculation: 2
+    KWD:
+        display: 3
+        calculation: 2
+    KYD:
+        display: 2
+        calculation: 2
+    KZT:
+        display: 2
+        calculation: 2
+    LAK:
+        display: 0
+        calculation: 2
+    LBP:
+        display: 0
+        calculation: 2
+    LKR:
+        display: 2
+        calculation: 2
+    LRD:
+        display: 2
+        calculation: 2
+    LSL:
+        display: 2
+        calculation: 2
+    LTL:
+        display: 2
+        calculation: 2
+    LUF:
+        display: 0
+        calculation: 2
+    LVL:
+        display: 2
+        calculation: 2
+    LYD:
+        display: 3
+        calculation: 2
+    MAD:
+        display: 2
+        calculation: 2
+    MDL:
+        display: 2
+        calculation: 2
+    MGA:
+        display: 0
+        calculation: 2
+    MGF:
+        display: 0
+        calculation: 2
+    MKD:
+        display: 2
+        calculation: 2
+    MMK:
+        display: 0
+        calculation: 2
+    MNT:
+        display: 0
+        calculation: 2
+    MOP:
+        display: 2
+        calculation: 2
+    MRO:
+        display: 0
+        calculation: 2
+    MUR:
+        display: 0
+        calculation: 2
+    MVR:
+        display: 2
+        calculation: 2
+    MWK:
+        display: 2
+        calculation: 2
+    MXN:
+        display: 2
+        calculation: 2
+    MYR:
+        display: 2
+        calculation: 2
+    MZN:
+        display: 2
+        calculation: 2
+    NAD:
+        display: 2
+        calculation: 2
+    NGN:
+        display: 2
+        calculation: 2
+    NIO:
+        display: 2
+        calculation: 2
+    NOK:
+        display: 2
+        calculation: 2
+    NPR:
+        display: 2
+        calculation: 2
+    NZD:
+        display: 2
+        calculation: 2
+    OMR:
+        display: 3
+        calculation: 2
+    PEN:
+        display: 2
+        calculation: 2
+    PGK:
+        display: 2
+        calculation: 2
+    PHP:
+        display: 2
+        calculation: 2
+    PKR:
+        display: 0
+        calculation: 2
+    PLN:
+        display: 2
+        calculation: 2
+    PYG:
+        display: 0
+        calculation: 2
+    QAR:
+        display: 2
+        calculation: 2
+    RON:
+        display: 2
+        calculation: 2
+    RSD:
+        display: 0
+        calculation: 2
+    RUB:
+        display: 2
+        calculation: 2
+    RWF:
+        display: 0
+        calculation: 2
+    SAR:
+        display: 2
+        calculation: 2
+    SBD:
+        display: 2
+        calculation: 2
+    SCR:
+        display: 2
+        calculation: 2
+    SDG:
+        display: 2
+        calculation: 2
+    SEK:
+        display: 2
+        calculation: 2
+    SGD:
+        display: 2
+        calculation: 2
+    SHP:
+        display: 2
+        calculation: 2
+    SLL:
+        display: 0
+        calculation: 2
+    SOS:
+        display: 0
+        calculation: 2
+    SRD:
+        display: 2
+        calculation: 2
+    SSP:
+        display: 2
+        calculation: 2
+    STD:
+        display: 0
+        calculation: 2
+    SUR:
+        display: 2
+        calculation: 2
+    SYP:
+        display: 0
+        calculation: 2
+    SZL:
+        display: 2
+        calculation: 2
+    THB:
+        display: 2
+        calculation: 2
+    TJS:
+        display: 2
+        calculation: 2
+    TMM:
+        display: 0
+        calculation: 2
+    TMT:
+        display: 2
+        calculation: 2
+    TND:
+        display: 3
+        calculation: 2
+    TOP:
+        display: 2
+        calculation: 2
+    TRL:
+        display: 0
+        calculation: 2
+    TRY:
+        display: 2
+        calculation: 2
+    TTD:
+        display: 2
+        calculation: 2
+    TWD:
+        display: 2
+        calculation: 2
+    TZS:
+        display: 0
+        calculation: 2
+    UAH:
+        display: 2
+        calculation: 2
+    UGX:
+        display: 0
+        calculation: 2
+    USD:
+        display: 2
+        calculation: 2
+    UYU:
+        display: 2
+        calculation: 2
+    UZS:
+        display: 0
+        calculation: 2
+    VEF:
+        display: 2
+        calculation: 2
+    VND:
+        display: 0
+        calculation: 2
+    VUV:
+        display: 0
+        calculation: 2
+    WST:
+        display: 2
+        calculation: 2
+    XAF:
+        display: 0
+        calculation: 2
+    XCD:
+        display: 2
+        calculation: 2
+    XOF:
+        display: 0
+        calculation: 2
+    XPF:
+        display: 0
+        calculation: 2
+    YDD:
+        display: 2
+        calculation: 2
+    YER:
+        display: 0
+        calculation: 2
+    YUM:
+        display: 2
+        calculation: 2
+    ZAR:
+        display: 2
+        calculation: 2
+    ZMK:
+        display: 0
+        calculation: 2
+    ZMW:
+        display: 2
+        calculation: 2
+    ZRN:
+        display: 2
+        calculation: 2
+    ZWD:
+        display: 0
+        calculation: 2
+region:
+    150: EUR
+    AC: SHP
+    AD: EUR
+    AE: AED
+    AF: AFN
+    AG: XCD
+    AI: XCD
+    AL: ALL
+    AM: AMD
+    AO: AOA
+    AQ: null
+    AR: ARS
+    AS: USD
+    AT: EUR
+    AU: AUD
+    AW: AWG
+    AX: EUR
+    AZ: AZN
+    BA: BAM
+    BB: BBD
+    BD: BDT
+    BE: EUR
+    BF: XOF
+    BG: BGN
+    BH: BHD
+    BI: BIF
+    BJ: XOF
+    BL: EUR
+    BM: BMD
+    BN: BND
+    BO: BOB
+    BQ: USD
+    BR: BRL
+    BS: BSD
+    BT: BTN
+    BU: BUK
+    BV: NOK
+    BW: BWP
+    BY: BYR
+    BZ: BZD
+    CA: CAD
+    CC: AUD
+    CD: CDF
+    CF: XAF
+    CG: XAF
+    CH: CHF
+    CI: XOF
+    CK: NZD
+    CL: CLP
+    CM: XAF
+    CN: CNY
+    CO: COP
+    CP: null
+    CR: CRC
+    CS: EUR
+    CU: CUC
+    CV: CVE
+    CW: ANG
+    CX: AUD
+    CY: EUR
+    CZ: CZK
+    DD: DDM
+    DE: EUR
+    DG: USD
+    DJ: DJF
+    DK: DKK
+    DM: XCD
+    DO: DOP
+    DZ: DZD
+    EA: EUR
+    EC: USD
+    EE: EUR
+    EG: EGP
+    EH: MAD
+    ER: ERN
+    ES: EUR
+    EU: EUR
+    ET: ETB
+    FI: EUR
+    FJ: FJD
+    FK: FKP
+    FM: USD
+    FO: DKK
+    FR: EUR
+    GA: XAF
+    GB: GBP
+    GD: XCD
+    GE: GEL
+    GF: EUR
+    GG: GBP
+    GH: GHS
+    GI: GIP
+    GL: DKK
+    GM: GMD
+    GN: GNF
+    GP: EUR
+    GQ: XAF
+    GR: EUR
+    GS: GBP
+    GT: GTQ
+    GU: USD
+    GW: XOF
+    GY: GYD
+    HK: HKD
+    HM: AUD
+    HN: HNL
+    HR: HRK
+    HT: USD
+    HU: HUF
+    IC: EUR
+    ID: IDR
+    IE: EUR
+    IL: ILS
+    IM: GBP
+    IN: INR
+    IO: USD
+    IQ: IQD
+    IR: IRR
+    IS: ISK
+    IT: EUR
+    JE: GBP
+    JM: JMD
+    JO: JOD
+    JP: JPY
+    KE: KES
+    KG: KGS
+    KH: KHR
+    KI: AUD
+    KM: KMF
+    KN: XCD
+    KP: KPW
+    KR: KRW
+    KW: KWD
+    KY: KYD
+    KZ: KZT
+    LA: LAK
+    LB: LBP
+    LC: XCD
+    LI: CHF
+    LK: LKR
+    LR: LRD
+    LS: LSL
+    LT: LTL
+    LU: EUR
+    LV: LVL
+    LY: LYD
+    MA: MAD
+    MC: EUR
+    MD: MDL
+    ME: EUR
+    MF: EUR
+    MG: MGA
+    MH: USD
+    MK: MKD
+    ML: XOF
+    MM: MMK
+    MN: MNT
+    MO: MOP
+    MP: USD
+    MQ: EUR
+    MR: MRO
+    MS: XCD
+    MT: EUR
+    MU: MUR
+    MV: MVR
+    MW: MWK
+    MX: MXN
+    MY: MYR
+    MZ: MZN
+    NA: NAD
+    NC: XPF
+    NE: XOF
+    NF: AUD
+    NG: NGN
+    NI: NIO
+    NL: EUR
+    NO: NOK
+    NP: NPR
+    NR: AUD
+    NU: NZD
+    NZ: NZD
+    OM: OMR
+    PA: USD
+    PE: PEN
+    PF: XPF
+    PG: PGK
+    PH: PHP
+    PK: PKR
+    PL: PLN
+    PM: EUR
+    PN: NZD
+    PR: USD
+    PS: JOD
+    PT: EUR
+    PW: USD
+    PY: PYG
+    QA: QAR
+    RE: EUR
+    RO: RON
+    RS: RSD
+    RU: RUB
+    RW: RWF
+    SA: SAR
+    SB: SBD
+    SC: SCR
+    SD: SDG
+    SE: SEK
+    SG: SGD
+    SH: SHP
+    SI: EUR
+    SJ: NOK
+    SK: EUR
+    SL: SLL
+    SM: EUR
+    SN: XOF
+    SO: SOS
+    SR: SRD
+    SS: SSP
+    ST: STD
+    SU: SUR
+    SV: USD
+    SX: ANG
+    SY: SYP
+    SZ: SZL
+    TA: GBP
+    TC: USD
+    TD: XAF
+    TF: EUR
+    TG: XOF
+    TH: THB
+    TJ: TJS
+    TK: NZD
+    TL: USD
+    TM: TMT
+    TN: TND
+    TO: TOP
+    TP: IDR
+    TR: TRY
+    TT: TTD
+    TV: AUD
+    TW: TWD
+    TZ: TZS
+    UA: UAH
+    UG: UGX
+    UM: USD
+    US: USD
+    UY: UYU
+    UZ: UZS
+    VA: EUR
+    VC: XCD
+    VE: VEF
+    VG: USD
+    VI: USD
+    VN: VND
+    VU: VUV
+    WF: XPF
+    WS: WST
+    YE: YER
+    YD: YDD
+    YT: EUR
+    YU: YUM
+    ZA: ZAR
+    ZM: ZMW
+    ZR: ZRN
+    ZW: USD
+symbol:
+    EUR: '&#8364;'
+    GBP: '&#163;'
+    USD: '&#36;'
