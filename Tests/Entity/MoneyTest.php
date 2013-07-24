@@ -387,12 +387,12 @@ class MoneyTest extends TestCase
         $usdMoney = new Money($usd);
         $usdMoney->setAmountFloat(1.23);
         $json = $serializer->serialize($usdMoney, 'json');
-        $this->assertEquals('{"currency":{"currencyCode":"USD","precision":5,"displayPrecision":2},"scale":100000,"amountInteger":123000,"amountFloat":1.23,"amountDisplay":"1.23"}', $json);
+        $this->assertEquals('{"currency":{"currencyCode":"USD","precision":5,"displayPrecision":2,"symbol":""},"scale":100000,"amountInteger":123000,"amountFloat":1.23,"amountDisplay":"1.23"}', $json);
 
         $cad = new Currency('CAD', 8, 8);
         $cadMoney = new Money($cad);
         $json2 = $serializer->serialize($cadMoney, 'json');
-        $this->assertEquals('{"currency":{"currencyCode":"CAD","precision":8,"displayPrecision":8},"scale":100000000,"amountInteger":0,"amountFloat":0,"amountDisplay":"0.00000000"}', $json2);
+        $this->assertEquals('{"currency":{"currencyCode":"CAD","precision":8,"displayPrecision":8,"symbol":""},"scale":100000000,"amountInteger":0,"amountFloat":0,"amountDisplay":"0.00000000"}', $json2);
 
     }
 

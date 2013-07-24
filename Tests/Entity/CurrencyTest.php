@@ -48,11 +48,11 @@ class CurrencyTest extends TestCase
 
         $usd = new Currency('USD', 5, 2);
         $json = $serializer->serialize($usd, 'json');
-        $this->assertEquals('{"currencyCode":"USD","precision":5,"displayPrecision":2}', $json);
+        $this->assertEquals('{"currencyCode":"USD","precision":5,"displayPrecision":2,"symbol":""}', $json);
 
         $cad = new Currency('CAD', 8, 8);
         $json2 = $serializer->serialize($cad, 'json');
-        $this->assertEquals('{"currencyCode":"CAD","precision":8,"displayPrecision":8}', $json2);
+        $this->assertEquals('{"currencyCode":"CAD","precision":8,"displayPrecision":8,"symbol":""}', $json2);
 
     }
 
@@ -62,12 +62,12 @@ class CurrencyTest extends TestCase
         $serializer = SerializerBuilder::create()->build();
 
         $usd = new Currency('USD', 5, 2);
-        $json = '{"currencyCode":"USD","precision":5,"displayPrecision":2}';
+        $json = '{"currencyCode":"USD","precision":5,"displayPrecision":2,"symbol":""}';
         $usdResult = $serializer->deserialize($json, 'Lmh\Bundle\MoneyBundle\Entity\Currency', 'json');
         $this->assertEquals($usd, $usdResult);
 
         $cad = new Currency('CAD', 8, 8);
-        $json2 = '{"currencyCode":"CAD","precision":8,"displayPrecision":8}';
+        $json2 = '{"currencyCode":"CAD","precision":8,"displayPrecision":8,"symbol":""}';
         $cadResult = $serializer->deserialize($json2, 'Lmh\Bundle\MoneyBundle\Entity\Currency', 'json');
         $this->assertEquals($cad, $cadResult);
 

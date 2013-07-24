@@ -1,918 +1,598 @@
 <?xml version="1.0"?>
-<currency-configuration>
+<currencies>
   <currency code="ADP" calculationPrecision="2" displayPrecision="0"/>
   <currency code="AED" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="AE"/>
-    </regions>
+    <region code="AE"/>
   </currency>
   <currency code="AFN" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="AF"/>
-    </regions>
+    <region code="AF"/>
   </currency>
   <currency code="ALL" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="AL"/>
-    </regions>
+    <region code="AL"/>
   </currency>
   <currency code="AMD" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="AM"/>
-    </regions>
+    <region code="AM"/>
   </currency>
   <currency code="ANG" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="CW"/>
-      <region code="SX"/>
-    </regions>
+    <region code="CW"/>
+    <region code="SX"/>
   </currency>
   <currency code="AOA" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="AO"/>
-    </regions>
+    <region code="AO"/>
   </currency>
   <currency code="ARS" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="AR"/>
-    </regions>
+    <region code="AR"/>
   </currency>
   <currency code="AUD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="AU"/>
-      <region code="CC"/>
-      <region code="CX"/>
-      <region code="HM"/>
-      <region code="KI"/>
-      <region code="NF"/>
-      <region code="NR"/>
-      <region code="TV"/>
-    </regions>
+    <region code="AU"/>
+    <region code="CC"/>
+    <region code="CX"/>
+    <region code="HM"/>
+    <region code="KI"/>
+    <region code="NF"/>
+    <region code="NR"/>
+    <region code="TV"/>
   </currency>
   <currency code="AWG" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="AW"/>
-    </regions>
+    <region code="AW"/>
   </currency>
   <currency code="AZN" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="AZ"/>
-    </regions>
+    <region code="AZ"/>
   </currency>
   <currency code="BAM" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="BA"/>
-    </regions>
+    <region code="BA"/>
   </currency>
   <currency code="BBD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="BB"/>
-    </regions>
+    <region code="BB"/>
   </currency>
   <currency code="BDT" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="BD"/>
-    </regions>
+    <region code="BD"/>
   </currency>
   <currency code="BGN" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="BG"/>
-    </regions>
+    <region code="BG"/>
   </currency>
   <currency code="BHD" calculationPrecision="2" displayPrecision="3">
-    <regions>
-      <region code="BH"/>
-    </regions>
+    <region code="BH"/>
   </currency>
   <currency code="BIF" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="BI"/>
-    </regions>
+    <region code="BI"/>
   </currency>
   <currency code="BMD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="BM"/>
-    </regions>
+    <region code="BM"/>
   </currency>
   <currency code="BND" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="BN"/>
-    </regions>
+    <region code="BN"/>
   </currency>
   <currency code="BOB" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="BO"/>
-    </regions>
+    <region code="BO"/>
   </currency>
   <currency code="BRL" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="BR"/>
-    </regions>
+    <region code="BR"/>
   </currency>
   <currency code="BSD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="BS"/>
-    </regions>
+    <region code="BS"/>
   </currency>
   <currency code="BTC" calculationPrecision="8" displayPrecision="8"/>
   <currency code="BTN" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="BT"/>
-    </regions>
+    <region code="BT"/>
   </currency>
   <currency code="BUK" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="BU"/>
-    </regions>
+    <region code="BU"/>
   </currency>
   <currency code="BWP" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="BW"/>
-    </regions>
+    <region code="BW"/>
   </currency>
   <currency code="BYR" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="BY"/>
-    </regions>
+    <region code="BY"/>
   </currency>
   <currency code="BZD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="BZ"/>
-    </regions>
+    <region code="BZ"/>
   </currency>
   <currency code="CAD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="CA"/>
-    </regions>
+    <region code="CA"/>
   </currency>
   <currency code="CDF" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="CD"/>
-    </regions>
+    <region code="CD"/>
   </currency>
   <currency code="CHF" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="CH"/>
-      <region code="LI"/>
-    </regions>
+    <region code="CH"/>
+    <region code="LI"/>
   </currency>
   <currency code="CLF" calculationPrecision="2" displayPrecision="0"/>
   <currency code="CLP" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="CL"/>
-    </regions>
+    <region code="CL"/>
   </currency>
   <currency code="CNY" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="CN"/>
-    </regions>
+    <region code="CN"/>
   </currency>
   <currency code="COP" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="CO"/>
-    </regions>
+    <region code="CO"/>
   </currency>
   <currency code="CRC" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="CR"/>
-    </regions>
+    <region code="CR"/>
   </currency>
   <currency code="CUC" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="CU"/>
-    </regions>
+    <region code="CU"/>
   </currency>
   <currency code="CVE" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="CV"/>
-    </regions>
+    <region code="CV"/>
   </currency>
   <currency code="CZK" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="CZ"/>
-    </regions>
+    <region code="CZ"/>
   </currency>
   <currency code="DDM" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="DD"/>
-    </regions>
+    <region code="DD"/>
   </currency>
   <currency code="DEFAULT" calculationPrecision="2" displayPrecision="2"/>
   <currency code="DJF" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="DJ"/>
-    </regions>
+    <region code="DJ"/>
   </currency>
   <currency code="DKK" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="DK"/>
-      <region code="FO"/>
-      <region code="GL"/>
-    </regions>
+    <region code="DK"/>
+    <region code="FO"/>
+    <region code="GL"/>
   </currency>
   <currency code="DOP" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="DO"/>
-    </regions>
+    <region code="DO"/>
   </currency>
   <currency code="DZD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="DZ"/>
-    </regions>
+    <region code="DZ"/>
   </currency>
   <currency code="EGP" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="EG"/>
-    </regions>
+    <region code="EG"/>
   </currency>
   <currency code="ERN" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="ER"/>
-    </regions>
+    <region code="ER"/>
   </currency>
   <currency code="ESP" calculationPrecision="2" displayPrecision="0"/>
   <currency code="ETB" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="ET"/>
-    </regions>
+    <region code="ET"/>
   </currency>
   <currency code="EUR" calculationPrecision="2" displayPrecision="2" symbol="&amp;#8364;">
-    <regions>
-      <region code="150"/>
-      <region code="AD"/>
-      <region code="AT"/>
-      <region code="AX"/>
-      <region code="BE"/>
-      <region code="BL"/>
-      <region code="CS"/>
-      <region code="CY"/>
-      <region code="DE"/>
-      <region code="EA"/>
-      <region code="EE"/>
-      <region code="ES"/>
-      <region code="EU"/>
-      <region code="FI"/>
-      <region code="FR"/>
-      <region code="GF"/>
-      <region code="GP"/>
-      <region code="GR"/>
-      <region code="IC"/>
-      <region code="IE"/>
-      <region code="IT"/>
-      <region code="LU"/>
-      <region code="MC"/>
-      <region code="ME"/>
-      <region code="MF"/>
-      <region code="MQ"/>
-      <region code="MT"/>
-      <region code="NL"/>
-      <region code="PM"/>
-      <region code="PT"/>
-      <region code="RE"/>
-      <region code="SI"/>
-      <region code="SK"/>
-      <region code="SM"/>
-      <region code="TF"/>
-      <region code="VA"/>
-      <region code="YT"/>
-    </regions>
+    <region code="150"/>
+    <region code="AD"/>
+    <region code="AT"/>
+    <region code="AX"/>
+    <region code="BE"/>
+    <region code="BL"/>
+    <region code="CS"/>
+    <region code="CY"/>
+    <region code="DE"/>
+    <region code="EA"/>
+    <region code="EE"/>
+    <region code="ES"/>
+    <region code="EU"/>
+    <region code="FI"/>
+    <region code="FR"/>
+    <region code="GF"/>
+    <region code="GP"/>
+    <region code="GR"/>
+    <region code="IC"/>
+    <region code="IE"/>
+    <region code="IT"/>
+    <region code="LU"/>
+    <region code="MC"/>
+    <region code="ME"/>
+    <region code="MF"/>
+    <region code="MQ"/>
+    <region code="MT"/>
+    <region code="NL"/>
+    <region code="PM"/>
+    <region code="PT"/>
+    <region code="RE"/>
+    <region code="SI"/>
+    <region code="SK"/>
+    <region code="SM"/>
+    <region code="TF"/>
+    <region code="VA"/>
+    <region code="YT"/>
   </currency>
   <currency code="FJD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="FJ"/>
-    </regions>
+    <region code="FJ"/>
   </currency>
   <currency code="FKP" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="FK"/>
-    </regions>
+    <region code="FK"/>
   </currency>
   <currency code="GBP" calculationPrecision="2" displayPrecision="2" symbol="&amp;#163;">
-    <regions>
-      <region code="GB"/>
-      <region code="GG"/>
-      <region code="GS"/>
-      <region code="IM"/>
-      <region code="JE"/>
-      <region code="TA"/>
-    </regions>
+    <region code="GB"/>
+    <region code="GG"/>
+    <region code="GS"/>
+    <region code="IM"/>
+    <region code="JE"/>
+    <region code="TA"/>
   </currency>
   <currency code="GEL" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="GE"/>
-    </regions>
+    <region code="GE"/>
   </currency>
   <currency code="GHS" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="GH"/>
-    </regions>
+    <region code="GH"/>
   </currency>
   <currency code="GIP" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="GI"/>
-    </regions>
+    <region code="GI"/>
   </currency>
   <currency code="GMD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="GM"/>
-    </regions>
+    <region code="GM"/>
   </currency>
   <currency code="GNF" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="GN"/>
-    </regions>
+    <region code="GN"/>
   </currency>
   <currency code="GTQ" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="GT"/>
-    </regions>
+    <region code="GT"/>
   </currency>
   <currency code="GYD" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="GY"/>
-    </regions>
+    <region code="GY"/>
   </currency>
   <currency code="HKD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="HK"/>
-    </regions>
+    <region code="HK"/>
   </currency>
   <currency code="HNL" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="HN"/>
-    </regions>
+    <region code="HN"/>
   </currency>
   <currency code="HRK" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="HR"/>
-    </regions>
+    <region code="HR"/>
   </currency>
   <currency code="HUF" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="HU"/>
-    </regions>
+    <region code="HU"/>
   </currency>
   <currency code="IDR" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="ID"/>
-      <region code="TP"/>
-    </regions>
+    <region code="ID"/>
+    <region code="TP"/>
   </currency>
   <currency code="ILS" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="IL"/>
-    </regions>
+    <region code="IL"/>
   </currency>
   <currency code="INR" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="IN"/>
-    </regions>
+    <region code="IN"/>
   </currency>
   <currency code="IQD" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="IQ"/>
-    </regions>
+    <region code="IQ"/>
   </currency>
   <currency code="IRR" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="IR"/>
-    </regions>
+    <region code="IR"/>
   </currency>
   <currency code="ISK" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="IS"/>
-    </regions>
+    <region code="IS"/>
   </currency>
   <currency code="ITL" calculationPrecision="2" displayPrecision="0"/>
   <currency code="JMD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="JM"/>
-    </regions>
+    <region code="JM"/>
   </currency>
   <currency code="JOD" calculationPrecision="2" displayPrecision="3">
-    <regions>
-      <region code="JO"/>
-      <region code="PS"/>
-    </regions>
+    <region code="JO"/>
+    <region code="PS"/>
   </currency>
   <currency code="JPY" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="JP"/>
-    </regions>
+    <region code="JP"/>
   </currency>
   <currency code="KES" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="KE"/>
-    </regions>
+    <region code="KE"/>
   </currency>
   <currency code="KGS" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="KG"/>
-    </regions>
+    <region code="KG"/>
   </currency>
   <currency code="KHR" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="KH"/>
-    </regions>
+    <region code="KH"/>
   </currency>
   <currency code="KMF" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="KM"/>
-    </regions>
+    <region code="KM"/>
   </currency>
   <currency code="KPW" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="KP"/>
-    </regions>
+    <region code="KP"/>
   </currency>
   <currency code="KRW" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="KR"/>
-    </regions>
+    <region code="KR"/>
   </currency>
   <currency code="KWD" calculationPrecision="2" displayPrecision="3">
-    <regions>
-      <region code="KW"/>
-    </regions>
+    <region code="KW"/>
   </currency>
   <currency code="KYD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="KY"/>
-    </regions>
+    <region code="KY"/>
   </currency>
   <currency code="KZT" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="KZ"/>
-    </regions>
+    <region code="KZ"/>
   </currency>
   <currency code="LAK" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="LA"/>
-    </regions>
+    <region code="LA"/>
   </currency>
   <currency code="LBP" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="LB"/>
-    </regions>
+    <region code="LB"/>
   </currency>
   <currency code="LKR" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="LK"/>
-    </regions>
+    <region code="LK"/>
   </currency>
   <currency code="LRD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="LR"/>
-    </regions>
+    <region code="LR"/>
   </currency>
   <currency code="LSL" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="LS"/>
-    </regions>
+    <region code="LS"/>
   </currency>
   <currency code="LTL" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="LT"/>
-    </regions>
+    <region code="LT"/>
   </currency>
   <currency code="LUF" calculationPrecision="2" displayPrecision="0"/>
   <currency code="LVL" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="LV"/>
-    </regions>
+    <region code="LV"/>
   </currency>
   <currency code="LYD" calculationPrecision="2" displayPrecision="3">
-    <regions>
-      <region code="LY"/>
-    </regions>
+    <region code="LY"/>
   </currency>
   <currency code="MAD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="EH"/>
-      <region code="MA"/>
-    </regions>
+    <region code="EH"/>
+    <region code="MA"/>
   </currency>
   <currency code="MDL" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="MD"/>
-    </regions>
+    <region code="MD"/>
   </currency>
   <currency code="MGA" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="MG"/>
-    </regions>
+    <region code="MG"/>
   </currency>
   <currency code="MGF" calculationPrecision="2" displayPrecision="0"/>
   <currency code="MKD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="MK"/>
-    </regions>
+    <region code="MK"/>
   </currency>
   <currency code="MMK" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="MM"/>
-    </regions>
+    <region code="MM"/>
   </currency>
   <currency code="MNT" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="MN"/>
-    </regions>
+    <region code="MN"/>
   </currency>
   <currency code="MOP" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="MO"/>
-    </regions>
+    <region code="MO"/>
   </currency>
   <currency code="MRO" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="MR"/>
-    </regions>
+    <region code="MR"/>
   </currency>
   <currency code="MUR" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="MU"/>
-    </regions>
+    <region code="MU"/>
   </currency>
   <currency code="MVR" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="MV"/>
-    </regions>
+    <region code="MV"/>
   </currency>
   <currency code="MWK" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="MW"/>
-    </regions>
+    <region code="MW"/>
   </currency>
   <currency code="MXN" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="MX"/>
-    </regions>
+    <region code="MX"/>
   </currency>
   <currency code="MYR" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="MY"/>
-    </regions>
+    <region code="MY"/>
   </currency>
   <currency code="MZN" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="MZ"/>
-    </regions>
+    <region code="MZ"/>
   </currency>
   <currency code="NAD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="NA"/>
-    </regions>
+    <region code="NA"/>
   </currency>
   <currency code="NGN" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="NG"/>
-    </regions>
+    <region code="NG"/>
   </currency>
   <currency code="NIO" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="NI"/>
-    </regions>
+    <region code="NI"/>
   </currency>
   <currency code="NOK" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="BV"/>
-      <region code="NO"/>
-      <region code="SJ"/>
-    </regions>
+    <region code="BV"/>
+    <region code="NO"/>
+    <region code="SJ"/>
   </currency>
   <currency code="NPR" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="NP"/>
-    </regions>
+    <region code="NP"/>
   </currency>
   <currency code="NZD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="CK"/>
-      <region code="NU"/>
-      <region code="NZ"/>
-      <region code="PN"/>
-      <region code="TK"/>
-    </regions>
+    <region code="CK"/>
+    <region code="NU"/>
+    <region code="NZ"/>
+    <region code="PN"/>
+    <region code="TK"/>
   </currency>
   <currency code="OMR" calculationPrecision="2" displayPrecision="3">
-    <regions>
-      <region code="OM"/>
-    </regions>
+    <region code="OM"/>
   </currency>
   <currency code="PEN" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="PE"/>
-    </regions>
+    <region code="PE"/>
   </currency>
   <currency code="PGK" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="PG"/>
-    </regions>
+    <region code="PG"/>
   </currency>
   <currency code="PHP" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="PH"/>
-    </regions>
+    <region code="PH"/>
   </currency>
   <currency code="PKR" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="PK"/>
-    </regions>
+    <region code="PK"/>
   </currency>
   <currency code="PLN" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="PL"/>
-    </regions>
+    <region code="PL"/>
   </currency>
   <currency code="PYG" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="PY"/>
-    </regions>
+    <region code="PY"/>
   </currency>
   <currency code="QAR" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="QA"/>
-    </regions>
+    <region code="QA"/>
   </currency>
   <currency code="RON" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="RO"/>
-    </regions>
+    <region code="RO"/>
   </currency>
   <currency code="RSD" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="RS"/>
-    </regions>
+    <region code="RS"/>
   </currency>
   <currency code="RUB" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="RU"/>
-    </regions>
+    <region code="RU"/>
   </currency>
   <currency code="RWF" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="RW"/>
-    </regions>
+    <region code="RW"/>
   </currency>
   <currency code="SAR" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="SA"/>
-    </regions>
+    <region code="SA"/>
   </currency>
   <currency code="SBD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="SB"/>
-    </regions>
+    <region code="SB"/>
   </currency>
   <currency code="SCR" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="SC"/>
-    </regions>
+    <region code="SC"/>
   </currency>
   <currency code="SDG" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="SD"/>
-    </regions>
+    <region code="SD"/>
   </currency>
   <currency code="SEK" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="SE"/>
-    </regions>
+    <region code="SE"/>
   </currency>
   <currency code="SGD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="SG"/>
-    </regions>
+    <region code="SG"/>
   </currency>
   <currency code="SHP" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="AC"/>
-      <region code="SH"/>
-    </regions>
+    <region code="AC"/>
+    <region code="SH"/>
   </currency>
   <currency code="SLL" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="SL"/>
-    </regions>
+    <region code="SL"/>
   </currency>
   <currency code="SOS" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="SO"/>
-    </regions>
+    <region code="SO"/>
   </currency>
   <currency code="SRD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="SR"/>
-    </regions>
+    <region code="SR"/>
   </currency>
   <currency code="SSP" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="SS"/>
-    </regions>
+    <region code="SS"/>
   </currency>
   <currency code="STD" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="ST"/>
-    </regions>
+    <region code="ST"/>
   </currency>
   <currency code="SUR" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="SU"/>
-    </regions>
+    <region code="SU"/>
   </currency>
   <currency code="SYP" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="SY"/>
-    </regions>
+    <region code="SY"/>
   </currency>
   <currency code="SZL" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="SZ"/>
-    </regions>
+    <region code="SZ"/>
   </currency>
   <currency code="THB" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="TH"/>
-    </regions>
+    <region code="TH"/>
   </currency>
   <currency code="TJS" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="TJ"/>
-    </regions>
+    <region code="TJ"/>
   </currency>
   <currency code="TMM" calculationPrecision="2" displayPrecision="0"/>
   <currency code="TMT" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="TM"/>
-    </regions>
+    <region code="TM"/>
   </currency>
   <currency code="TND" calculationPrecision="2" displayPrecision="3">
-    <regions>
-      <region code="TN"/>
-    </regions>
+    <region code="TN"/>
   </currency>
   <currency code="TOP" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="TO"/>
-    </regions>
+    <region code="TO"/>
   </currency>
   <currency code="TRL" calculationPrecision="2" displayPrecision="0"/>
   <currency code="TRY" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="TR"/>
-    </regions>
+    <region code="TR"/>
   </currency>
   <currency code="TTD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="TT"/>
-    </regions>
+    <region code="TT"/>
   </currency>
   <currency code="TWD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="TW"/>
-    </regions>
+    <region code="TW"/>
   </currency>
   <currency code="TZS" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="TZ"/>
-    </regions>
+    <region code="TZ"/>
   </currency>
   <currency code="UAH" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="UA"/>
-    </regions>
+    <region code="UA"/>
   </currency>
   <currency code="UGX" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="UG"/>
-    </regions>
+    <region code="UG"/>
   </currency>
   <currency code="USD" calculationPrecision="2" displayPrecision="2" symbol="&amp;#36;">
-    <regions>
-      <region code="AS"/>
-      <region code="BQ"/>
-      <region code="DG"/>
-      <region code="EC"/>
-      <region code="FM"/>
-      <region code="GU"/>
-      <region code="HT"/>
-      <region code="IO"/>
-      <region code="MH"/>
-      <region code="MP"/>
-      <region code="PA"/>
-      <region code="PR"/>
-      <region code="PW"/>
-      <region code="SV"/>
-      <region code="TC"/>
-      <region code="TL"/>
-      <region code="UM"/>
-      <region code="US"/>
-      <region code="VG"/>
-      <region code="VI"/>
-      <region code="ZW"/>
-    </regions>
+    <region code="AS"/>
+    <region code="BQ"/>
+    <region code="DG"/>
+    <region code="EC"/>
+    <region code="FM"/>
+    <region code="GU"/>
+    <region code="HT"/>
+    <region code="IO"/>
+    <region code="MH"/>
+    <region code="MP"/>
+    <region code="PA"/>
+    <region code="PR"/>
+    <region code="PW"/>
+    <region code="SV"/>
+    <region code="TC"/>
+    <region code="TL"/>
+    <region code="UM"/>
+    <region code="US"/>
+    <region code="VG"/>
+    <region code="VI"/>
+    <region code="ZW"/>
   </currency>
   <currency code="UYU" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="UY"/>
-    </regions>
+    <region code="UY"/>
   </currency>
   <currency code="UZS" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="UZ"/>
-    </regions>
+    <region code="UZ"/>
   </currency>
   <currency code="VEF" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="VE"/>
-    </regions>
+    <region code="VE"/>
   </currency>
   <currency code="VND" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="VN"/>
-    </regions>
+    <region code="VN"/>
   </currency>
   <currency code="VUV" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="VU"/>
-    </regions>
+    <region code="VU"/>
   </currency>
   <currency code="WST" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="WS"/>
-    </regions>
+    <region code="WS"/>
   </currency>
   <currency code="XAF" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="CF"/>
-      <region code="CG"/>
-      <region code="CM"/>
-      <region code="GA"/>
-      <region code="GQ"/>
-      <region code="TD"/>
-    </regions>
+    <region code="CF"/>
+    <region code="CG"/>
+    <region code="CM"/>
+    <region code="GA"/>
+    <region code="GQ"/>
+    <region code="TD"/>
   </currency>
   <currency code="XCD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="AG"/>
-      <region code="AI"/>
-      <region code="DM"/>
-      <region code="GD"/>
-      <region code="KN"/>
-      <region code="LC"/>
-      <region code="MS"/>
-      <region code="VC"/>
-    </regions>
+    <region code="AG"/>
+    <region code="AI"/>
+    <region code="DM"/>
+    <region code="GD"/>
+    <region code="KN"/>
+    <region code="LC"/>
+    <region code="MS"/>
+    <region code="VC"/>
   </currency>
   <currency code="XOF" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="BF"/>
-      <region code="BJ"/>
-      <region code="CI"/>
-      <region code="GW"/>
-      <region code="ML"/>
-      <region code="NE"/>
-      <region code="SN"/>
-      <region code="TG"/>
-    </regions>
+    <region code="BF"/>
+    <region code="BJ"/>
+    <region code="CI"/>
+    <region code="GW"/>
+    <region code="ML"/>
+    <region code="NE"/>
+    <region code="SN"/>
+    <region code="TG"/>
   </currency>
   <currency code="XPF" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="NC"/>
-      <region code="PF"/>
-      <region code="WF"/>
-    </regions>
+    <region code="NC"/>
+    <region code="PF"/>
+    <region code="WF"/>
   </currency>
   <currency code="YDD" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="YD"/>
-    </regions>
+    <region code="YD"/>
   </currency>
   <currency code="YER" calculationPrecision="2" displayPrecision="0">
-    <regions>
-      <region code="YE"/>
-    </regions>
+    <region code="YE"/>
   </currency>
   <currency code="YUM" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="YU"/>
-    </regions>
+    <region code="YU"/>
   </currency>
   <currency code="ZAR" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="ZA"/>
-    </regions>
+    <region code="ZA"/>
   </currency>
   <currency code="ZMK" calculationPrecision="2" displayPrecision="0"/>
   <currency code="ZMW" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="ZM"/>
-    </regions>
+    <region code="ZM"/>
   </currency>
   <currency code="ZRN" calculationPrecision="2" displayPrecision="2">
-    <regions>
-      <region code="ZR"/>
-    </regions>
+    <region code="ZR"/>
   </currency>
   <currency code="ZWD" calculationPrecision="2" displayPrecision="0"/>
-</currency-configuration>
+</currencies>

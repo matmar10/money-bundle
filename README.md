@@ -154,13 +154,48 @@ echo $converted->getAmountDisplay(); // 75.00
 
 ```
 
+Adding New Currencies
+---------------------
+
+You can add new currencies that are not supported by default.
+This is useful, for example to add alternative currencies such as Litecoin and Ripple
+
+```yaml
+
+// inside a config file, such as app/config/config.yml
+
+lmh_money:
+    currencies:
+        LTC: { displayPrecision: 5, calculationPrecision: 8, symbol: '&#0321;' }
+        XRP: { displayPrecision: 8, calculationPrecision: 8 }
+
+```
+
 Currency Validator
 ------------------
 
-The Bundle also includes a validator for use in validating an entity's attribute is a valid currency code.
+The Bundle also includes a Symfony validator for use in validating an entity's attribute is a valid currency code
+using Symfony's Validator component.
 
 TODO: example usage
 
+```php
+<?php
+
+// inside an entity file, such as src/Bundle/AcmeBundle/Entity/Purchase.php
+
+namespace Lmh\Bundle\AcmeBundle\Entity;
+
+use @Lmh\Bundle\MoneyBundle\Validator\Constraints\CurrencyCode as CurrencyCodeConstraint;
+
+class Purchase
+{
+    /**
+     * @CurrencyCodeConstraint()
+     */
+    public $currency;
+
+}
 
 
 

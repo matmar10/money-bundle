@@ -1,6 +1,9 @@
 imports:                                                                                                                                                                                                           
     - { resource: config.yml }
- 
+    - { resource: other-currencies.yml }
+    # TODO: get XML configuration working
+    # - { resource: other-currencies.xml }
+
 framework:
     test: ~
     session:

@@ -42,6 +42,10 @@ class CurrencyManagerTest extends WebTestCase
             array('GBP', 'GB', ),
             array('EUR', 'FR', ),
             array('MAD', 'MA', ),
+            array('012', '01', ),
+            array('012', '02', ),
+            array('034', '03', ),
+            array('034', '04', ),
         );
     }
 
@@ -68,6 +72,12 @@ class CurrencyManagerTest extends WebTestCase
             array(
                 'MAD',
             ),
+            array(
+                '012',
+            ),
+            array(
+                '034',
+            ),
         );
     }
 
@@ -90,10 +100,32 @@ class CurrencyManagerTest extends WebTestCase
     public function provideTestGetCurrencyForCountry()
     {
         return array(
-            array(new Currency('USD', 2, 2, '&#36;'), 'US', ),
-            array(new Currency('GBP', 2, 2, '&#163;'), 'GB', ),
-            array(new Currency('EUR', 2, 2, '&#8364;'), 'FR', ),
-            array(new Currency('MAD', 2, 2), 'MA', ),
+            array(
+                new Currency('USD', 2, 2, '&#36;'),
+                'US',
+            ),
+            array(
+                new Currency('GBP', 2, 2, '&#163;'),
+                'GB',
+            ),
+            array(
+                new Currency('EUR', 2, 2, '&#8364;'),
+                'FR',
+            ),
+            array(
+                new Currency('MAD', 2, 2),
+                'MA',
+            ),
+
+            // dummy currencies to test the semantic configuration
+            array(
+                new Currency('012', 1, 2),
+                '012'
+            ),
+            array(
+                new Currency('034', 3, 4),
+                '034'
+            ),
         );
     }
 
@@ -123,7 +155,17 @@ class CurrencyManagerTest extends WebTestCase
             array(
                 new Currency('MAD', 2, 2),
                 'MAD',
-            )
+            ),
+
+            // dummy currencies to test the semantic configuration
+            array(
+                new Currency('012', 1, 2),
+                '012'
+            ),
+            array(
+                new Currency('034', 3, 4),
+                '034'
+            ),
         );
     }
 
@@ -162,15 +204,66 @@ class CurrencyManagerTest extends WebTestCase
                 new Money(new Currency('MAD', 2, 2)),
                 'MA',
             ),
+            // dummy currencies to test the semantic configuration
+            array(
+                new Money(new Currency('012', 1, 2)),
+                '012'
+            ),
+            array(
+                new Money(new Currency('034', 3, 4)),
+                '034'
+            ),
         );
     }
 
-    public function testGetMoneyForCurrencyCode()
+    /**
+     * @dataProvider provideTestGetMoneyForCurrencyCode
+     */
+    public function testGetMoneyForCurrencyCode(Money $money, $currencyCode)
     {
-        $this->assertEquals(new Money(new Currency('USD', 2, 2, '&#36;')), $this->manager->getMoney('USD'));
-        $this->assertEquals(new Money(new Currency('GBP', 2, 2, '&#163;')), $this->manager->getMoney('GBP'));
-        $this->assertEquals(new Money(new Currency('EUR', 2, 2, '&#8364;')), $this->manager->getMoney('EUR'));
-        $this->assertEquals(new Money(new Currency('MAD', 2, 2)), $this->manager->getMoney('MAD'));
+        $this->assertEquals($money, $this->manager->getMoney($currencyCode));
+    }
+
+    public function provideTestGetMoneyForCurrencyCode()
+    {
+        return array(
+            array(
+                new Money(new Currency('USD', 2, 2, '&#36;')),
+                'USD',
+            ),
+            array(
+                new Money(new Currency('GBP', 2, 2, '&#163;')),
+                'GBP',
+            ),
+            array(
+                new Money(new Currency('EUR', 2, 2, '&#8364;')),
+                'EUR',
+            ),
+            array(
+                new Money(new Currency('MAD', 2, 2)),
+                'MAD'
+            ),
+
+            // dummy currencies to test the semantic configuration
+            array(
+                new Money(new Currency('012', 1, 2)),
+                '012'
+            ),
+            array(
+                new Money(new Currency('034', 3, 4)),
+                '034'
+            ),
+            /* TODO: get XML based configuration working and re-enable these tests
+            array(
+                new Money(new Currency('034', 5, 6)),
+                '056'
+            ),
+            array(
+                new Money(new Currency('034', 7, 8)),
+                '078'
+            ),
+            */
+        );
     }
 
     /**
@@ -204,6 +297,12 @@ class CurrencyManagerTest extends WebTestCase
                 'GB',
                 'FR',
                 0.9,
+            ),
+            array(
+                new CurrencyPair(new Currency('012', 1, 2, ''), new Currency('034', 3, 4, ''), 5.6),
+                '01',
+                '03',
+                5.6,
             ),
         );
     }

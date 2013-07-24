@@ -141,7 +141,7 @@ class GenerateCurrencyDataCommand extends ContainerAwareCommand
         fclose($handle);
 
         $outputXmlFilename = __DIR__.'/../Resources/config/currency-configuration.xml';
-        $outputXmlElement = new SimpleXMLElement('<currency-configuration/>');
+        $outputXmlElement = new SimpleXMLElement('<currencies/>');
         foreach($currencyData['precision'] as $code => $precisionData) {
             $currencyNode = $outputXmlElement->addChild('currency');
             $currencyNode->addAttribute('code', $code);
@@ -154,12 +154,8 @@ class GenerateCurrencyDataCommand extends ContainerAwareCommand
                  return $code === $regionCurrencyCode;
             });
             if(count($regions)) {
-                $regionsNode = $currencyNode->children('regions');
-                if(!$regionsNode) {
-                    $regionsNode = $currencyNode->addChild('regions');
-                }
                 foreach($regions as $regionCode => $currencyCode) {
-                    $regionNode = $regionsNode->addChild('region');
+                    $regionNode = $currencyNode->addChild('region');
                     $regionNode->addAttribute('code', $regionCode);
                 }
             }

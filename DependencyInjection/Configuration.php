@@ -13,51 +13,38 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('lmh_money');
 
         $rootNode
+            ->fixXmlConfig('currency', 'currencies')
             ->children()
                 ->scalarNode('currency_configuration_filename')
-            ->end();
-
-/*
-        $rootNode
-            ->children()
-
+                    ->info('The base currency configuration filename')
+                    ->isRequired()
+                ->end()
                 ->arrayNode('currencies')
                     ->info('Adds additional currencies.')
-                    ->useAttributeAsKey('name')
+                    ->useAttributeAsKey('code')
+                    ->fixXmlConfig('region')
                     ->prototype('array')
                         ->children()
-                            ->integerNode('calculation')
+                            ->integerNode('calculationPrecision')
                                 ->isRequired()
                                 ->min(0)
                                 ->max(10)
                             ->end()
-                            ->integerNode('display')
+                            ->integerNode('displayPrecision')
                                 ->isRequired()
                                 ->min(0)
                                 ->max(10)
+                            ->end()
+                            ->scalarNode('symbol')
+                                ->defaultValue('')
+                            ->end()
+                            ->arrayNode('regions')
+                                ->prototype('scalar')->end()
                             ->end()
                         ->end()
                     ->end()
                 ->end()
-
-                ->arrayNode('regions')
-                    ->info('Maps region codes to currency codes')
-                    ->isRequired()
-                    ->requiresAtLeastOneElement()
-                    ->useAttributeAsKey('name')
-                    ->prototype('scalar')->end()
-                ->end()
-
-                ->arrayNode('symbols')
-                    ->info('Currency symbols for various currencies')
-                    ->isRequired()
-                    ->requiresAtLeastOneElement()
-                    ->useAttributeAsKey('name')
-                    ->prototype('scalar')->end()
-                ->end()
-
             ->end();
-*/
         return $treeBuilder;
     }
 }

@@ -17,7 +17,9 @@ class CurrencyManager
 
     protected $currencyConfigurationFilename;
 
-    protected $extraCurrencyConfig;
+    protected $extraCurrencies;
+
+    protected $addedCurrencies = array();
 
     /**
      * Construct a new service builder
@@ -27,8 +29,17 @@ class CurrencyManager
     public function __construct($currencyConfigurationFilename, array $extraCurrencyConfig = array())
     {
         $this->currencyConfigurationFilename = $currencyConfigurationFilename;
+        $this->extraCurrencies = $extraCurrencyConfig;
     }
 
+    /**
+     * Build a CurrencyPair based on the provided from and to currencies at the specified multiplier rate
+     *
+     * @param string $fromCurrencyOrCountryCode From currency
+     * @param string $toCurrencyOrCountryCode To Currency
+     * @param float $multiplier The multiplier to convert the from currency to the to currency
+     * @return \Lmh\Bundle\MoneyBundle\Entity\CurrencyPair
+     */
     public function getCurrencyPair($fromCurrencyOrCountryCode, $toCurrencyOrCountryCode, $multiplier)
     {
         $from = $this->getCurrency($fromCurrencyOrCountryCode);
@@ -36,39 +47,69 @@ class CurrencyManager
         return new CurrencyPair($from, $to, $multiplier);
     }
 
-    public function getMoney($currencyOrCountryCode)
+    /**
+     * Build a Money object based on the provided country or currency code
+     *
+     * @param string $currencyCodeOrCountryCode The currency or country code to build a Money object from
+     * @return \Lmh\Bundle\MoneyBundle\Entity\Money
+     */
+    public function getMoney($currencyCodeOrCountryCode)
     {
-        $currency = $this->getCurrency($currencyOrCountryCode);
+        $currency = $this->getCurrency($currencyCodeOrCountryCode);
         return new Money($currency);
     }
 
-    public function getCurrency($currencyOrCountryCode)
+    /**
+     * Get a Currency object for the provided country or currency code
+     *
+     * @param string $currencyCodeOrCountryCode The currency or country code to build a Currency object from
+     * @return \Lmh\Bundle\MoneyBundle\Entity\Currency
+     * @throws \Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException
+     */
+    public function getCurrency($currencyCodeOrCountryCode)
     {
-        $currencyNode = $this->getCurrencyNodeData($currencyOrCountryCode);
-        if(!$currencyNode) {
-            throw new InvalidArgumentException("Currency or country code '$currencyOrCountryCode' is not supported: no matching code found in file '{$this->currencyConfigurationFilename}'.");
-        }
-        $currency = new Currency(
-            $currencyNode->getAttribute('code'),
-            (int)$currencyNode->getAttribute('calculationPrecision'),
-            (int)$currencyNode->getAttribute('displayPrecision')
-        );
-        $symbol = $currencyNode->getAttribute('symbol');
-        if($symbol) {
-            $currency->setSymbol($symbol);
-        }
-        $currency->setSymbol($symbol);
-
-        return $currency;
+        return $this->searchCurrency($currencyCodeOrCountryCode);
     }
 
-    public function getCode($currencyOrCountryCode)
+    /**
+     * Get the currency code for the provided country or currency code
+     *
+     * @param string $currencyCodeOrCountryCode The currency or country code to retrieve the currency code for
+     * @return string
+     * @throws \Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException
+     */
+    public function getCode($currencyCodeOrCountryCode)
     {
-        $currencyNode = $this->getCurrencyNodeData($currencyOrCountryCode);
-        if(!$currencyNode) {
-            throw new InvalidArgumentException("Currency or country code '$currencyOrCountryCode' is not supported: no matching code found in file '{$this->currencyConfigurationFilename}'.");
+        $currency = $this->searchCurrency($currencyCodeOrCountryCode);
+        return $currency->getCurrencyCode();
+    }
+
+    protected function searchCurrency($currencyCodeOrCountryCode)
+    {
+        // search first in additional configured currencies (since those are likely important to the end user of the Bundle
+        $currency = $this->searchAdditionalConfiguredCurrencies($currencyCodeOrCountryCode);
+
+        // not present in the configured currencies, look it up in the default XML based currency configuration
+        if(!$currency) {
+            $currencyNode = $this->getCurrencyNodeData($currencyCodeOrCountryCode);
+
+            // not found in default XML; unsupported
+            if(!$currencyNode) {
+                throw new InvalidArgumentException("Currency or country code '$currencyCodeOrCountryCode' is not supported: no matching code found in file '{$this->currencyConfigurationFilename}'.");
+            }
+            $currency = new Currency(
+                $currencyNode->getAttribute('code'),
+                (int)$currencyNode->getAttribute('calculationPrecision'),
+                (int)$currencyNode->getAttribute('displayPrecision')
+            );
+            $symbol = $currencyNode->getAttribute('symbol');
+            if($symbol) {
+                $currency->setSymbol($symbol);
+            }
+            $currency->setSymbol($symbol);
         }
-        return $currencyNode->getAttribute('code');
+
+        return $currency;
     }
 
     protected function getCurrencyNodeData($currencyCodeOrCountryCode)
@@ -111,5 +152,37 @@ class CurrencyManager
 
         $xml->close();
         return false;
+    }
+
+    protected function searchAdditionalConfiguredCurrencies($currencyCodeOrCountryCode)
+    {
+        // check if the requested code exists as a configured currency code
+        if(false === array_key_exists($currencyCodeOrCountryCode, $this->extraCurrencies)) {
+            $code = false;
+            foreach($this->extraCurrencies as $currencyCode => $currencyData) {
+                if(false === array_key_exists('regions', $currencyData)) {
+                    continue;
+                }
+                if(false === array_search($currencyCodeOrCountryCode, $currencyData['regions'])) {
+                    continue;
+                }
+                $code = $currencyCode;
+            }
+
+            // code not found from config, check if one was added manually
+            if(!$code) {
+                // code not found, unsupported
+                return false;
+            }
+        } else {
+            // requested code existed as a currency code
+            $code = $currencyCodeOrCountryCode;
+        }
+
+        $calculationPrecision = $this->extraCurrencies[$code]['calculationPrecision'];
+        $displayPrecision = $this->extraCurrencies[$code]['displayPrecision'];
+        $symbol = $this->extraCurrencies[$code]['symbol'];
+
+        return new Currency($code, $calculationPrecision, $displayPrecision, $symbol);
     }
 }

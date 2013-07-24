@@ -40,7 +40,7 @@ class Currency
      */
     protected $symbol;
 
-    public function __construct($currencyCode, $precision, $displayPrecision, $symbol = null) {
+    public function __construct($currencyCode, $precision, $displayPrecision, $symbol = '') {
         $this->setCurrencyCode($currencyCode);
         $this->precision = $precision;
         $this->displayPrecision = $displayPrecision;
