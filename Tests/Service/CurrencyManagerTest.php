@@ -314,4 +314,26 @@ class CurrencyManagerTest extends WebTestCase
     {
         $test = new CurrencyPair(new Currency('BLAH', 5, 2, '&#36;'), new Currency('FOO', 5, 2, '&#163;'), 1.7);
     }
+
+    /**
+     * @dataProvider provideTestAddCurrency
+     */
+    public function testAddCurrency($currency, $expectException = false)
+    {
+        $this->manager->addCurrency($currency);
+        $foundCurrency = $this->manager->getCurrency($currency->getCurrencyCode());
+        $this->assertEquals($currency, $foundCurrency);
+    }
+
+    public function provideTestAddCurrency()
+    {
+        return array(
+            array(
+                new Currency('XXX', 1, 1, 'x'),
+            ),
+            array(
+                new Currency('AAA', 1, 1, 'a'),
+            )
+        );
+    }
 }
