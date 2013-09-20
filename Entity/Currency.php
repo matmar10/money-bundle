@@ -8,15 +8,14 @@ use JMS\Serializer\Annotation\ReadOnly;
 use JMS\Serializer\Annotation\SerializedName;
 use JMS\Serializer\Annotation\Type;
 use Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException;
+use Lmh\Bundle\MoneyBundle\Entity\CurrencyInterface;
 
 /**
  * @AccessType("public_method")
  * @ExclusionPolicy("none")
  */
-class Currency
+class Currency implements CurrencyInterface
 {
-
-    const CURRENCY_CODE_LENGTH = 3;
 
     /**
      * @Type("string")
@@ -80,7 +79,7 @@ class Currency
         return $this->displayPrecision;
     }
 
-    public function equals(Currency $currency) {
+    public function equals(CurrencyInterface $currency) {
         return $this->currencyCode === $currency->getCurrencyCode() &&
                 $this->precision === $currency->getPrecision() &&
                 $this->displayPrecision === $currency->getDisplayPrecision();

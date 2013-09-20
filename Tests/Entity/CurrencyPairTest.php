@@ -7,7 +7,7 @@ use Lmh\Bundle\MoneyBundle\Entity\Currency;
 use Lmh\Bundle\MoneyBundle\Entity\Money;
 use PHPUnit_Framework_TestCase as TestCase;
 
-class ConversionRateTest extends TestCase
+class CurrencyPairTest extends TestCase
 {
     protected $usdCode;
     protected $usd;
