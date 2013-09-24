@@ -2,9 +2,9 @@
 
 namespace Lmh\Bundle\MoneyBundle\Tests\Validator\Constraints;
 
-use Lmh\Bundle\MoneyBundle\Entity\Currency;
-use Lmh\Bundle\MoneyBundle\Entity\CurrencyPair;
-use Lmh\Bundle\MoneyBundle\Entity\Money;
+use Matmar10\Money\Entity\Currency;
+use Matmar10\Money\Entity\CurrencyPair;
+use Matmar10\Money\Entity\Money;
 use Lmh\Bundle\MoneyBundle\Validator\Constraints\CurrencyCode;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -308,7 +308,7 @@ class CurrencyManagerTest extends WebTestCase
     }
 
     /**
-     * @expectedException Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException
+     * @expectedException Matmar10\Money\Exception\InvalidArgumentException
      */
     public function testGetCurrencyPairForCountriesInvalidArgument()
     {

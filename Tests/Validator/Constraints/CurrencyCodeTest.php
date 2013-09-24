@@ -2,7 +2,7 @@
 
 namespace Lmh\Bundle\MoneyBundle\Tests\Validator\Constraints;
 
-use Lmh\Bundle\MoneyBundle\Entity\Currency;
+use Matmar10\Money\Entity\Currency;
 use Lmh\Bundle\MoneyBundle\Validator\Constraints\CurrencyCode;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

@@ -2,9 +2,9 @@
 
 namespace Lmh\Bundle\MoneyBundle\Service;
 
-use Lmh\Bundle\MoneyBundle\Entity\Currency;
-use Lmh\Bundle\MoneyBundle\Entity\CurrencyPair;
-use Lmh\Bundle\MoneyBundle\Entity\Money;
+use Matmar10\Money\Entity\Currency;
+use Matmar10\Money\Entity\CurrencyPair;
+use Matmar10\Money\Entity\Money;
 use Lmh\Bundle\MoneyBundle\Exception\ConfigurationException;
 use Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException;
 use Symfony\Component\Yaml\Parser;
@@ -39,7 +39,7 @@ class CurrencyManager
      * @param string $fromCurrencyOrCountryCode From currency
      * @param string $toCurrencyOrCountryCode To Currency
      * @param float $multiplier The multiplier to convert the from currency to the to currency
-     * @return \Lmh\Bundle\MoneyBundle\Entity\CurrencyPair
+     * @return \Matmar10\Money\Entity\CurrencyPair
      */
     public function getCurrencyPair($fromCurrencyOrCountryCode, $toCurrencyOrCountryCode, $multiplier)
     {
@@ -52,7 +52,7 @@ class CurrencyManager
      * Build a Money object based on the provided country or currency code
      *
      * @param string $currencyCodeOrCountryCode The currency or country code to build a Money object from
-     * @return \Lmh\Bundle\MoneyBundle\Entity\Money
+     * @return \Matmar10\Money\Entity\Money
      */
     public function getMoney($currencyCodeOrCountryCode)
     {
@@ -64,7 +64,7 @@ class CurrencyManager
      * Get a Currency object for the provided country or currency code
      *
      * @param string $currencyCodeOrCountryCode The currency or country code to build a Currency object from
-     * @return \Lmh\Bundle\MoneyBundle\Entity\Currency
+     * @return \Matmar10\Money\Entity\Currency
      * @throws \Lmh\Bundle\MoneyBundle\Exception\InvalidArgumentException
      */
     public function getCurrency($currencyCodeOrCountryCode)
@@ -88,7 +88,7 @@ class CurrencyManager
     /**
      * Adds a new managed currency on the fly
      *
-     * @param \Lmh\Bundle\MoneyBundle\Entity\Currency $currency The Currency to add
+     * @param \Matmar10\Money\Entity\Currency $currency The Currency to add
      * @return \Lmh\Bundle\MoneyBundle\Service\CurrencyManager
      */
     public function addCurrency(Currency $currency, array $regions = array())

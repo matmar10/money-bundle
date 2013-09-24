@@ -10,10 +10,17 @@
             "email": "matthew.mar10@gmail.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/matmar10/lib-money"
+        }
+    ],
     "require": {
         "symfony/symfony": "2.3.*",
         "symfony/framework-bundle": "2.3.*",
-        "jms/serializer": "0.12.*"
+        "jms/serializer": "0.12.*",
+        "matmar10/lib-money": "dev-master"
     },
     "autoload": {
         "psr-0": { "Lmh\\Bundle\\MoneyBundle": "" }
