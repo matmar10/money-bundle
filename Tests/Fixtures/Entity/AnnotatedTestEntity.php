@@ -3,8 +3,10 @@
 namespace Lmh\Bundle\MoneyBundle\Tests\Fixtures\Entity;
 
 use Matmar10\Money\Entity\Currency as CurrencyEntity;
+use Matmar10\Money\Entity\CurrencyPair as CurrencyPairEntity;
 use Matmar10\Money\Entity\Money as MoneyEntity;
 use Lmh\Bundle\MoneyBundle\Annotation\Currency;
+use Lmh\Bundle\MoneyBundle\Annotation\CurrencyPair;
 use Lmh\Bundle\MoneyBundle\Annotation\Money;
 
 class AnnotatedTestEntity
@@ -22,6 +24,16 @@ class AnnotatedTestEntity
     protected $exampleMoney;
     protected $exampleMoneyAmountInteger;
     protected $exampleMoneyCurrencyCode;
+
+    /**
+     * @CurrencyPair(fromCurrencyCode="exampleCurrencyPairFromCurrencyCode",
+     *      toCurrencyCode="exampleCurrencyPairToCurrencyCode",
+     *      multiplier="exampleCurrencyPairMultiplier")
+     */
+    protected $exampleCurrencyPair;
+    protected $exampleCurrencyPairFromCurrencyCode;
+    protected $exampleCurrencyPairToCurrencyCode;
+    protected $exampleCurrencyPairMultiplier;
 
     public function setExampleCurrency(CurrencyEntity $exampleCurrency)
     {
@@ -71,5 +83,45 @@ class AnnotatedTestEntity
     public function getExampleMoneyCurrencyCode()
     {
         return $this->exampleMoneyCurrencyCode;
+    }
+
+    public function setExampleCurrencyPair($exampleCurrencyPair)
+    {
+        $this->exampleCurrencyPair = $exampleCurrencyPair;
+    }
+
+    public function getExampleCurrencyPair()
+    {
+        return $this->exampleCurrencyPair;
+    }
+
+    public function setExampleCurrencyPairFromCurrencyCode($exampleCurrencyPairFromCurrencyCode)
+    {
+        $this->exampleCurrencyPairFromCurrencyCode = $exampleCurrencyPairFromCurrencyCode;
+    }
+
+    public function getExampleCurrencyPairFromCurrencyCode()
+    {
+        return $this->exampleCurrencyPairFromCurrencyCode;
+    }
+
+    public function setExampleCurrencyPairMultiplier($exampleCurrencyPairMultiplier)
+    {
+        $this->exampleCurrencyPairMultiplier = $exampleCurrencyPairMultiplier;
+    }
+
+    public function getExampleCurrencyPairMultiplier()
+    {
+        return $this->exampleCurrencyPairMultiplier;
+    }
+
+    public function setExampleCurrencyPairToCurrencyCode($exampleCurrencyPairToCurrencyCode)
+    {
+        $this->exampleCurrencyPairToCurrencyCode = $exampleCurrencyPairToCurrencyCode;
+    }
+
+    public function getExampleCurrencyPairToCurrencyCode()
+    {
+        return $this->exampleCurrencyPairToCurrencyCode;
     }
 }

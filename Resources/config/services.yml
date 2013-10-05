@@ -6,6 +6,7 @@ parameters:
     lmh_money.annotation_reader.class: Lmh\Bundle\MoneyBundle\Service\AnnotationReader
     lmh_money.field_mapper.class: Lmh\Bundle\MoneyBundle\Service\FieldMapper
     lmh_money.field_mapper.currency.class: Lmh\Bundle\MoneyBundle\Mapper\CurrencyMapper
+    lmh_money.field_mapper.currency_pair.class: Lmh\Bundle\MoneyBundle\Mapper\CurrencyPairMapper
     lmh_money.field_mapper.money.class: Lmh\Bundle\MoneyBundle\Mapper\MoneyMapper
 
 services:
@@ -33,8 +34,12 @@ services:
         arguments: [ @lmh_money.currency_manager ]
         tags:
             - { name: lmh_money.field_mapper, annotation: \Lmh\Bundle\MoneyBundle\Annotation\Currency }
-            - { name: lmh_money.field_mapper, annotation: \Lmh\Bundle\MoneyBundle\Annotation\Two }
-            - { name: lmh_money.field_mapper, annotation: \Lmh\Bundle\MoneyBundle\Annotation\Three }
+
+    lmh_money.field_mapper.currency_pair:
+        class: "%lmh_money.field_mapper.currency_pair.class%"
+        arguments: [ @lmh_money.currency_manager ]
+        tags:
+            - { name: lmh_money.field_mapper, annotation: \Lmh\Bundle\MoneyBundle\Annotation\CurrencyPair }
 
     lmh_money.field_mapper.money:
         class: "%lmh_money.field_mapper.money.class%"
