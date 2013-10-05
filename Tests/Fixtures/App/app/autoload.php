@@ -10,6 +10,7 @@ if (!function_exists('intl_get_error_code')) {
 }
 
 AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
+// AnnotationRegistry::registerAutoloadNamespace('Lmh\\Bundle\\MoneyBundle\\Annotation', __DIR__ . '/../../../../');
 
 return $loader;
 

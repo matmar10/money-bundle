@@ -22,11 +22,6 @@ class CurrencyManager
     protected $addedCurrencies = array();
     protected $addedCurrencyRegions = array();
 
-    /**
-     * Construct a new service builder
-     *
-     * @param string $configurationFilename The filename of the configuration file
-     */
     public function __construct($currencyConfigurationFilename, array $extraCurrencyConfig = array())
     {
         $this->currencyConfigurationFilename = $currencyConfigurationFilename;
@@ -89,6 +84,7 @@ class CurrencyManager
      * Adds a new managed currency on the fly
      *
      * @param \Matmar10\Money\Entity\Currency $currency The Currency to add
+     * @param array $regions The regions to associate with the currencies
      * @return \Lmh\Bundle\MoneyBundle\Service\CurrencyManager
      */
     public function addCurrency(Currency $currency, array $regions = array())
