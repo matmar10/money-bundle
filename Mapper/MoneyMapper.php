@@ -46,7 +46,7 @@ class MoneyMapper implements EntityFieldMapperInterface
 
         $amountIntegerReflectionProperty = new ReflectionProperty($entity, $amountIntegerPropertyName);
         $amountIntegerReflectionProperty->setAccessible(true);
-        $amountIntegerReflectionProperty->setValue($entity, $amountInteger);
+        $amountIntegerReflectionProperty->setValue($entity, (integer)$amountInteger);
 
         $currencyCodeReflectionProperty = new ReflectionProperty($entity, $currencyCodePropertyName);
         $currencyCodeReflectionProperty->setAccessible(true);
