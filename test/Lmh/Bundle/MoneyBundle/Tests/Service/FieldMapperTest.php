@@ -25,7 +25,7 @@ class FieldMapperTest extends WebTestCase
         $kernel->boot();
         $this->currencyManager = $kernel->getContainer()->get('lmh_money.currency_manager');
         $this->fieldMapper = $kernel->getContainer()->get('lmh_money.field_mapper');
-        AnnotationRegistry::registerAutoloadNamespace('Lmh\\Bundle\\MoneyBundle\\Annotation', __DIR__.'/../../../../../');
+        AnnotationRegistry::registerAutoloadNamespace('Lmh\\Bundle\\MoneyBundle\\Annotation', __DIR__.'/../../../src/');
     }
 
     public function testPrePersist()
