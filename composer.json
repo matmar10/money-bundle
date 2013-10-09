@@ -20,12 +20,12 @@
         "symfony/symfony": "2.3.*",
         "symfony/framework-bundle": "2.3.*",
         "jms/serializer": "0.12.*",
-        "matmar10/lib-money": "dev-master"
+        "matmar10/lib-money": "dev-exchange-rate-entity-name"
     },
     "autoload": {
         "psr-0": {
-            "Lmh\\Bundle\\MoneyBundle\\Tests": "test",
-            "Lmh\\Bundle\\MoneyBundle": "src"
+            "Matmar10\\Bundle\\MoneyBundle": "src",
+            "Matmar10\\Bundle\\MoneyBundle\\Tests": "test"
         }
     }
 }

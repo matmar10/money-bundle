@@ -1,0 +1,11 @@
+
+matmar10_money:
+    currencies:
+        '012':
+            calculationPrecision: 1
+            displayPrecision: 2
+            regions: [ '01', '02' ]
+        '034':
+            calculationPrecision: 3
+            displayPrecision: 4
+            regions: [ '03', '04' ]

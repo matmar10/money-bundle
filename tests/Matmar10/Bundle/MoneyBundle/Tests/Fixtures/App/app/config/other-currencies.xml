@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<matmar10-money>
+    <currency code="056" calculationPrecision="5" displayPrecision="6">
+        <region>05</region>
+        <region>06</region>
+    </currency>
+    <currency code="078" calculationPrecision="7" displayPrecision="8">
+        <region>07</region>
+        <region>08</region>
+    </currency>
+</matmar10-money>
