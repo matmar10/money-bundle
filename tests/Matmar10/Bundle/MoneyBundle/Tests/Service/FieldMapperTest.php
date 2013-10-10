@@ -3,8 +3,10 @@
 namespace Matmar10\Bundle\MoneyBundle\Tests\Service;
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Lmh\Bundle\MoneyBundle\Tests\Fixtures\Entity\AnnotatedTestEntity;
+use Matmar10\Bundle\MoneyBundle\Tests\Fixtures\Entity\AnnotatedTestEntity;
+use Matmar10\Bundle\MoneyBundle\Tests\Fixtures\Entity\ImproperlyCurrencyAnnotatedTestEntity;
 use Matmar10\Money\Entity\CurrencyPair;
+use Matmar10\Money\Entity\ExchangeRate;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class FieldMapperTest extends WebTestCase
@@ -25,7 +27,7 @@ class FieldMapperTest extends WebTestCase
         $kernel->boot();
         $this->currencyManager = $kernel->getContainer()->get('matmar10_money.currency_manager');
         $this->fieldMapper = $kernel->getContainer()->get('matmar10_money.field_mapper');
-        AnnotationRegistry::registerAutoloadNamespace('Lmh\\Bundle\\MoneyBundle\\Annotation', __DIR__.'/../../../src/');
+        AnnotationRegistry::registerAutoloadNamespace('Matmar10\\Bundle\\MoneyBundle\\Annotation', __DIR__.'/../../../src/');
     }
 
     public function testPrePersist()
@@ -44,22 +46,35 @@ class FieldMapperTest extends WebTestCase
         // set CurrencyPair
         $gbp = $this->currencyManager->getCurrency('GBP');
         $eur = $this->currencyManager->getCurrency('EUR');
-        $multiplier = 1.18;
-        $currencyPair = new CurrencyPair($gbp, $eur, $multiplier);
+        $currencyPair = new CurrencyPair($gbp, $eur);
         $entity->setExampleCurrencyPair($currencyPair);
+
+        // set ExchangeRate
+        $mad = $this->currencyManager->getCurrency('MAD');
+        $jpy = $this->currencyManager->getCurrency('JPY');
+        $multiplier = 11.75;
+        $exchangeRate = new ExchangeRate($mad, $jpy, $multiplier);
+        $entity->setExampleExchangeRate($exchangeRate);
 
         // process the field mappings
         $this->fieldMapper->prePersist($entity);
 
         // test Currency
         $this->assertEquals('BTC', $entity->getExampleCurrencyCode());
+
         // test Money
         $this->assertEquals(199, $entity->getExampleMoneyAmountInteger());
         $this->assertEquals('USD', $entity->getExampleMoneyCurrencyCode());
+
         // test CurrencyPair
         $this->assertEquals('GBP', $entity->getExampleCurrencyPairFromCurrencyCode());
         $this->assertEquals('EUR', $entity->getExampleCurrencyPairToCurrencyCode());
-        $this->assertEquals($multiplier, $entity->getExampleCurrencyPairMultiplier());
+
+        // test ExchangeRate
+        $this->assertEquals('MAD', $entity->getExampleExchangeRateFromCurrencyCode());
+        $this->assertEquals('JPY', $entity->getExampleExchangeRateToCurrencyCode());
+        $this->assertEquals($multiplier, $entity->getExampleExchangeRateMultiplier());
+
     }
 
     public function testPostPersist()
@@ -76,7 +91,11 @@ class FieldMapperTest extends WebTestCase
         // set CurrencyPair related fields
         $entity->setExampleCurrencyPairFromCurrencyCode('GBP');
         $entity->setExampleCurrencyPairToCurrencyCode('EUR');
-        $entity->setExampleCurrencyPairMultiplier(1.18);
+
+        // set ExchangeRate related fields
+        $entity->setExampleExchangeRateFromCurrencyCode('MAD');
+        $entity->setExampleExchangeRateToCurrencyCode('JPY');
+        $entity->setExampleExchangeRateMultiplier(11.75);
 
         // process the field mappings
         $this->fieldMapper->postPersist($entity);
@@ -93,10 +112,27 @@ class FieldMapperTest extends WebTestCase
         // test CurrencyPair
         $gbp = $this->currencyManager->getCurrency('GBP');
         $eur = $this->currencyManager->getCurrency('EUR');
-        $multiplier = 1.18;
-        $currencyPair = new CurrencyPair($gbp, $eur, $multiplier);
+        $currencyPair = new CurrencyPair($gbp, $eur);
         $entity->setExampleCurrencyPair($currencyPair);
         $this->assertEquals($currencyPair, $entity->getExampleCurrencyPair());
+
+        // test ExchangeRate
+        $mad = $this->currencyManager->getCurrency('MAD');
+        $jpy = $this->currencyManager->getCurrency('JPY');
+        $exchangeRate = new ExchangeRate($mad, $jpy, 11.75);
+        $entity->setExampleExchangeRate($exchangeRate);
+        $this->assertEquals($exchangeRate, $entity->getExampleExchangeRate());
     }
 
+    /**
+     * @expectedException Matmar10\Bundle\MoneyBundle\Exception\NullFieldMappingException
+     * @expectedExceptionMessage You must provide a valid mapping for required property 'currencyCode'
+     */
+    public function testImproperCurrency()
+    {
+        $entity = new ImproperlyCurrencyAnnotatedTestEntity();
+
+        // process the field mappings
+        $this->fieldMapper->prePersist($entity);
+    }
 }

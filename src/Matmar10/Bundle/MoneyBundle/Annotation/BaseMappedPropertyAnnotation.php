@@ -2,8 +2,8 @@
 
 namespace Matmar10\Bundle\MoneyBundle\Annotation;
 
-use InvalidArgumentException;
 use Matmar10\Bundle\MoneyBundle\Annotation\MappedPropertyAnnotationInterface;
+use Matmar10\Bundle\MoneyBundle\Exception\NullFieldMappingException;
 
 /**
  * Convenience implementation for specifying property mappings by way of
@@ -23,10 +23,10 @@ abstract class BaseMappedPropertyAnnotation implements MappedPropertyAnnotationI
         // assert required property names
         foreach($this->getRequiredProperties() as $requiredProperty) {
             if(false === array_key_exists($requiredProperty, $options)) {
-                throw new InvalidArgumentException(sprintf("You must provide a mapping for require property '%s'", $requiredProperty));
+                throw new NullFieldMappingException(sprintf("You must provide a valid mapping for required property '%s'", $requiredProperty));
             }
-            if(!$this->options[$requiredProperty]) {
-                throw new InvalidArgumentException(sprintf("You must provide a valid mapping for require property '%s' ('%s' is not a valid field name)", $this->options[$requiredProperty]));
+            if(!$this->options[$requiredProperty] || '' === $this->options[$requiredProperty]) {
+                throw new NullFieldMappingException(sprintf("You must provide a valid mapping for required property '%s'", $requiredProperty));
             }
         }
     }

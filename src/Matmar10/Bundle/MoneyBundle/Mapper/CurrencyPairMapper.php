@@ -4,21 +4,19 @@ namespace Matmar10\Bundle\MoneyBundle\Mapper;
 
 use InvalidArgumentException;
 use Matmar10\Bundle\MoneyBundle\Annotation\MappedPropertyAnnotationInterface;
+use Matmar10\Bundle\MoneyBundle\Exception\NullFieldMappingException;
 use Matmar10\Bundle\MoneyBundle\Mapper\DefaultMapper;
 use Matmar10\Bundle\MoneyBundle\Mapper\EntityFieldMapperInterface;
 use Matmar10\Bundle\MoneyBundle\Service\CurrencyManager;
-use Matmar10\Money\Entity\ExchangeRate;
-use Matmar10\Bundle\MoneyBundle\Exception\NullFieldException;
+use Matmar10\Money\Entity\CurrencyPair;
 use ReflectionObject;
 use ReflectionProperty;
 
 /**
  * {inheritDoc}
  */
-class ExchangeRateMapper implements EntityFieldMapperInterface
+class CurrencyPairMapper implements EntityFieldMapperInterface
 {
-
-    protected static $nullPropertyExceptionMessage = 'Cannot apply entity mapping for %s instance: required property %s is null or blank';
 
     protected $currencyManager;
 
@@ -35,26 +33,21 @@ class ExchangeRateMapper implements EntityFieldMapperInterface
         $reflectionProperty->setAccessible(true);
 
         /**
-         * @var $exchangeRateInstance \Matmar10\Money\Entity\ExchangeRate
+         * @var $currencyPairInstance \Matmar10\Money\Entity\CurrencyPair
          */
-        $exchangeRateInstance = $reflectionProperty->getValue($entity);
-        $fromCurrency = $exchangeRateInstance->getFromCurrency();
-        if(is_null($exchangeRateInstance)) {
-            throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity, 'fromCurrency')));
+        $currencyPairInstance = $reflectionProperty->getValue($entity);
+        $fromCurrency = $currencyPairInstance->getFromCurrency();
+        if(is_null($fromCurrency)) {
+            throw new NullFieldMappingException(sprintf('Cannot apply post persist property mapping for %s instance: required field %s is null', get_class($entity), 'fromCurrency'));
         }
-        $toCurrency = $exchangeRateInstance->getToCurrency();
-        if(is_null($exchangeRateInstance)) {
-            throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity, 'toCurrency')));
-        }
-        $multiplier = $exchangeRateInstance->getMultiplier();
-        if(is_null($multiplier)) {
-            throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity, 'multiplier')));
+        $toCurrency = $currencyPairInstance->getToCurrency();
+        if(is_null($toCurrency)) {
+            throw new NullFieldMappingException(sprintf('Cannot apply post persist property mapping for %s instance: required field %s is null', get_class($entity), 'toCurrency'));
         }
 
         // lookup the currency code's field name based on the provided mapping
         $fromCurrencyCodePropertyName = $mappedProperties['fromCurrencyCode'];
         $toCurrencyCodePropertyName = $mappedProperties['toCurrencyCode'];
-        $multiplierPropertyName = $mappedProperties['multiplier'];
 
         $fromCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $fromCurrencyCodePropertyName);
         $fromCurrencyCodeReflectionProperty->setAccessible(true);
@@ -63,10 +56,6 @@ class ExchangeRateMapper implements EntityFieldMapperInterface
         $toCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $toCurrencyCodePropertyName);
         $toCurrencyCodeReflectionProperty->setAccessible(true);
         $toCurrencyCodeReflectionProperty->setValue($entity, $toCurrency->getCurrencyCode());
-
-        $multiplierCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $multiplierPropertyName);
-        $multiplierCurrencyCodeReflectionProperty->setAccessible(true);
-        $multiplierCurrencyCodeReflectionProperty->setValue($entity, $multiplier);
 
         return $entity;
     }
@@ -78,37 +67,29 @@ class ExchangeRateMapper implements EntityFieldMapperInterface
         // lookup the currency code's field name based on the provided mapping
         $fromCurrencyCodePropertyName = $mappedProperties['fromCurrencyCode'];
         $toCurrencyCodePropertyName = $mappedProperties['toCurrencyCode'];
-        $multiplierPropertyName = $mappedProperties['multiplier'];
 
         $fromCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $fromCurrencyCodePropertyName);
         $fromCurrencyCodeReflectionProperty->setAccessible(true);
         $fromCurrencyCode = $fromCurrencyCodeReflectionProperty->getValue($entity);
         if(is_null($fromCurrencyCode) || '' === $fromCurrencyCode) {
-            throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity), $fromCurrencyCodePropertyName));
+            throw new NullFieldMappingException(sprintf('Cannot apply post persist property mapping for %s instance: required field %s is null or blank', get_class($entity), $fromCurrencyCodePropertyName));
         }
 
         $toCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $toCurrencyCodePropertyName);
         $toCurrencyCodeReflectionProperty->setAccessible(true);
         $toCurrencyCode = $toCurrencyCodeReflectionProperty->getValue($entity);
-        if(is_null($toCurrencyCode) || '' === $toCurrencyCode) {
-            throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity), $toCurrencyCodePropertyName));
-        }
-
-        $multiplierCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $multiplierPropertyName);
-        $multiplierCurrencyCodeReflectionProperty->setAccessible(true);
-        $multiplier = $multiplierCurrencyCodeReflectionProperty->getValue($entity);
-        if(is_null($multiplier)) {
-            throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity), $multiplierPropertyName));
+        if(is_null($fromCurrencyCode) || '' === $fromCurrencyCode) {
+            throw new NullFieldMappingException(sprintf('Cannot apply post persist property mapping for %s instance: required field %s is null or blank', get_class($entity), $toCurrencyCodePropertyName));
         }
 
         // build the currency instance from the currency manager using provided code
         $fromCurrency = $this->currencyManager->getCurrency($fromCurrencyCode);
         $toCurrency = $this->currencyManager->getCurrency($toCurrencyCode);
-        $exchangeRateInstance = new ExchangeRate($fromCurrency, $toCurrency, $multiplier);
+        $currencyPairInstance = new CurrencyPair($fromCurrency, $toCurrency);
 
         // set the currency instance on the original entities field
         $reflectionProperty->setAccessible(true);
-        $reflectionProperty->setValue($entity, $exchangeRateInstance);
+        $reflectionProperty->setValue($entity, $currencyPairInstance);
 
         return $entity;
     }

@@ -13,12 +13,12 @@ class EntityFieldMapperCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
 
-        if (!$container->hasDefinition('lmh_money.field_mapper')) {
+        if (!$container->hasDefinition('matmar10_money.field_mapper')) {
             return;
         }
 
-        $definition = $container->getDefinition('lmh_money.field_mapper');
-        $taggedServices = $container->findTaggedServiceIds('lmh_money.field_mapper');
+        $definition = $container->getDefinition('matmar10_money.field_mapper');
+        $taggedServices = $container->findTaggedServiceIds('matmar10_money.field_mapper');
 
         foreach($taggedServices as $dicServiceId => $taggedAnnotations) {
             foreach($taggedAnnotations as $attributes) {

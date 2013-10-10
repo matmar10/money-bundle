@@ -1,39 +1,58 @@
 <?php
 
-namespace Lmh\Bundle\MoneyBundle\Tests\Fixtures\Entity;
+namespace Matmar10\Bundle\MoneyBundle\Tests\Fixtures\Entity;
 
 use Matmar10\Money\Entity\Currency as CurrencyEntity;
 use Matmar10\Money\Entity\CurrencyPair as CurrencyPairEntity;
+use Matmar10\Money\Entity\ExchangeRate as ExchangeRateEntity;
 use Matmar10\Money\Entity\Money as MoneyEntity;
-use Lmh\Bundle\MoneyBundle\Annotation\Currency;
-use Lmh\Bundle\MoneyBundle\Annotation\CurrencyPair;
-use Lmh\Bundle\MoneyBundle\Annotation\Money;
+use Matmar10\Bundle\MoneyBundle\Annotation\Currency;
+use Matmar10\Bundle\MoneyBundle\Annotation\CurrencyPair;
+use Matmar10\Bundle\MoneyBundle\Annotation\ExchangeRate;
+use Matmar10\Bundle\MoneyBundle\Annotation\Money;
 
 class AnnotatedTestEntity
 {
 
     /**
+     * @var \Matmar10\Money\Entity\Currency
+     *
      * @Currency(currencyCode="exampleCurrencyCode")
      */
     protected $exampleCurrency;
     protected $exampleCurrencyCode;
 
     /**
-     * @Money(amountInteger="exampleMoneyAmountInteger", currencyCode="exampleMoneyCurrencyCode")
+     * @var \Matmar10\Bundle\MoneyBundle\Annotation\Money
+     *
+     * @Money(amountInteger="exampleMoneyAmountInteger",
+     *      currencyCode="exampleMoneyCurrencyCode")
      */
     protected $exampleMoney;
     protected $exampleMoneyAmountInteger;
     protected $exampleMoneyCurrencyCode;
 
     /**
+     * @var \Matmar10\Money\Entity\CurrencyPair
+     *
      * @CurrencyPair(fromCurrencyCode="exampleCurrencyPairFromCurrencyCode",
-     *      toCurrencyCode="exampleCurrencyPairToCurrencyCode",
-     *      multiplier="exampleCurrencyPairMultiplier")
+     *      toCurrencyCode="exampleCurrencyPairToCurrencyCode")
      */
     protected $exampleCurrencyPair;
     protected $exampleCurrencyPairFromCurrencyCode;
     protected $exampleCurrencyPairToCurrencyCode;
-    protected $exampleCurrencyPairMultiplier;
+
+    /**
+     * @var \Matmar10\Money\Entity\ExchangeRate
+     *
+     * @ExchangeRate (fromCurrencyCode="exampleExchangeRateFromCurrencyCode",
+     *      toCurrencyCode="exampleExchangeRateToCurrencyCode",
+     *      multiplier="exampleExchangeRateMultiplier")
+     */
+    protected $exampleExchangeRate;
+    protected $exampleExchangeRateFromCurrencyCode;
+    protected $exampleExchangeRateToCurrencyCode;
+    protected $exampleExchangeRateMultiplier;
 
     public function setExampleCurrency(CurrencyEntity $exampleCurrency)
     {
@@ -85,7 +104,7 @@ class AnnotatedTestEntity
         return $this->exampleMoneyCurrencyCode;
     }
 
-    public function setExampleCurrencyPair($exampleCurrencyPair)
+    public function setExampleCurrencyPair(CurrencyPairEntity $exampleCurrencyPair)
     {
         $this->exampleCurrencyPair = $exampleCurrencyPair;
     }
@@ -105,16 +124,6 @@ class AnnotatedTestEntity
         return $this->exampleCurrencyPairFromCurrencyCode;
     }
 
-    public function setExampleCurrencyPairMultiplier($exampleCurrencyPairMultiplier)
-    {
-        $this->exampleCurrencyPairMultiplier = $exampleCurrencyPairMultiplier;
-    }
-
-    public function getExampleCurrencyPairMultiplier()
-    {
-        return $this->exampleCurrencyPairMultiplier;
-    }
-
     public function setExampleCurrencyPairToCurrencyCode($exampleCurrencyPairToCurrencyCode)
     {
         $this->exampleCurrencyPairToCurrencyCode = $exampleCurrencyPairToCurrencyCode;
@@ -123,5 +132,45 @@ class AnnotatedTestEntity
     public function getExampleCurrencyPairToCurrencyCode()
     {
         return $this->exampleCurrencyPairToCurrencyCode;
+    }
+
+    public function setExampleExchangeRate(ExchangeRateEntity $exampleExchangeRate)
+    {
+        $this->exampleExchangeRate = $exampleExchangeRate;
+    }
+
+    public function getExampleExchangeRate()
+    {
+        return $this->exampleExchangeRate;
+    }
+
+    public function setExampleExchangeRateFromCurrencyCode($exampleExchangeRateFromCurrencyCode)
+    {
+        $this->exampleExchangeRateFromCurrencyCode = $exampleExchangeRateFromCurrencyCode;
+    }
+
+    public function getExampleExchangeRateFromCurrencyCode()
+    {
+        return $this->exampleExchangeRateFromCurrencyCode;
+    }
+
+    public function setExampleExchangeRateToCurrencyCode($exampleExchangeRateToCurrencyCode)
+    {
+        $this->exampleExchangeRateToCurrencyCode = $exampleExchangeRateToCurrencyCode;
+    }
+
+    public function getExampleExchangeRateToCurrencyCode()
+    {
+        return $this->exampleExchangeRateToCurrencyCode;
+    }
+
+    public function setExampleExchangeRateMultiplier($exampleExchangeRateMultiplier)
+    {
+        $this->exampleExchangeRateMultiplier = $exampleExchangeRateMultiplier;
+    }
+
+    public function getExampleExchangeRateMultiplier()
+    {
+        return $this->exampleExchangeRateMultiplier;
     }
 }

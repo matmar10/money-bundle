@@ -24,8 +24,8 @@
     },
     "autoload": {
         "psr-0": {
-            "Matmar10\\Bundle\\MoneyBundle": "src",
-            "Matmar10\\Bundle\\MoneyBundle\\Tests": "test"
+            "Matmar10\\Bundle\\MoneyBundle\\Tests": "tests",
+            "Matmar10\\Bundle\\MoneyBundle": "src"
         }
     }
 }

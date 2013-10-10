@@ -4,6 +4,7 @@ namespace Matmar10\Bundle\MoneyBundle\Mapper;
 
 use InvalidArgumentException;
 use Matmar10\Bundle\MoneyBundle\Annotation\MappedPropertyAnnotationInterface;
+use Matmar10\Bundle\MoneyBundle\Exception\NullFieldMappingException;
 use Matmar10\Bundle\MoneyBundle\Mapper\DefaultMapper;
 use Matmar10\Bundle\MoneyBundle\Mapper\EntityFieldMapperInterface;
 use Matmar10\Bundle\MoneyBundle\Service\CurrencyManager;
@@ -31,6 +32,9 @@ class CurrencyMapper implements EntityFieldMapperInterface
          */
         $currencyInstance = $reflectionProperty->getValue($entity);
         $currencyCode = $currencyInstance->getCurrencyCode();
+        if(is_null($currencyCode)) {
+            throw new NullFieldMappingException(sprintf('Cannot apply pre persist property mapping for %s instance: required field %s is null', get_class($entity), 'currencyCode'));
+        }
 
         // lookup the currency code's field name based on the provided mapping
         $currencyCodePropertyName = $mappedProperties['currencyCode'];
@@ -52,6 +56,9 @@ class CurrencyMapper implements EntityFieldMapperInterface
         $currencyCodeReflectionProperty = new ReflectionProperty($entity, $currencyCodePropertyName);
         $currencyCodeReflectionProperty->setAccessible(true);
         $currencyCode = $currencyCodeReflectionProperty->getValue($entity);
+        if(is_null($currencyCode) || '' === $currencyCode) {
+            throw new NullFieldMappingException(sprintf('Cannot apply post persist property mapping for %s instance: required field %s is null or blank', get_class($entity), $currencyCodePropertyName));
+        }
 
         // build the currency instance from the currency manager using provided code
         $currencyInstance = $this->currencyManager->getCurrency($currencyCode);
