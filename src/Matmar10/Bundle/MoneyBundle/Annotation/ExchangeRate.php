@@ -38,8 +38,12 @@ class ExchangeRate extends BaseMappedPropertyAnnotation implements MappedPropert
     /**
      * {inheritDoc}
      */
-    public function getOptionalProperties()
+    public function getMappedProperties()
     {
-        return array();
+        return array(
+            'fromCurrencyCode',
+            'toCurrencyCode',
+            'multiplier',
+        );
     }
 }

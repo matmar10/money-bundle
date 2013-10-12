@@ -31,6 +31,15 @@ class CurrencyMapper implements EntityFieldMapperInterface
          * @var $currencyInstance \Matmar10\Money\Entity\Currency
          */
         $currencyInstance = $reflectionProperty->getValue($entity);
+
+        // ignore if nullable and currency instance is null
+        if(is_null($currencyInstance)) {
+            $options = $annotation->getOptions();
+            if($options['nullable']) {
+                return $entity;
+            }
+        }
+
         $currencyCode = $currencyInstance->getCurrencyCode();
         if(is_null($currencyCode)) {
             throw new NullFieldMappingException(sprintf('Cannot apply pre persist property mapping for %s instance: required field %s is null', get_class($entity), 'currencyCode'));
@@ -56,7 +65,13 @@ class CurrencyMapper implements EntityFieldMapperInterface
         $currencyCodeReflectionProperty = new ReflectionProperty($entity, $currencyCodePropertyName);
         $currencyCodeReflectionProperty->setAccessible(true);
         $currencyCode = $currencyCodeReflectionProperty->getValue($entity);
+
         if(is_null($currencyCode) || '' === $currencyCode) {
+            // ignore if nullable and currency instance is null
+            $options = $annotation->getOptions();
+            if($options['nullable']) {
+                return $entity;
+            }
             throw new NullFieldMappingException(sprintf('Cannot apply post persist property mapping for %s instance: required field %s is null or blank', get_class($entity), $currencyCodePropertyName));
         }
 

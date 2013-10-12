@@ -36,12 +36,31 @@ class CurrencyPairMapper implements EntityFieldMapperInterface
          * @var $currencyPairInstance \Matmar10\Money\Entity\CurrencyPair
          */
         $currencyPairInstance = $reflectionProperty->getValue($entity);
+
+        // ignore if nullable and currency instance is null
+        if(is_null($currencyPairInstance)) {
+            $options = $annotation->getOptions();
+            if($options['nullable']) {
+                return $entity;
+            }
+        }
+
         $fromCurrency = $currencyPairInstance->getFromCurrency();
         if(is_null($fromCurrency)) {
+            // ignore if nullable and currency instance is null
+            $options = $annotation->getOptions();
+            if($options['nullable']) {
+                return $entity;
+            }
             throw new NullFieldMappingException(sprintf('Cannot apply post persist property mapping for %s instance: required field %s is null', get_class($entity), 'fromCurrency'));
         }
         $toCurrency = $currencyPairInstance->getToCurrency();
         if(is_null($toCurrency)) {
+            // ignore if nullable and currency instance is null
+            $options = $annotation->getOptions();
+            if($options['nullable']) {
+                return $entity;
+            }
             throw new NullFieldMappingException(sprintf('Cannot apply post persist property mapping for %s instance: required field %s is null', get_class($entity), 'toCurrency'));
         }
 

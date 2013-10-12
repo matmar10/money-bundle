@@ -30,6 +30,7 @@ class ExchangeRateMapper implements EntityFieldMapperInterface
     public function mapPrePersist(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
     {
         $mappedProperties = $annotation->getMap();
+        $options = $annotation->getOptions();
 
         // get the currency code from the currency instance
         $reflectionProperty->setAccessible(true);
@@ -38,6 +39,14 @@ class ExchangeRateMapper implements EntityFieldMapperInterface
          * @var $exchangeRateInstance \Matmar10\Money\Entity\ExchangeRate
          */
         $exchangeRateInstance = $reflectionProperty->getValue($entity);
+
+        // ignore if nullable and currency instance is null
+        if(is_null($exchangeRateInstance)) {
+            if($options['nullable']) {
+                return $entity;
+            }
+        }
+
         $fromCurrency = $exchangeRateInstance->getFromCurrency();
         if(is_null($exchangeRateInstance)) {
             throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity, 'fromCurrency')));
@@ -74,6 +83,7 @@ class ExchangeRateMapper implements EntityFieldMapperInterface
     public function mapPostPersist(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
     {
         $mappedProperties = $annotation->getMap();
+        $options = $annotation->getOptions();
 
         // lookup the currency code's field name based on the provided mapping
         $fromCurrencyCodePropertyName = $mappedProperties['fromCurrencyCode'];
@@ -84,6 +94,10 @@ class ExchangeRateMapper implements EntityFieldMapperInterface
         $fromCurrencyCodeReflectionProperty->setAccessible(true);
         $fromCurrencyCode = $fromCurrencyCodeReflectionProperty->getValue($entity);
         if(is_null($fromCurrencyCode) || '' === $fromCurrencyCode) {
+            // ignore if nullable and currency instance is null
+            if($options['nullable']) {
+                return $entity;
+            }
             throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity), $fromCurrencyCodePropertyName));
         }
 
@@ -91,6 +105,10 @@ class ExchangeRateMapper implements EntityFieldMapperInterface
         $toCurrencyCodeReflectionProperty->setAccessible(true);
         $toCurrencyCode = $toCurrencyCodeReflectionProperty->getValue($entity);
         if(is_null($toCurrencyCode) || '' === $toCurrencyCode) {
+            // ignore if nullable and currency instance is null
+            if($options['nullable']) {
+                return $entity;
+            }
             throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity), $toCurrencyCodePropertyName));
         }
 
@@ -98,6 +116,10 @@ class ExchangeRateMapper implements EntityFieldMapperInterface
         $multiplierCurrencyCodeReflectionProperty->setAccessible(true);
         $multiplier = $multiplierCurrencyCodeReflectionProperty->getValue($entity);
         if(is_null($multiplier)) {
+            // ignore if nullable and currency instance is null
+            if($options['nullable']) {
+                return $entity;
+            }
             throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity), $multiplierPropertyName));
         }
 

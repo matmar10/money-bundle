@@ -26,4 +26,12 @@ interface MappedPropertyAnnotationInterface
      */
     public function getMap();
 
+    /**
+     * Returns an associative array of options configured by the annotation
+     *
+     * @abstract
+     * @return array The associative array of options
+     */
+    public function getOptions();
+
 }

@@ -3,6 +3,7 @@
 namespace Matmar10\Bundle\MoneyBundle\Annotation;
 
 use Matmar10\Bundle\MoneyBundle\Annotation\MappedPropertyAnnotationInterface;
+use Matmar10\Bundle\MoneyBundle\Exception\InvalidArgumentException;
 use Matmar10\Bundle\MoneyBundle\Exception\NullFieldMappingException;
 
 /**
@@ -16,34 +17,54 @@ abstract class BaseMappedPropertyAnnotation implements MappedPropertyAnnotationI
 
     protected $options;
 
+    protected $map;
+
     public function __construct($options)
     {
         $this->options = $options;
 
-        // assert required property names
-        foreach($this->getRequiredProperties() as $requiredProperty) {
-            if(false === array_key_exists($requiredProperty, $options)) {
-                throw new NullFieldMappingException(sprintf("You must provide a valid mapping for required property '%s'", $requiredProperty));
+        $required = $this->getRequiredProperties();
+        $optional = $this->getOptionalProperties();
+        $mapped = $this->getMappedProperties();
+
+        $missingRequired = $required;
+
+        foreach($this->options as $name => $value) {
+
+            // required
+            $position = array_search($name, $required);
+            if(false !== $position) {
+                // throw new NullFieldMappingException(sprintf("You must provide a valid mapping for required property '%s'", $name));
+                if(!$value || '' === $value) {
+                    throw new NullFieldMappingException(sprintf("You must provide a valid mapping for required property '%s'", $name));
+                }
+                unset($missingRequired[$position]);
+                $this->map[$name] = $value;
+                if(false !== array_search($name, $mapped)) {
+                    $this->map[$name] = $value;
+                }
+                continue;
             }
-            if(!$this->options[$requiredProperty] || '' === $this->options[$requiredProperty]) {
-                throw new NullFieldMappingException(sprintf("You must provide a valid mapping for required property '%s'", $requiredProperty));
+
+            // optional
+            if(false !== array_search($name, $optional)) {
+                if(false !== array_search($name, $mapped)) {
+                    $this->map[$name] = $value;
+                }
+                continue;
             }
+
+            throw new InvalidArgumentException(sprintf("Unsupported option '%s' provided", $name));
+        }
+
+        if(count($missingRequired)) {
+            throw new NullFieldMappingException(sprintf("You must provide a valid mapping for all required properties; missing properties are: %s", implode(',', $missingRequired)));
         }
     }
 
     public function getMap()
     {
-        $map = array();
-        foreach($this->getRequiredProperties() as $propertyName) {
-            $map[$propertyName] = $this->options[$propertyName];
-        }
-        foreach($this->getOptionalProperties() as $propertyName) {
-            if(!$this->options[$propertyName]) {
-                continue;
-            }
-            $map[$propertyName] = $this->options[$propertyName];
-        }
-        return $map;
+        return $this->map;
     }
 
     /**
@@ -57,14 +78,33 @@ abstract class BaseMappedPropertyAnnotation implements MappedPropertyAnnotationI
     /**
      * Returns an array of properties which may be mapped in the annotation but are not required
      *
-     * @abstract
      * @return array
      */
-    abstract public function getOptionalProperties();
+    public function getOptionalProperties()
+    {
+        return array(
+            'nullable',
+        );
+    }
+
+    /**
+     * Returns an array of properties to be included in the map
+     */
+    abstract public function getMappedProperties();
 
     /**
      * {inheritDoc}
      */
     abstract public function getClass();
+
+    /**
+     * Gets the options as configured by the annotation
+     *
+     * @return array The options
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
 
 }

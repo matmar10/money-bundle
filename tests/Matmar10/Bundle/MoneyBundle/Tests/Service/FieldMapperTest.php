@@ -5,6 +5,7 @@ namespace Matmar10\Bundle\MoneyBundle\Tests\Service;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Matmar10\Bundle\MoneyBundle\Tests\Fixtures\Entity\AnnotatedTestEntity;
 use Matmar10\Bundle\MoneyBundle\Tests\Fixtures\Entity\ImproperlyCurrencyAnnotatedTestEntity;
+use Matmar10\Bundle\MoneyBundle\Tests\Fixtures\Entity\NullCurrencyAnnotatedTestEntity;
 use Matmar10\Money\Entity\CurrencyPair;
 use Matmar10\Money\Entity\ExchangeRate;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -75,6 +76,11 @@ class FieldMapperTest extends WebTestCase
         $this->assertEquals('JPY', $entity->getExampleExchangeRateToCurrencyCode());
         $this->assertEquals($multiplier, $entity->getExampleExchangeRateMultiplier());
 
+        // test nullable ExchangeRate
+        $this->assertEquals(null, $entity->getExampleNullableExchangeRateFromCurrencyCode());
+        $this->assertEquals(null, $entity->getExampleNullableExchangeRateToCurrencyCode());
+        $this->assertEquals(null, $entity->getExampleNullableExchangeRateMultiplier());
+
     }
 
     public function testPostPersist()
@@ -125,12 +131,24 @@ class FieldMapperTest extends WebTestCase
     }
 
     /**
-     * @expectedException Matmar10\Bundle\MoneyBundle\Exception\NullFieldMappingException
-     * @expectedExceptionMessage You must provide a valid mapping for required property 'currencyCode'
+     * @expectedException Matmar10\Bundle\MoneyBundle\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Unsupported option 'curencyCde' provided
      */
     public function testImproperCurrency()
     {
         $entity = new ImproperlyCurrencyAnnotatedTestEntity();
+
+        // process the field mappings
+        $this->fieldMapper->prePersist($entity);
+    }
+
+    /**
+     * @expectedException Matmar10\Bundle\MoneyBundle\Exception\NullFieldMappingException
+     * @expectedExceptionMessage You must provide a valid mapping for all required properties; missing properties are: currencyCode
+     */
+    public function testNullFieldMappingException()
+    {
+        $entity = new NullCurrencyAnnotatedTestEntity();
 
         // process the field mappings
         $this->fieldMapper->prePersist($entity);

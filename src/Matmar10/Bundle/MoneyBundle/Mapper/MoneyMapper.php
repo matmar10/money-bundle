@@ -16,6 +16,8 @@ use ReflectionProperty;
 class MoneyMapper implements EntityFieldMapperInterface
 {
 
+    protected static $nullPropertyExceptionMessage = 'Cannot apply entity mapping for %s instance: required property %s is null or blank';
+
     protected $currencyManager;
 
     public function __construct(CurrencyManager $currencyManager)
@@ -34,6 +36,14 @@ class MoneyMapper implements EntityFieldMapperInterface
          * @var $moneyInstance \Matmar10\Money\Entity\Money
          */
         $moneyInstance = $reflectionProperty->getValue($entity);
+
+        // ignore if nullable and currency instance is null
+        if(is_null($moneyInstance)) {
+            $options = $annotation->getOptions();
+            if($options['nullable']) {
+                return $entity;
+            }
+        }
 
         /**
          * @var $currency \Matmar10\Money\Entity\Currency
@@ -61,6 +71,7 @@ class MoneyMapper implements EntityFieldMapperInterface
     public function mapPostPersist(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
     {
         $mappedProperties = $annotation->getMap();
+        $options = $annotation->getOptions();
 
         // lookup the currency code and amountInteger field names based on the provided mapping
         $amountIntegerPropertyName = $mappedProperties['amountInteger'];
@@ -69,10 +80,24 @@ class MoneyMapper implements EntityFieldMapperInterface
         $amountIntegerReflectionProperty = new ReflectionProperty($entity, $amountIntegerPropertyName);
         $amountIntegerReflectionProperty->setAccessible(true);
         $amountInteger = $amountIntegerReflectionProperty->getValue($entity);
+        if(is_null($amountInteger) || '' === $amountInteger) {
+            // ignore if nullable and currency instance is null
+            if($options['nullable']) {
+                return $entity;
+            }
+            throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity), $amountIntegerPropertyName));
+        }
 
         $currencyCodeReflectionProperty = new ReflectionProperty($entity, $currencyCodePropertyName);
         $currencyCodeReflectionProperty->setAccessible(true);
         $currencyCode = $currencyCodeReflectionProperty->getValue($entity);
+        if(is_null($currencyCode) || '' === $currencyCode) {
+            // ignore if nullable and currency instance is null
+            if($options['nullable']) {
+                return $entity;
+            }
+            throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity), $currencyCodePropertyName));
+        }
 
         // build the currency instance from the currency manager using provided code
         $moneyInstance = $this->currencyManager->getMoney($currencyCode);

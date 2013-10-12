@@ -29,15 +29,17 @@ class Currency extends BaseMappedPropertyAnnotation implements MappedPropertyAnn
     public function getRequiredProperties()
     {
         return array(
-            'currencyCode'
+            'currencyCode',
         );
     }
 
     /**
      * {inheritDoc}
      */
-    public function getOptionalProperties()
+    public function getMappedProperties()
     {
-        return array();
+        return array(
+            'currencyCode',
+        );
     }
 }

@@ -54,6 +54,19 @@ class AnnotatedTestEntity
     protected $exampleExchangeRateToCurrencyCode;
     protected $exampleExchangeRateMultiplier;
 
+    /**
+     * @var \Matmar10\Money\Entity\ExchangeRate
+     *
+     * @ExchangeRate (fromCurrencyCode="exampleNullableExchangeRateFromCurrencyCode",
+     *      toCurrencyCode="exampleNullableExchangeRateToCurrencyCode",
+     *      multiplier="exampleNullableExchangeRateMultiplier",
+     *      nullable=true)
+     */
+    protected $exampleNullableExchangeRate;
+    protected $exampleNullableExchangeRateFromCurrencyCode;
+    protected $exampleNullableExchangeRateToCurrencyCode;
+    protected $exampleNullableExchangeRateMultiplier;
+
     public function setExampleCurrency(CurrencyEntity $exampleCurrency)
     {
         $this->exampleCurrency = $exampleCurrency;
@@ -172,5 +185,51 @@ class AnnotatedTestEntity
     public function getExampleExchangeRateMultiplier()
     {
         return $this->exampleExchangeRateMultiplier;
+    }
+
+    /**
+     * @param \Matmar10\Money\Entity\ExchangeRate $exampleNullableExchangeRate
+     */
+    public function setExampleNullableExchangeRate($exampleNullableExchangeRate)
+    {
+        $this->exampleNullableExchangeRate = $exampleNullableExchangeRate;
+    }
+
+    /**
+     * @return \Matmar10\Money\Entity\ExchangeRate
+     */
+    public function getExampleNullableExchangeRate()
+    {
+        return $this->exampleNullableExchangeRate;
+    }
+
+    public function setExampleNullableExchangeRateFromCurrencyCode($exampleNullableExchangeRateFromCurrencyCode)
+    {
+        $this->exampleNullableExchangeRateFromCurrencyCode = $exampleNullableExchangeRateFromCurrencyCode;
+    }
+
+    public function getExampleNullableExchangeRateFromCurrencyCode()
+    {
+        return $this->exampleNullableExchangeRateFromCurrencyCode;
+    }
+
+    public function setExampleNullableExchangeRateMultiplier($exampleNullableExchangeRateMultiplier)
+    {
+        $this->exampleNullableExchangeRateMultiplier = $exampleNullableExchangeRateMultiplier;
+    }
+
+    public function getExampleNullableExchangeRateMultiplier()
+    {
+        return $this->exampleNullableExchangeRateMultiplier;
+    }
+
+    public function setExampleNullableExchangeRateToCurrencyCode($exampleNullableExchangeRateToCurrencyCode)
+    {
+        $this->exampleNullableExchangeRateToCurrencyCode = $exampleNullableExchangeRateToCurrencyCode;
+    }
+
+    public function getExampleNullableExchangeRateToCurrencyCode()
+    {
+        return $this->exampleNullableExchangeRateToCurrencyCode;
     }
 }
