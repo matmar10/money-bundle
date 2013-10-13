@@ -20,7 +20,7 @@
         "symfony/symfony": "2.3.*",
         "symfony/framework-bundle": "2.3.*",
         "jms/serializer": "0.12.*",
-        "matmar10/lib-money": "dev-exchange-rate-entity-name"
+        "matmar10/lib-money": "dev-master"
     },
     "autoload": {
         "psr-0": {
