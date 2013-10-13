@@ -41,9 +41,8 @@ class Money extends BaseMappedPropertyAnnotation implements MappedPropertyAnnota
     public function getMappedProperties()
     {
         return array(
-            'fromCurrencyCode',
-            'toCurrencyCode',
-            'multiplier',
+            'currencyCode',
+            'amountInteger',
         );
     }
 }

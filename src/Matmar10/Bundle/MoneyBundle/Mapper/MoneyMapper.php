@@ -4,6 +4,7 @@ namespace Matmar10\Bundle\MoneyBundle\Mapper;
 
 use InvalidArgumentException;
 use Matmar10\Bundle\MoneyBundle\Annotation\MappedPropertyAnnotationInterface;
+use Matmar10\Bundle\MoneyBundle\Exception\NullFieldMappingException;
 use Matmar10\Bundle\MoneyBundle\Mapper\DefaultMapper;
 use Matmar10\Bundle\MoneyBundle\Mapper\EntityFieldMapperInterface;
 use Matmar10\Bundle\MoneyBundle\Service\CurrencyManager;
@@ -27,6 +28,7 @@ class MoneyMapper implements EntityFieldMapperInterface
 
     public function mapPrePersist(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
     {
+        $annotation->init();
         $mappedProperties = $annotation->getMap();
 
         // get the currency code from the currency instance
@@ -43,6 +45,7 @@ class MoneyMapper implements EntityFieldMapperInterface
             if($options['nullable']) {
                 return $entity;
             }
+            throw new NullFieldMappingException(sprintf("Mapped property '%s' cannot be null (to allow null value, use nullable=true)", $reflectionProperty->getName()));
         }
 
         /**
@@ -70,6 +73,7 @@ class MoneyMapper implements EntityFieldMapperInterface
 
     public function mapPostPersist(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
     {
+        $annotation->init();
         $mappedProperties = $annotation->getMap();
         $options = $annotation->getOptions();
 

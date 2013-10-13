@@ -2,8 +2,7 @@
 
 namespace Matmar10\Bundle\MoneyBundle\Tests\Validator\Constraints;
 
-use Matmar10\Bundle\MoneyBundle\Validator\Constraints\CurrencyCode;
-use Matmar10\Money\Entity\Currency;
+use Matmar10\Bundle\MoneyBundle\Validator\Constraints\CurrencyCode as AssertCurrencyCode;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class CurrencyCodeTest extends WebTestCase
@@ -22,7 +21,7 @@ class CurrencyCodeTest extends WebTestCase
         $kernel = $this->getKernel();
         $validator = $kernel->getContainer()->get('validator');
         
-        $currencyCodeConstraint = new CurrencyCode();
+        $currencyCodeConstraint = new AssertCurrencyCode();
 
         // use the validator to validate the value
         $violationList = $validator->validateValue(

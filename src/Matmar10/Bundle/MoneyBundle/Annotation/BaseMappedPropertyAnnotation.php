@@ -15,16 +15,24 @@ use Matmar10\Bundle\MoneyBundle\Exception\NullFieldMappingException;
 abstract class BaseMappedPropertyAnnotation implements MappedPropertyAnnotationInterface
 {
 
-    protected $options;
+    protected $options = array();
 
-    protected $map;
+    protected $map = array();
 
-    public function __construct($options)
+    public function __construct(array $options = array())
     {
         $this->options = $options;
+    }
 
+    public function init()
+    {
+        if(!is_array($this->options)) {
+            $this->options = array();
+        }
         $required = $this->getRequiredProperties();
         $optional = $this->getOptionalProperties();
+        // apply options as the defaults
+        $this->options = array_merge($optional, $this->options);
         $mapped = $this->getMappedProperties();
 
         $missingRequired = $required;
@@ -47,7 +55,7 @@ abstract class BaseMappedPropertyAnnotation implements MappedPropertyAnnotationI
             }
 
             // optional
-            if(false !== array_search($name, $optional)) {
+            if(false !== array_key_exists($name, $optional)) {
                 if(false !== array_search($name, $mapped)) {
                     $this->map[$name] = $value;
                 }
@@ -60,6 +68,8 @@ abstract class BaseMappedPropertyAnnotation implements MappedPropertyAnnotationI
         if(count($missingRequired)) {
             throw new NullFieldMappingException(sprintf("You must provide a valid mapping for all required properties; missing properties are: %s", implode(',', $missingRequired)));
         }
+
+        return $this;
     }
 
     public function getMap()
@@ -83,7 +93,7 @@ abstract class BaseMappedPropertyAnnotation implements MappedPropertyAnnotationI
     public function getOptionalProperties()
     {
         return array(
-            'nullable',
+            'nullable' => false,
         );
     }
 
