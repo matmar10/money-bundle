@@ -11,6 +11,14 @@ interface MappedPropertyAnnotationInterface
 {
 
     /**
+     * Applies validation rules and prepares the map and options
+     *
+     * @abstract
+     * @return self
+     */
+    public function init();
+
+    /**
      * Returns the expected fully qualified class path of the object field's instance
      *
      * @abstract

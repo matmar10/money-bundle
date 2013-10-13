@@ -23,6 +23,7 @@ class CurrencyMapper implements EntityFieldMapperInterface
 
     public function mapPrePersist(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
     {
+        $annotation->init();
         $mappedProperties = $annotation->getMap();
 
         // get the currency code from the currency instance
@@ -38,6 +39,7 @@ class CurrencyMapper implements EntityFieldMapperInterface
             if($options['nullable']) {
                 return $entity;
             }
+            throw new NullFieldMappingException(sprintf("Mapped property '%s' cannot be null (to allow null value, use nullable=true)", $reflectionProperty->getName()));
         }
 
         $currencyCode = $currencyInstance->getCurrencyCode();
