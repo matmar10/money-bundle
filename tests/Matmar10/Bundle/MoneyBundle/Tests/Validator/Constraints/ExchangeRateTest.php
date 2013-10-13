@@ -42,7 +42,7 @@ class ExchangeRateTest extends WebTestCase
             null,
             $exchangeRateConstraint
         );
-        $this->assertEquals('The value is not a valid ExchangeRateInterface instance', $violationList2[0]->getMessage());
+        $this->assertEquals('The value for the property  is not a valid Matmar10\Money\Entity\ExchangeRateInterface instance', $violationList2[0]->getMessage());
 
     }
 

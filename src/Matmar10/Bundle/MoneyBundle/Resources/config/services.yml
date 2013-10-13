@@ -4,11 +4,11 @@ parameters:
     matmar10_money.currency_manager.class: Matmar10\Bundle\MoneyBundle\Service\CurrencyManager
 
     # validators
-    matmar10_money.validator.currency.class: Matmar10\Bundle\MoneyBundle\Validator\CurrencyValidator
+    matmar10_money.validator.currency.class: Matmar10\Bundle\MoneyBundle\Validator\InstanceValidator
     matmar10_money.validator.currency_code.class: Matmar10\Bundle\MoneyBundle\Validator\CurrencyCodeValidator
-    matmar10_money.validator.currency_pair.class: Matmar10\Bundle\MoneyBundle\Validator\CurrencyPairValidator
-    matmar10_money.validator.exchange_rate.class: Matmar10\Bundle\MoneyBundle\Validator\ExchangeRateValidator
-    matmar10_money.validator.money.class: Matmar10\Bundle\MoneyBundle\Validator\MoneyValidator
+    matmar10_money.validator.currency_pair.class: Matmar10\Bundle\MoneyBundle\Validator\InstanceValidator
+    matmar10_money.validator.exchange_rate.class: Matmar10\Bundle\MoneyBundle\Validator\InstanceValidator
+    matmar10_money.validator.money.class: Matmar10\Bundle\MoneyBundle\Validator\InstanceValidator
 
     # annotation
     matmar10_money.annotation_reader.class: Matmar10\Bundle\MoneyBundle\Service\AnnotationReader

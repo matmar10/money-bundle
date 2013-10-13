@@ -23,7 +23,7 @@ class CurrencyPairTest extends WebTestCase
     }
 
     public function testValidateValue()
-    {;
+    {
         
         $currencyPairConstraint = new AssertCurrencyPair();
 
@@ -43,7 +43,7 @@ class CurrencyPairTest extends WebTestCase
             null,
             $currencyPairConstraint
         );
-        $this->assertEquals('The value is not a valid CurrencyPairInterface instance', $violationList2[0]->getMessage());
+        $this->assertEquals('The value for the property  is not a valid Matmar10\Money\Entity\CurrencyPairInterface instance', $violationList2[0]->getMessage());
 
     }
 

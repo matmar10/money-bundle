@@ -7,9 +7,12 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class Currency extends Constraint {
+class Currency extends Constraint
+{
 
-    public $invalidInstanceMessage = 'The value is not a valid CurrencyInterface instance';
+    public $instanceClass = 'Matmar10\\Money\\Entity\\CurrencyInterface';
+    public $propertyName = '';
+    public $message = 'The value for the property %propertyName% is not a valid %instanceClass% instance';
 
     public function validatedBy()
     {

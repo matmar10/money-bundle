@@ -39,7 +39,7 @@ class CurrencyTest extends WebTestCase
             null,
             $currencyConstraint
         );
-        $this->assertEquals('The value is not a valid CurrencyInterface instance', $violationList2[0]->getMessage());
+        $this->assertEquals('The value for the property  is not a valid Matmar10\Money\Entity\CurrencyInterface instance', $violationList2[0]->getMessage());
 
     }
 

@@ -41,7 +41,7 @@ class MoneyTest extends WebTestCase
             null,
             $moneyConstraint
         );
-        $this->assertEquals('The value is not a valid MoneyInterface instance', $violationList2[0]->getMessage());
+        $this->assertEquals('The value for the property  is not a valid Matmar10\Money\Entity\MoneyInterface instance', $violationList2[0]->getMessage());
 
     }
 
