@@ -2,7 +2,15 @@
 parameters:
 
     matmar10_money.currency_manager.class: Matmar10\Bundle\MoneyBundle\Service\CurrencyManager
-    matmar10_money.currency_code_validator.class: Matmar10\Bundle\MoneyBundle\Service\CurrencyCodeValidator
+
+    # validators
+    matmar10_money.validator.currency.class: Matmar10\Bundle\MoneyBundle\Validator\CurrencyValidator
+    matmar10_money.validator.currency_code.class: Matmar10\Bundle\MoneyBundle\Validator\CurrencyCodeValidator
+    matmar10_money.validator.currency_pair.class: Matmar10\Bundle\MoneyBundle\Validator\CurrencyPairValidator
+    matmar10_money.validator.exchange_rate.class: Matmar10\Bundle\MoneyBundle\Validator\ExchangeRateValidator
+    matmar10_money.validator.money.class: Matmar10\Bundle\MoneyBundle\Validator\MoneyValidator
+
+    # annotation
     matmar10_money.annotation_reader.class: Matmar10\Bundle\MoneyBundle\Service\AnnotationReader
     matmar10_money.field_mapper.class: Matmar10\Bundle\MoneyBundle\Service\FieldMapper
     matmar10_money.field_mapper.currency.class: Matmar10\Bundle\MoneyBundle\Mapper\CurrencyMapper
@@ -18,11 +26,31 @@ services:
             - "%matmar10_money.currency_configuration_filename%"
             - "%matmar10_money.currencies%"
 
-    validator.unique.currency_code_validator:
-        class: "%matmar10_money.currency_code_validator.class%"
+    matmar10_money.validator.currency_validator:
+        class: "%matmar10_money.validator.currency.class%"
+        tags:
+            - { name: validator.constraint_validator, alias: currency_validator }
+
+    matmar10_money.validator.currency_code_validator:
+        class: "%matmar10_money.validator.currency_code.class%"
         arguments: [ @matmar10_money.currency_manager ]
         tags:
             - { name: validator.constraint_validator, alias: currency_code_validator }
+
+    matmar10_money.validator.currency_pair_validator:
+        class: "%matmar10_money.validator.currency_pair.class%"
+        tags:
+            - { name: validator.constraint_validator, alias: currency_pair_validator }
+
+    matmar10_money.validator.exchange_rate_validator:
+        class: "%matmar10_money.validator.exchange_rate.class%"
+        tags:
+            - { name: validator.constraint_validator, alias: exchange_rate_validator }
+
+    matmar10_money.validator.money_validator:
+        class: "%matmar10_money.validator.money.class%"
+        tags:
+            - { name: validator.constraint_validator, alias: money_validator }
 
     matmar10_money.field_mapper:
         class: "%matmar10_money.field_mapper.class%"

@@ -60,6 +60,7 @@ class CurrencyMapper implements EntityFieldMapperInterface
 
     public function mapPostPersist(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
     {
+        $annotation->init();
         $mappedProperties = $annotation->getMap();
 
         // lookup the currency code's field name based on the provided mapping

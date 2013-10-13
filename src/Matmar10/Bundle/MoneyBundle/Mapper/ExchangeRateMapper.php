@@ -85,6 +85,7 @@ class ExchangeRateMapper implements EntityFieldMapperInterface
 
     public function mapPostPersist(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
     {
+        $annotation->init();
         $mappedProperties = $annotation->getMap();
         $options = $annotation->getOptions();
 

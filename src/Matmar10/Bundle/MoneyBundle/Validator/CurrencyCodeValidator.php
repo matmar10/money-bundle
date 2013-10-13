@@ -1,6 +1,6 @@
 <?php
 
-namespace Matmar10\Bundle\MoneyBundle\Service;
+namespace Matmar10\Bundle\MoneyBundle\Validator;
 
 use Matmar10\Bundle\MoneyBundle\Exception\InvalidArgumentException;
 use Matmar10\Bundle\MoneyBundle\Service\CurrencyManager;
