@@ -2,9 +2,9 @@
 
 namespace Matmar10\Bundle\MoneyBundle\Annotation;
 
-use InvalidArgumentException;
-use Matmar10\Bundle\MoneyBundle\Annotation\BaseMappedPropertyAnnotation;
-use Matmar10\Bundle\MoneyBundle\Annotation\MappedPropertyAnnotationInterface;
+use Matmar10\Bundle\MoneyBundle\Annotation\BaseCompositeProperty;
+use Matmar10\Bundle\MoneyBundle\Annotation\CompositeProperty;
+use Matmar10\Bundle\MoneyBundle\Exception\InvalidArgumentException;
 
 /**
  * Money
@@ -14,8 +14,17 @@ use Matmar10\Bundle\MoneyBundle\Annotation\MappedPropertyAnnotationInterface;
  * @Annotation
  * @Target({"PROPERTY"})
  */
-class Money extends BaseMappedPropertyAnnotation implements MappedPropertyAnnotationInterface
+class Money extends BaseCompositeProperty implements CompositeProperty
 {
+
+    public $currencyCode;
+
+    public $amountInteger;
+
+    public $amountFloat;
+
+    public $amountDisplay;
+
     /**
      * {inheritDoc}
      */
@@ -27,22 +36,28 @@ class Money extends BaseMappedPropertyAnnotation implements MappedPropertyAnnota
     /**
      * {inheritDoc}
      */
-    public function getRequiredProperties()
+    public function getMap()
     {
-        return array(
-            'currencyCode',
-            'amountInteger',
+        $map = array(
+            'currencyCode' => $this->currencyCode,
         );
-    }
 
-    /**
-     * {inheritDoc}
-     */
-    public function getMappedProperties()
-    {
-        return array(
-            'currencyCode',
-            'amountInteger',
-        );
+        if(!is_null($this->amountInteger)) {
+            $map['amountInteger'] = $this->amountInteger;
+            return $map;
+        }
+
+        if(!is_null($this->amountFloat)) {
+            $map['amountFloat'] = $this->amountFloat;
+            return $map;
+        }
+
+        if(!is_null($this->amountDisplay)) {
+            $map['amountDisplay'] = $this->amountDisplay;
+            return $map;
+        }
+
+        $message = 'No amount field was provided for composite property of type %s (annotation requires either an amountInteger, amountFloat, or amountDisplay property mapping';
+        throw new InvalidArgumentException(sprintf($message, $this->getClass()));
     }
 }

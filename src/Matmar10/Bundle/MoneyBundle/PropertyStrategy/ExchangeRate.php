@@ -1,14 +1,13 @@
 <?php
 
-namespace Matmar10\Bundle\MoneyBundle\Mapper;
+namespace Matmar10\Bundle\MoneyBundle\PropertyStrategy;
 
 use InvalidArgumentException;
 use Matmar10\Bundle\MoneyBundle\Annotation\MappedPropertyAnnotationInterface;
 use Matmar10\Bundle\MoneyBundle\Exception\NullFieldMappingException;
-use Matmar10\Bundle\MoneyBundle\Mapper\DefaultMapper;
-use Matmar10\Bundle\MoneyBundle\Mapper\EntityFieldMapperInterface;
+use Matmar10\Bundle\MoneyBundle\PropertyStrategy\CompositePropertyStrategy;
 use Matmar10\Bundle\MoneyBundle\Service\CurrencyManager;
-use Matmar10\Money\Entity\ExchangeRate;
+use Matmar10\Money\Entity\ExchangeRate as ExchangeRateEntity;
 use Matmar10\Bundle\MoneyBundle\Exception\NullFieldException;
 use ReflectionObject;
 use ReflectionProperty;
@@ -16,7 +15,7 @@ use ReflectionProperty;
 /**
  * {inheritDoc}
  */
-class ExchangeRateMapper implements EntityFieldMapperInterface
+class ExchangeRate implements CompositePropertyStrategy
 {
 
     protected static $nullPropertyExceptionMessage = 'Cannot apply entity mapping for %s instance: required property %s is null or blank';
@@ -28,7 +27,7 @@ class ExchangeRateMapper implements EntityFieldMapperInterface
         $this->currencyManager = $currencyManager;
     }
 
-    public function mapPrePersist(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
+    public function flattenCompositeProperty(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
     {
         $annotation->init();
         $mappedProperties = $annotation->getMap();
@@ -83,7 +82,7 @@ class ExchangeRateMapper implements EntityFieldMapperInterface
         return $entity;
     }
 
-    public function mapPostPersist(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
+    public function composeCompositeProperty(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
     {
         $annotation->init();
         $mappedProperties = $annotation->getMap();

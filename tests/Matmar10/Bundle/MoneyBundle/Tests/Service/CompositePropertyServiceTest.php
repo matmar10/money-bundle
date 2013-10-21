@@ -8,7 +8,7 @@ use Matmar10\Money\Entity\CurrencyPair;
 use Matmar10\Money\Entity\Money;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class CurrencyManagerTest extends WebTestCase
+class CompositePrpertyServiceTest extends WebTestCase
 {
 
     /**

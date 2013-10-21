@@ -2,8 +2,8 @@
 
 namespace Matmar10\Bundle\MoneyBundle\Annotation;
 
-use Matmar10\Bundle\MoneyBundle\Annotation\BaseMappedPropertyAnnotation;
-use Matmar10\Bundle\MoneyBundle\Annotation\MappedPropertyAnnotationInterface;
+use Matmar10\Bundle\MoneyBundle\Annotation\BaseCompositeProperty;
+use Matmar10\Bundle\MoneyBundle\Annotation\CompositeProperty;
 
 /**
  * Currency annotation
@@ -13,8 +13,10 @@ use Matmar10\Bundle\MoneyBundle\Annotation\MappedPropertyAnnotationInterface;
  * @Annotation
  * @Target({"PROPERTY"})
  */
-class Currency extends BaseMappedPropertyAnnotation implements MappedPropertyAnnotationInterface
+class Currency extends BaseCompositeProperty implements CompositeProperty
 {
+    public $currencyCode;
+
     /**
      * {inheritDoc}
      */
@@ -26,20 +28,11 @@ class Currency extends BaseMappedPropertyAnnotation implements MappedPropertyAnn
     /**
      * {inheritDoc}
      */
-    public function getRequiredProperties()
+    public function getMap()
     {
         return array(
-            'currencyCode',
+            'currencyCode' => $this->currencyCode,
         );
     }
 
-    /**
-     * {inheritDoc}
-     */
-    public function getMappedProperties()
-    {
-        return array(
-            'currencyCode',
-        );
-    }
 }

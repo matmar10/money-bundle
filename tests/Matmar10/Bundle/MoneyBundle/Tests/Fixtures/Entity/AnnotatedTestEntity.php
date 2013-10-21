@@ -6,18 +6,18 @@ use Matmar10\Money\Entity\Currency as CurrencyEntity;
 use Matmar10\Money\Entity\CurrencyPair as CurrencyPairEntity;
 use Matmar10\Money\Entity\ExchangeRate as ExchangeRateEntity;
 use Matmar10\Money\Entity\Money as MoneyEntity;
-use Matmar10\Bundle\MoneyBundle\Annotation\Currency;
-use Matmar10\Bundle\MoneyBundle\Annotation\CurrencyPair;
-use Matmar10\Bundle\MoneyBundle\Annotation\ExchangeRate;
-use Matmar10\Bundle\MoneyBundle\Annotation\Money;
+use Matmar10\Bundle\MoneyBundle\Annotation as CPS;
 
+/**
+ * @CPS\Entity
+ */
 class AnnotatedTestEntity
 {
 
     /**
      * @var \Matmar10\Money\Entity\Currency
      *
-     * @Currency(currencyCode="exampleCurrencyCode")
+     * @CPS\Currency(currencyCode="exampleCurrencyCode")
      */
     protected $exampleCurrency;
     protected $exampleCurrencyCode;
@@ -25,7 +25,7 @@ class AnnotatedTestEntity
     /**
      * @var \Matmar10\Bundle\MoneyBundle\Annotation\Money
      *
-     * @Money(amountInteger="exampleMoneyAmountInteger",
+     * @CPS\Money(amountInteger="exampleMoneyAmountInteger",
      *      currencyCode="exampleMoneyCurrencyCode")
      */
     protected $exampleMoney;
@@ -35,7 +35,7 @@ class AnnotatedTestEntity
     /**
      * @var \Matmar10\Money\Entity\CurrencyPair
      *
-     * @CurrencyPair(fromCurrencyCode="exampleCurrencyPairFromCurrencyCode",
+     * @CPS\CurrencyPair(fromCurrencyCode="exampleCurrencyPairFromCurrencyCode",
      *      toCurrencyCode="exampleCurrencyPairToCurrencyCode")
      */
     protected $exampleCurrencyPair;
@@ -45,7 +45,7 @@ class AnnotatedTestEntity
     /**
      * @var \Matmar10\Money\Entity\ExchangeRate
      *
-     * @ExchangeRate (fromCurrencyCode="exampleExchangeRateFromCurrencyCode",
+     * @CPS\ExchangeRate(fromCurrencyCode="exampleExchangeRateFromCurrencyCode",
      *      toCurrencyCode="exampleExchangeRateToCurrencyCode",
      *      multiplier="exampleExchangeRateMultiplier")
      */
@@ -57,7 +57,7 @@ class AnnotatedTestEntity
     /**
      * @var \Matmar10\Money\Entity\ExchangeRate
      *
-     * @ExchangeRate (fromCurrencyCode="exampleNullableExchangeRateFromCurrencyCode",
+     * @CPS\ExchangeRate(fromCurrencyCode="exampleNullableExchangeRateFromCurrencyCode",
      *      toCurrencyCode="exampleNullableExchangeRateToCurrencyCode",
      *      multiplier="exampleNullableExchangeRateMultiplier",
      *      nullable=true)

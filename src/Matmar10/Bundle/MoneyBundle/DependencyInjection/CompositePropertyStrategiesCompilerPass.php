@@ -1,24 +1,24 @@
 <?php
 
-namespace Matmar10\Bundle\MoneyBundle\DependencyInjection\Compiler;
+namespace Matmar10\Bundle\MoneyBundle\DependencyInjection;
 
 use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
-class EntityFieldMapperCompilerPass implements CompilerPassInterface
+class CompositePropertyStrategiesCompilerPass implements CompilerPassInterface
 {
 
     public function process(ContainerBuilder $container)
     {
 
-        if (!$container->hasDefinition('matmar10_money.field_mapper')) {
+        if (!$container->hasDefinition('matmar10_money.composite_property_service')) {
             return;
         }
 
-        $definition = $container->getDefinition('matmar10_money.field_mapper');
-        $taggedServices = $container->findTaggedServiceIds('matmar10_money.field_mapper');
+        $definition = $container->getDefinition('matmar10_money.composite_property_service');
+        $taggedServices = $container->findTaggedServiceIds('composite_property_strategy');
 
         foreach($taggedServices as $dicServiceId => $taggedAnnotations) {
             foreach($taggedAnnotations as $attributes) {
@@ -32,7 +32,7 @@ class EntityFieldMapperCompilerPass implements CompilerPassInterface
                 }
 
                 $definition->addMethodCall(
-                    'registerMapper',
+                    'registerStrategy',
                     array(
                         $annotationClassName,
                         new Reference($dicServiceId),

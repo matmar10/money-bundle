@@ -1,21 +1,20 @@
 <?php
 
-namespace Matmar10\Bundle\MoneyBundle\Mapper;
+namespace Matmar10\Bundle\MoneyBundle\PropertyStrategy;
 
 use InvalidArgumentException;
 use Matmar10\Bundle\MoneyBundle\Annotation\MappedPropertyAnnotationInterface;
 use Matmar10\Bundle\MoneyBundle\Exception\NullFieldMappingException;
-use Matmar10\Bundle\MoneyBundle\Mapper\DefaultMapper;
-use Matmar10\Bundle\MoneyBundle\Mapper\EntityFieldMapperInterface;
+use Matmar10\Bundle\MoneyBundle\PropertyStrategy\CompositePropertyStrategy;
 use Matmar10\Bundle\MoneyBundle\Service\CurrencyManager;
-use Matmar10\Money\Entity\CurrencyPair;
+use Matmar10\Money\Entity\CurrencyPair as CurrencyPairEntity;
 use ReflectionObject;
 use ReflectionProperty;
 
 /**
  * {inheritDoc}
  */
-class CurrencyPairMapper implements EntityFieldMapperInterface
+class CurrencyPair implements CompositePropertyStrategy
 {
 
     protected $currencyManager;
@@ -25,7 +24,7 @@ class CurrencyPairMapper implements EntityFieldMapperInterface
         $this->currencyManager = $currencyManager;
     }
 
-    public function mapPrePersist(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
+    public function flattenCompositeProperty(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
     {
         $annotation->init();
         $mappedProperties = $annotation->getMap();
@@ -71,7 +70,7 @@ class CurrencyPairMapper implements EntityFieldMapperInterface
         return $entity;
     }
 
-    public function mapPostPersist(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
+    public function composeCompositeProperty(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
     {
         $annotation->init();
         $mappedProperties = $annotation->getMap();
@@ -97,7 +96,7 @@ class CurrencyPairMapper implements EntityFieldMapperInterface
         // build the currency instance from the currency manager using provided code
         $fromCurrency = $this->currencyManager->getCurrency($fromCurrencyCode);
         $toCurrency = $this->currencyManager->getCurrency($toCurrencyCode);
-        $currencyPairInstance = new CurrencyPair($fromCurrency, $toCurrency);
+        $currencyPairInstance = new CurrencyPairEntity($fromCurrency, $toCurrency);
 
         // set the currency instance on the original entities field
         $reflectionProperty->setAccessible(true);

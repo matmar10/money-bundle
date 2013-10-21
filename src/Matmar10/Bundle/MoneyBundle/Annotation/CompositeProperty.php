@@ -7,16 +7,8 @@ namespace Matmar10\Bundle\MoneyBundle\Annotation;
  *
  * @bundle matmar10-money-bundle
  */
-interface MappedPropertyAnnotationInterface
+interface CompositeProperty
 {
-
-    /**
-     * Applies validation rules and prepares the map and options
-     *
-     * @abstract
-     * @return self
-     */
-    public function init();
 
     /**
      * Returns the expected fully qualified class path of the object field's instance
@@ -33,13 +25,5 @@ interface MappedPropertyAnnotationInterface
      * @return array The mapping of compound from entities properties to root-level entity properties
      */
     public function getMap();
-
-    /**
-     * Returns an associative array of options configured by the annotation
-     *
-     * @abstract
-     * @return array The associative array of options
-     */
-    public function getOptions();
 
 }
