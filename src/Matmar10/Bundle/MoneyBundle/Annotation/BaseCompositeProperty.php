@@ -7,6 +7,9 @@ use Matmar10\Bundle\MoneyBundle\Annotation\CompositeProperty;
 abstract class BaseCompositeProperty implements CompositeProperty
 {
 
+    /**
+     * @var boolean
+     */
     public $nullable;
 
     /**
@@ -18,5 +21,13 @@ abstract class BaseCompositeProperty implements CompositeProperty
      * {inheritDoc}
      */
     abstract public function getClass();
+
+    /**
+     * {inheritDoc}
+     */
+    public function getNullable()
+    {
+        return $this->nullable;
+    }
 
 }

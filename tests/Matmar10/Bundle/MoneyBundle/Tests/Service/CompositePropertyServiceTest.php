@@ -1,342 +1,154 @@
 <?php
 
-namespace Matmar10\Bundle\MoneyBundle\Tests\Validator\Constraints;
+namespace Matmar10\Bundle\MoneyBundle\Tests\Service;
 
-use Matmar10\Bundle\MoneyBundle\Validator\Constraints\CurrencyCode;
-use Matmar10\Money\Entity\Currency;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use Matmar10\Bundle\MoneyBundle\Tests\Fixtures\Entity\AnnotatedTestEntity;
+use Matmar10\Bundle\MoneyBundle\Tests\Fixtures\Entity\ImproperlyCurrencyAnnotatedTestEntity;
+use Matmar10\Bundle\MoneyBundle\Tests\Fixtures\Entity\NullCurrencyAnnotatedTestEntity;
 use Matmar10\Money\Entity\CurrencyPair;
-use Matmar10\Money\Entity\Money;
+use Matmar10\Money\Entity\ExchangeRate;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class CompositePrpertyServiceTest extends WebTestCase
+class CompositePropertyServiceTest extends WebTestCase
 {
+    /**
+     * @var \Matmar10\Bundle\MoneyBundle\Service\CurrencyManager
+     */
+    protected $currencyManager;
 
     /**
-     * @var
+     * @var \Matmar10\Bundle\MoneyBundle\Service\CompositePropertyService
      */
-    protected $manager;
-
-    private function getKernel()
-    {
-        $kernel = $this->createKernel();
-        $kernel->boot();
-
-        return $kernel;
-    }
+    protected $compositePropertyService;
 
     public function setUp()
     {
-        $kernel = $this->getKernel();
-        $this->manager = $kernel->getContainer()->get('matmar10_money.currency_manager');
+        $kernel = $this->createKernel();
+        $kernel->boot();
+        $this->currencyManager = $kernel->getContainer()->get('matmar10_money.currency_manager');
+        $this->compositePropertyService = $kernel->getContainer()->get('matmar10_money.composite_property_service');
+        AnnotationRegistry::registerAutoloadNamespace('Matmar10\\Bundle\\MoneyBundle\\Annotation', __DIR__.'/../../../src/');
+    }
+
+    public function testFlattenCompositeProperties()
+    {
+        $entity = new AnnotatedTestEntity();
+
+        // set Currency
+        $btc = $this->currencyManager->getCurrency('BTC');
+        $entity->setExampleCurrency($btc);
+
+        // set Money
+        $usdAmount = $this->currencyManager->getMoney('USD');
+        $usdAmount->setAmountFloat(1.99);
+        $entity->setExampleMoney($usdAmount);
+
+        // set CurrencyPair
+        $gbp = $this->currencyManager->getCurrency('GBP');
+        $eur = $this->currencyManager->getCurrency('EUR');
+        $currencyPair = new CurrencyPair($gbp, $eur);
+        $entity->setExampleCurrencyPair($currencyPair);
+
+        // set ExchangeRate
+        $mad = $this->currencyManager->getCurrency('MAD');
+        $jpy = $this->currencyManager->getCurrency('JPY');
+        $multiplier = 11.75;
+        $exchangeRate = new ExchangeRate($mad, $jpy, $multiplier);
+        $entity->setExampleExchangeRate($exchangeRate);
+
+        // process the field mappings
+        $this->compositePropertyService->flattenCompositeProperties($entity);
+
+        // test Currency
+        $this->assertEquals('BTC', $entity->getExampleCurrencyCode());
+
+        // test Money
+        $this->assertEquals(199, $entity->getExampleMoneyAmountInteger());
+        $this->assertEquals('USD', $entity->getExampleMoneyCurrencyCode());
+
+        // test CurrencyPair
+        $this->assertEquals('GBP', $entity->getExampleCurrencyPairFromCurrencyCode());
+        $this->assertEquals('EUR', $entity->getExampleCurrencyPairToCurrencyCode());
+
+        // test ExchangeRate
+        $this->assertEquals('MAD', $entity->getExampleExchangeRateFromCurrencyCode());
+        $this->assertEquals('JPY', $entity->getExampleExchangeRateToCurrencyCode());
+        $this->assertEquals($multiplier, $entity->getExampleExchangeRateMultiplier());
+
+        // test nullable ExchangeRate
+        $this->assertEquals(null, $entity->getExampleNullableExchangeRateFromCurrencyCode());
+        $this->assertEquals(null, $entity->getExampleNullableExchangeRateToCurrencyCode());
+        $this->assertEquals(null, $entity->getExampleNullableExchangeRateMultiplier());
+
+    }
+
+    public function testComposeCompositeProperties()
+    {
+        $entity = new AnnotatedTestEntity();
+
+        // set Currency related fields
+        $entity->setExampleCurrencyCode('BTC');
+
+        // set Money related fields
+        $entity->setExampleMoneyAmountInteger(321);
+        $entity->setExampleMoneyCurrencyCode('USD');
+
+        // set CurrencyPair related fields
+        $entity->setExampleCurrencyPairFromCurrencyCode('GBP');
+        $entity->setExampleCurrencyPairToCurrencyCode('EUR');
+
+        // set ExchangeRate related fields
+        $entity->setExampleExchangeRateFromCurrencyCode('MAD');
+        $entity->setExampleExchangeRateToCurrencyCode('JPY');
+        $entity->setExampleExchangeRateMultiplier(11.75);
+
+        // process the field mappings
+        $this->compositePropertyService->composeCompositeProperties($entity);
+
+        // test Currency
+        $btc = $this->currencyManager->getCurrency('BTC');
+        $this->assertEquals($btc, $entity->getExampleCurrency());
+
+        // test Money
+        $usdAmount = $this->currencyManager->getMoney('USD');
+        $usdAmount->setAmountFloat(3.21);
+        $this->assertEquals($usdAmount, $entity->getExampleMoney());
+
+        // test CurrencyPair
+        $gbp = $this->currencyManager->getCurrency('GBP');
+        $eur = $this->currencyManager->getCurrency('EUR');
+        $currencyPair = new CurrencyPair($gbp, $eur);
+        $entity->setExampleCurrencyPair($currencyPair);
+        $this->assertEquals($currencyPair, $entity->getExampleCurrencyPair());
+
+        // test ExchangeRate
+        $mad = $this->currencyManager->getCurrency('MAD');
+        $jpy = $this->currencyManager->getCurrency('JPY');
+        $exchangeRate = new ExchangeRate($mad, $jpy, 11.75);
+        $entity->setExampleExchangeRate($exchangeRate);
+        $this->assertEquals($exchangeRate, $entity->getExampleExchangeRate());
     }
 
     /**
-     * @dataProvider provideTestGetCodeForCountry
+     * @expectedException Doctrine\Common\Annotations\AnnotationException
      */
-    public function testGetCodeForCountry($code, $country)
+    public function testImproperCurrency()
     {
-        $this->assertEquals($code, $this->manager->getCode($country));
-    }
+        $entity = new ImproperlyCurrencyAnnotatedTestEntity();
 
-    public function provideTestGetCodeForCountry()
-    {
-        return array(
-            array('USD', 'US', ),
-            array('GBP', 'GB', ),
-            array('EUR', 'FR', ),
-            array('MAD', 'MA', ),
-            array('012', '01', ),
-            array('012', '02', ),
-            array('034', '03', ),
-            array('034', '04', ),
-        );
+        // process the field mappings
+        $this->compositePropertyService->flattenCompositeProperties($entity);
     }
 
     /**
-     * @dataProvider provideTestGetCodeFromCode
+     * @expectedException Matmar10\Bundle\MoneyBundle\Exception\NullPropertyMappingException
      */
-    public function testGetCodeFromCode($currencyCode)
+    public function testNullFieldMappingException()
     {
-        $this->assertEquals($currencyCode, $this->manager->getCode($currencyCode));
-    }
+        $entity = new NullCurrencyAnnotatedTestEntity();
 
-    public function provideTestGetCodeFromCode()
-    {
-        return array(
-            array(
-                'USD',
-            ),
-            array(
-                'GBP',
-            ),
-            array(
-                'EUR',
-            ),
-            array(
-                'MAD',
-            ),
-            array(
-                '012',
-            ),
-            array(
-                '034',
-            ),
-        );
-    }
-
-    /**
-     * @expectedException Matmar10\Bundle\MoneyBundle\Exception\InvalidArgumentException
-     */
-    public function testGetCodeForInvalidArgument()
-    {
-        $this->manager->getCode('FOO');
-    }
-
-    /**
-     * @dataProvider provideTestGetCurrencyForCountry
-     */
-    public function testGetCurrencyForCountry(Currency $currency, $countryCode)
-    {
-        $this->assertEquals($currency, $this->manager->getCurrency($countryCode));
-    }
-
-    public function provideTestGetCurrencyForCountry()
-    {
-        return array(
-            array(
-                new Currency('USD', 2, 2, '&#36;'),
-                'US',
-            ),
-            array(
-                new Currency('GBP', 2, 2, '&#163;'),
-                'GB',
-            ),
-            array(
-                new Currency('EUR', 2, 2, '&#8364;'),
-                'FR',
-            ),
-            array(
-                new Currency('MAD', 2, 2),
-                'MA',
-            ),
-
-            // dummy currencies to test the semantic configuration
-            array(
-                new Currency('012', 1, 2),
-                '012'
-            ),
-            array(
-                new Currency('034', 3, 4),
-                '034'
-            ),
-        );
-    }
-
-    /**
-     * @dataProvider provideTestGetCurrencyForCurrencyCode
-     */
-    public function testGetCurrencyForCurrencyCode(Currency $currency, $code)
-    {
-        $this->assertEquals($currency, $this->manager->getCurrency($code));
-    }
-
-    public function provideTestGetCurrencyForCurrencyCode()
-    {
-        return array(
-            array(
-                new Currency('USD', 2, 2, '&#36;'),
-                'USD',
-            ),
-            array(
-                new Currency('GBP', 2, 2, '&#163;'),
-                'GBP',
-            ),
-            array(
-                new Currency('EUR', 2, 2, '&#8364;'),
-                'EUR',
-            ),
-            array(
-                new Currency('MAD', 2, 2),
-                'MAD',
-            ),
-
-            // dummy currencies to test the semantic configuration
-            array(
-                new Currency('012', 1, 2),
-                '012'
-            ),
-            array(
-                new Currency('034', 3, 4),
-                '034'
-            ),
-        );
-    }
-
-    /**
-     * @expectedException  Matmar10\Bundle\MoneyBundle\Exception\InvalidArgumentException
-     */
-    public function testGetCurrencyForInvalidArgument()
-    {
-        $this->manager->getCurrency('FOO');
-    }
-
-    /**
-     * @dataProvider providerTestGetMoneyForCountry
-     */
-    public function testGetMoneyForCountry(Money $money, $country)
-    {
-        $this->assertEquals($money, $this->manager->getMoney($country));
-    }
-
-    public function providerTestGetMoneyForCountry()
-    {
-        return array(
-            array(
-                new Money(new Currency('USD', 2, 2, '&#36;')),
-                'US',
-            ),
-            array(
-                new Money(new Currency('GBP', 2, 2, '&#163;')),
-                'GB',
-            ),
-            array(
-                new Money(new Currency('EUR', 2, 2, '&#8364;')),
-                'FR',
-            ),
-            array(
-                new Money(new Currency('MAD', 2, 2)),
-                'MA',
-            ),
-            // dummy currencies to test the semantic configuration
-            array(
-                new Money(new Currency('012', 1, 2)),
-                '012'
-            ),
-            array(
-                new Money(new Currency('034', 3, 4)),
-                '034'
-            ),
-        );
-    }
-
-    /**
-     * @dataProvider provideTestGetMoneyForCurrencyCode
-     */
-    public function testGetMoneyForCurrencyCode(Money $money, $currencyCode)
-    {
-        $this->assertEquals($money, $this->manager->getMoney($currencyCode));
-    }
-
-    public function provideTestGetMoneyForCurrencyCode()
-    {
-        return array(
-            array(
-                new Money(new Currency('USD', 2, 2, '&#36;')),
-                'USD',
-            ),
-            array(
-                new Money(new Currency('GBP', 2, 2, '&#163;')),
-                'GBP',
-            ),
-            array(
-                new Money(new Currency('EUR', 2, 2, '&#8364;')),
-                'EUR',
-            ),
-            array(
-                new Money(new Currency('MAD', 2, 2)),
-                'MAD'
-            ),
-
-            // dummy currencies to test the semantic configuration
-            array(
-                new Money(new Currency('012', 1, 2)),
-                '012'
-            ),
-            array(
-                new Money(new Currency('034', 3, 4)),
-                '034'
-            ),
-            /* TODO: get XML based configuration working and re-enable these tests
-            array(
-                new Money(new Currency('034', 5, 6)),
-                '056'
-            ),
-            array(
-                new Money(new Currency('034', 7, 8)),
-                '078'
-            ),
-            */
-        );
-    }
-
-    /**
-     * @expectedException Matmar10\Bundle\MoneyBundle\Exception\InvalidArgumentException
-     */
-    public function testGetMoneyForInvalidArgument()
-    {
-        $this->manager->getMoney('FOO');
-    }
-
-
-    /**
-     * @dataProvider provideTestGetCurrencyPairForCountries
-     */
-    public function testGetCurrencyPairForCountries($expectedPair, $fromCountry, $toCountry, $rate)
-    {
-        $this->assertEquals($expectedPair, $this->manager->getCurrencyPair($fromCountry, $toCountry, $rate));
-    }
-
-    public function provideTestGetCurrencyPairForCountries()
-    {
-        return array(
-            array(
-                new CurrencyPair(new Currency('USD', 2, 2, '&#36;'), new Currency('GBP', 2, 2, '&#163;'), 1.7),
-                'US',
-                'GB',
-                1.7,
-            ),
-            array(
-                new CurrencyPair(new Currency('GBP', 2, 2, '&#163;'), new Currency('EUR', 2, 2, '&#8364;'), 0.9),
-                'GB',
-                'FR',
-                0.9,
-            ),
-            array(
-                new CurrencyPair(new Currency('012', 1, 2, ''), new Currency('034', 3, 4, ''), 5.6),
-                '01',
-                '03',
-                5.6,
-            ),
-        );
-    }
-
-    /**
-     * @expectedException Matmar10\Money\Exception\InvalidArgumentException
-     */
-    public function testGetCurrencyPairForCountriesInvalidArgument()
-    {
-        $test = new CurrencyPair(new Currency('BLAH', 5, 2, '&#36;'), new Currency('FOO', 5, 2, '&#163;'), 1.7);
-    }
-
-    /**
-     * @dataProvider provideTestAddCurrency
-     */
-    public function testAddCurrency($currency, $expectException = false)
-    {
-        $this->manager->addCurrency($currency);
-        $foundCurrency = $this->manager->getCurrency($currency->getCurrencyCode());
-        $this->assertEquals($currency, $foundCurrency);
-    }
-
-    public function provideTestAddCurrency()
-    {
-        return array(
-            array(
-                new Currency('XXX', 1, 1, 'x'),
-            ),
-            array(
-                new Currency('AAA', 1, 1, 'a'),
-            )
-        );
+        // process the field mappings
+        $this->compositePropertyService->flattenCompositeProperties($entity);
     }
 }

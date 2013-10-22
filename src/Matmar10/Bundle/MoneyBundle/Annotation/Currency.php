@@ -35,4 +35,9 @@ class Currency extends BaseCompositeProperty implements CompositeProperty
         );
     }
 
+    public function getCurrencyCode()
+    {
+        return $this->currencyCode;
+    }
+
 }

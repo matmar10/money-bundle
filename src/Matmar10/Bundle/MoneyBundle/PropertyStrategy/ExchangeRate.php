@@ -3,12 +3,10 @@
 namespace Matmar10\Bundle\MoneyBundle\PropertyStrategy;
 
 use InvalidArgumentException;
-use Matmar10\Bundle\MoneyBundle\Annotation\MappedPropertyAnnotationInterface;
-use Matmar10\Bundle\MoneyBundle\Exception\NullFieldMappingException;
+use Matmar10\Bundle\MoneyBundle\Annotation\CompositeProperty;
+use Matmar10\Bundle\MoneyBundle\Exception\NullPropertyException;
 use Matmar10\Bundle\MoneyBundle\PropertyStrategy\CompositePropertyStrategy;
 use Matmar10\Bundle\MoneyBundle\Service\CurrencyManager;
-use Matmar10\Money\Entity\ExchangeRate as ExchangeRateEntity;
-use Matmar10\Bundle\MoneyBundle\Exception\NullFieldException;
 use ReflectionObject;
 use ReflectionProperty;
 
@@ -18,8 +16,9 @@ use ReflectionProperty;
 class ExchangeRate implements CompositePropertyStrategy
 {
 
-    protected static $nullPropertyExceptionMessage = 'Cannot apply entity mapping for %s instance: required property %s is null or blank';
-
+    /**
+     * @var \Matmar10\Bundle\MoneyBundle\Service\CurrencyManager
+     */
     protected $currencyManager;
 
     public function __construct(CurrencyManager $currencyManager)
@@ -27,11 +26,11 @@ class ExchangeRate implements CompositePropertyStrategy
         $this->currencyManager = $currencyManager;
     }
 
-    public function flattenCompositeProperty(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
+    public function flattenCompositeProperty(&$entity, ReflectionProperty $reflectionProperty, CompositeProperty $annotation)
     {
-        $annotation->init();
-        $mappedProperties = $annotation->getMap();
-        $options = $annotation->getOptions();
+        /**
+         * @var $annotation \Matmar10\Bundle\MoneyBundle\Annotation\ExchangeRate
+         */
 
         // get the currency code from the currency instance
         $reflectionProperty->setAccessible(true);
@@ -43,98 +42,87 @@ class ExchangeRate implements CompositePropertyStrategy
 
         // ignore if nullable and currency instance is null
         if(is_null($exchangeRateInstance)) {
-            if($options['nullable']) {
-                return $entity;
+            if($annotation->getNullable()) {
+                return;
             }
-            throw new NullFieldMappingException(sprintf("Mapped property '%s' cannot be null (to allow null value, use nullable=true)", $reflectionProperty->getName()));
+            throw new NullPropertyException();
         }
 
         $fromCurrency = $exchangeRateInstance->getFromCurrency();
-        if(is_null($exchangeRateInstance)) {
-            throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity, 'fromCurrency')));
+        if(is_null($fromCurrency)) {
+            throw new NullPropertyException();
         }
         $toCurrency = $exchangeRateInstance->getToCurrency();
-        if(is_null($exchangeRateInstance)) {
-            throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity, 'toCurrency')));
+        if(is_null($toCurrency)) {
+            throw new NullPropertyException();
         }
         $multiplier = $exchangeRateInstance->getMultiplier();
         if(is_null($multiplier)) {
-            throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity, 'multiplier')));
+            throw new NullPropertyException();
         }
 
-        // lookup the currency code's field name based on the provided mapping
-        $fromCurrencyCodePropertyName = $mappedProperties['fromCurrencyCode'];
-        $toCurrencyCodePropertyName = $mappedProperties['toCurrencyCode'];
-        $multiplierPropertyName = $mappedProperties['multiplier'];
-
-        $fromCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $fromCurrencyCodePropertyName);
+        $fromCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $annotation->getFromCurrencyCode());
         $fromCurrencyCodeReflectionProperty->setAccessible(true);
         $fromCurrencyCodeReflectionProperty->setValue($entity, $fromCurrency->getCurrencyCode());
 
-        $toCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $toCurrencyCodePropertyName);
+        $toCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $annotation->getToCurrencyCode());
         $toCurrencyCodeReflectionProperty->setAccessible(true);
         $toCurrencyCodeReflectionProperty->setValue($entity, $toCurrency->getCurrencyCode());
 
-        $multiplierCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $multiplierPropertyName);
+        $multiplierCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $annotation->getMultiplier());
         $multiplierCurrencyCodeReflectionProperty->setAccessible(true);
         $multiplierCurrencyCodeReflectionProperty->setValue($entity, $multiplier);
-
-        return $entity;
     }
 
-    public function composeCompositeProperty(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
+    public function composeCompositeProperty(&$entity, ReflectionProperty $reflectionProperty, CompositeProperty $annotation)
     {
-        $annotation->init();
-        $mappedProperties = $annotation->getMap();
-        $options = $annotation->getOptions();
+        /**
+         * @var $annotation \Matmar10\Bundle\MoneyBundle\Annotation\ExchangeRate
+         */
 
-        // lookup the currency code's field name based on the provided mapping
-        $fromCurrencyCodePropertyName = $mappedProperties['fromCurrencyCode'];
-        $toCurrencyCodePropertyName = $mappedProperties['toCurrencyCode'];
-        $multiplierPropertyName = $mappedProperties['multiplier'];
-
-        $fromCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $fromCurrencyCodePropertyName);
+        $fromCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $annotation->getFromCurrencyCode());
         $fromCurrencyCodeReflectionProperty->setAccessible(true);
         $fromCurrencyCode = $fromCurrencyCodeReflectionProperty->getValue($entity);
         if(is_null($fromCurrencyCode) || '' === $fromCurrencyCode) {
             // ignore if nullable and currency instance is null
-            if($options['nullable']) {
-                return $entity;
+            if($annotation->getNullable()) {
+                return;
             }
-            throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity), $fromCurrencyCodePropertyName));
+            throw new NullPropertyException();
         }
 
-        $toCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $toCurrencyCodePropertyName);
+        $toCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $annotation->getToCurrencyCode());
         $toCurrencyCodeReflectionProperty->setAccessible(true);
         $toCurrencyCode = $toCurrencyCodeReflectionProperty->getValue($entity);
         if(is_null($toCurrencyCode) || '' === $toCurrencyCode) {
             // ignore if nullable and currency instance is null
-            if($options['nullable']) {
-                return $entity;
+            if($annotation->getNullable()) {
+                return;
             }
-            throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity), $toCurrencyCodePropertyName));
+            throw new NullPropertyException();
         }
 
-        $multiplierCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $multiplierPropertyName);
+        $multiplierCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $annotation->getMultiplier());
         $multiplierCurrencyCodeReflectionProperty->setAccessible(true);
         $multiplier = $multiplierCurrencyCodeReflectionProperty->getValue($entity);
         if(is_null($multiplier)) {
             // ignore if nullable and currency instance is null
-            if($options['nullable']) {
-                return $entity;
+            if($annotation->getNullable()) {
+                return;
             }
-            throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity), $multiplierPropertyName));
+            throw new NullPropertyException();
         }
 
         // build the currency instance from the currency manager using provided code
         $fromCurrency = $this->currencyManager->getCurrency($fromCurrencyCode);
         $toCurrency = $this->currencyManager->getCurrency($toCurrencyCode);
-        $exchangeRateInstance = new ExchangeRate($fromCurrency, $toCurrency, $multiplier);
+        $className = $annotation->getClass();
+        $exchangeRateInstance = new $className($fromCurrency, $toCurrency, $multiplier);
 
         // set the currency instance on the original entities field
         $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($entity, $exchangeRateInstance);
 
-        return $entity;
+        return;
     }
 }

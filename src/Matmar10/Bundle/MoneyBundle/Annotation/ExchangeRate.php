@@ -26,7 +26,7 @@ class ExchangeRate extends BaseCompositeProperty implements CompositeProperty
     public $toCurrencyCode;
 
     /**
-     * @var float
+     * @var string
      */
     public $multiplier;
 
@@ -48,5 +48,29 @@ class ExchangeRate extends BaseCompositeProperty implements CompositeProperty
             'toCurrencyCode' => $this->toCurrencyCode,
             'multiplier' => $this->multiplier,
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getFromCurrencyCode()
+    {
+        return $this->fromCurrencyCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMultiplier()
+    {
+        return $this->multiplier;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToCurrencyCode()
+    {
+        return $this->toCurrencyCode;
     }
 }

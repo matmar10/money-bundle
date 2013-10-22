@@ -4,7 +4,6 @@ namespace Matmar10\Bundle\MoneyBundle\Service;
 
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\Event\PreUpdateEventArgs;
-use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Annotations\Reader as AnnotationReader;
 use InvalidArgumentException;
 use Matmar10\Bundle\MoneyBundle\Annotation\CompositeProperty;
@@ -14,7 +13,7 @@ use ReflectionClass;
 use ReflectionObject;
 use ReflectionProperty;
 
-class CompositePropertyService implements EventSubscriber
+class CompositePropertyService
 {
 
     /**
@@ -38,42 +37,12 @@ class CompositePropertyService implements EventSubscriber
         $this->annotationReader = $annotationReader;
     }
 
-    public function getSubscribedEvents()
-    {
-        return array(
-            'prePersist',
-            'preUpdate',
-            'postLoad',
-        );
-    }
-
-    public function prePersist(LifecycleEventArgs $eventArgs)
-    {
-        $entity = $eventArgs->getObject();
-        if(!$this->entityContainsMappedProperties($entity)) {
-            return;
-        }
-        $this->flattenCompositeProperties($entity);
-    }
-
-    public function preUpdate(PreUpdateEventArgs $eventArgs)
-    {
-        $entity = $eventArgs->getObject();
-        if(!$this->entityContainsMappedProperties($entity)) {
-            return;
-        }
-        $this->flattenCompositeProperties($entity);
-    }
-
-    public function postLoad(LifecycleEventArgs $eventArgs)
-    {
-        $entity = $eventArgs->getObject();
-        if(!$this->entityContainsMappedProperties($entity)) {
-            return;
-        }
-        $this->composeCompoundProperties($entity);
-    }
-
+    /**
+     * Flattens all annotated properties into the mapped scalar values
+     *
+     * @param object $entity The entity to flatten
+     * @return null
+     */
     public function flattenCompositeProperties(&$entity)
     {
         $reflectionObject = new ReflectionObject($entity);
@@ -85,20 +54,26 @@ class CompositePropertyService implements EventSubscriber
             foreach($annotations as $annotation) {
 
                 // only process mapped entity annotations
-                if(!($annotation instanceof CompositePropertyStrategy)) {
+                if(!($annotation instanceof CompositeProperty)) {
                     continue;
                 }
 
                 /**
-                 * @var $mapper \Matmar10\Bundle\MoneyBundle\PropertyStrategy\CompositePropertyStrategy
+                 * @var $strategy \Matmar10\Bundle\MoneyBundle\PropertyStrategy\CompositePropertyStrategy
                  */
-                $mapper = $this->getStrategyForAnnotation($annotation);
-                $mapper->flattenCompositeProperty($entity, $fromReflectionProperty, $annotation);
+                $strategy = $this->getStrategyForAnnotation($annotation);
+                $strategy->flattenCompositeProperty($entity, $fromReflectionProperty, $annotation);
             }
         }
     }
 
-    public function composeCompoundProperties(&$entity)
+    /**
+     * Populates all annotated compound properties using the registered strategy
+     *
+     * @param object $entity The entity to composte composite propertie for
+     * @return null
+     */
+    public function composeCompositeProperties(&$entity)
     {
         $reflectionObject = new ReflectionObject($entity);
         $properties = $reflectionObject->getProperties();
@@ -109,12 +84,12 @@ class CompositePropertyService implements EventSubscriber
             foreach($annotations as $annotation) {
 
                 // only process mapped entity annotations
-                if(!($annotation instanceof CompositePropertyStrategy)) {
+                if(!($annotation instanceof CompositeProperty)) {
                     continue;
                 }
 
                 /**
-                 * @var $mapper \Matmar10\Bundle\MoneyBundle\PropertyStrategy\CompositePropertyStrategy
+                 * @var $strategy \Matmar10\Bundle\MoneyBundle\PropertyStrategy\CompositePropertyStrategy
                  */
                 $strategy = $this->getStrategyForAnnotation($annotation);
                 $strategy->composeCompositeProperty($entity, $fromReflectionProperty, $annotation);
@@ -125,8 +100,8 @@ class CompositePropertyService implements EventSubscriber
     /**
      * Checks if the entity contains the class level annotation
      *
-     * @param $entity
-     * @return boolean
+     * @param object $entity The entity to check
+     * @return boolean Whether the entity contains the composite property annotation
      */
     public function entityContainsMappedProperties($entity)
     {

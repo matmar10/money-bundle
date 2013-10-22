@@ -10,6 +10,9 @@ parameters:
     matmar10_money.validator.exchange_rate.class: Matmar10\Bundle\MoneyBundle\Validator\InstanceValidator
     matmar10_money.validator.money.class: Matmar10\Bundle\MoneyBundle\Validator\InstanceValidator
 
+    # doctrine event subscriber
+    matmar10_money.composite_property_subscriber.class: Matmar10\Bundle\MoneyBundle\Subscriber\CompositePropertySubscriber
+
     # composite property service
     matmar10_money.composite_property_service.class: Matmar10\Bundle\MoneyBundle\Service\CompositePropertyService
 
@@ -62,9 +65,17 @@ services:
             - { name: validator.constraint_validator, alias: money_validator }
 
     ##
+    # doctrine event subscriber
+    ##
+    matmar10_money.composite_property_subscriber:
+        class: "%matmar10_money.composite_property_subscriber.class%"
+        arguments: [ @matmar10_money.composite_property_service ]
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
+    ##
     # composite property service
     ##
-
     matmar10_money.composite_property_service:
         class: "%matmar10_money.composite_property_service.class%"
         arguments:
@@ -82,19 +93,19 @@ services:
             - { name: composite_property_strategy, annotation: \Matmar10\Bundle\MoneyBundle\Annotation\Currency }
 
     matmar10_money.composite_property_strategy.currency_pair:
-        class: "%matmar10_money.field_mapper.currency_pair.class%"
+        class: "%matmar10_money.composite_property_strategy.currency_pair.class%"
         arguments: [ @matmar10_money.currency_manager ]
         tags:
             - { name: composite_property_strategy, annotation: \Matmar10\Bundle\MoneyBundle\Annotation\CurrencyPair }
 
     matmar10_money.composite_property_strategy.exchange_rate:
-        class: "%matmar10_money.field_mapper.exchange_rate.class%"
+        class: "%matmar10_money.composite_property_strategy.exchange_rate.class%"
         arguments: [ @matmar10_money.currency_manager ]
         tags:
             - { name: composite_property_strategy, annotation: \Matmar10\Bundle\MoneyBundle\Annotation\ExchangeRate }
 
     matmar10_money.field_mapper.money:
-        class: "%matmar10_money.field_mapper.money.class%"
+        class: "%matmar10_money.composite_property_strategy.money.class%"
         arguments: [ @matmar10_money.currency_manager ]
         tags:
             - { name: composite_property_strategy, annotation: \Matmar10\Bundle\MoneyBundle\Annotation\Money }

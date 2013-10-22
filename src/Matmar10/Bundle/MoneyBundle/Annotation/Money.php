@@ -17,13 +17,15 @@ use Matmar10\Bundle\MoneyBundle\Exception\InvalidArgumentException;
 class Money extends BaseCompositeProperty implements CompositeProperty
 {
 
+    /**
+     * @var string
+     */
     public $currencyCode;
 
+    /**
+     * @var integer
+     */
     public $amountInteger;
-
-    public $amountFloat;
-
-    public $amountDisplay;
 
     /**
      * {inheritDoc}
@@ -38,26 +40,25 @@ class Money extends BaseCompositeProperty implements CompositeProperty
      */
     public function getMap()
     {
-        $map = array(
+        return array(
             'currencyCode' => $this->currencyCode,
+            'amountInteger' => $this->amountInteger,
         );
+    }
 
-        if(!is_null($this->amountInteger)) {
-            $map['amountInteger'] = $this->amountInteger;
-            return $map;
-        }
+    /**
+     * @return int
+     */
+    public function getAmountInteger()
+    {
+        return $this->amountInteger;
+    }
 
-        if(!is_null($this->amountFloat)) {
-            $map['amountFloat'] = $this->amountFloat;
-            return $map;
-        }
-
-        if(!is_null($this->amountDisplay)) {
-            $map['amountDisplay'] = $this->amountDisplay;
-            return $map;
-        }
-
-        $message = 'No amount field was provided for composite property of type %s (annotation requires either an amountInteger, amountFloat, or amountDisplay property mapping';
-        throw new InvalidArgumentException(sprintf($message, $this->getClass()));
+    /**
+     * @return string
+     */
+    public function getCurrencyCode()
+    {
+        return $this->currencyCode;
     }
 }

@@ -3,8 +3,8 @@
 namespace Matmar10\Bundle\MoneyBundle\PropertyStrategy;
 
 use InvalidArgumentException;
-use Matmar10\Bundle\MoneyBundle\Annotation\MappedPropertyAnnotationInterface;
-use Matmar10\Bundle\MoneyBundle\Exception\NullFieldMappingException;
+use Matmar10\Bundle\MoneyBundle\Annotation\CompositeProperty;
+use Matmar10\Bundle\MoneyBundle\Exception\NullPropertyException;
 use Matmar10\Bundle\MoneyBundle\PropertyStrategy\CompositePropertyStrategy;
 use Matmar10\Bundle\MoneyBundle\Service\CurrencyManager;
 use ReflectionObject;
@@ -25,10 +25,11 @@ class Money implements CompositePropertyStrategy
         $this->currencyManager = $currencyManager;
     }
 
-    public function flattenCompositeProperty(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
+    public function flattenCompositeProperty(&$entity, ReflectionProperty $reflectionProperty, CompositeProperty $annotation)
     {
-        $annotation->init();
-        $mappedProperties = $annotation->getMap();
+        /**
+         * @var $annotation \Matmar10\Bundle\MoneyBundle\Annotation\Money
+         */
 
         // get the currency code from the currency instance
         $reflectionProperty->setAccessible(true);
@@ -40,66 +41,72 @@ class Money implements CompositePropertyStrategy
 
         // ignore if nullable and currency instance is null
         if(is_null($moneyInstance)) {
-            $options = $annotation->getOptions();
-            if($options['nullable']) {
-                return $entity;
+            if($annotation->getNullable()) {
+                return;
             }
-            throw new NullFieldMappingException(sprintf("Mapped property '%s' cannot be null (to allow null value, use nullable=true)", $reflectionProperty->getName()));
+            throw new NullPropertyException();
         }
 
         /**
          * @var $currency \Matmar10\Money\Entity\Currency
          */
         $currency = $moneyInstance->getCurrency();
-
-        $amountInteger = $moneyInstance->getAmountInteger();
+        if(is_null($currency)) {
+            if($annotation->getNullable()) {
+                return;
+            }
+            throw new NullPropertyException();
+        }
         $currencyCode = $currency->getCurrencyCode();
+        if(is_null($currencyCode)) {
+            if($annotation->getNullable()) {
+                return;
+            }
+            throw new NullPropertyException();
+        }
+        $amountInteger = $moneyInstance->getAmountInteger();
+        if(is_null($amountInteger)) {
+            if($annotation->getNullable()) {
+                return;
+            }
+            throw new NullPropertyException();
+        }
 
-        // lookup the currency code and amountInteger field names based on the provided mapping
-        $amountIntegerPropertyName = $mappedProperties['amountInteger'];
-        $currencyCodePropertyName = $mappedProperties['currencyCode'];
-
-        $amountIntegerReflectionProperty = new ReflectionProperty($entity, $amountIntegerPropertyName);
+        $amountIntegerReflectionProperty = new ReflectionProperty($entity, $annotation->getAmountInteger());
         $amountIntegerReflectionProperty->setAccessible(true);
         $amountIntegerReflectionProperty->setValue($entity, (integer)$amountInteger);
 
-        $currencyCodeReflectionProperty = new ReflectionProperty($entity, $currencyCodePropertyName);
+        $currencyCodeReflectionProperty = new ReflectionProperty($entity, $annotation->getCurrencyCode());
         $currencyCodeReflectionProperty->setAccessible(true);
         $currencyCodeReflectionProperty->setValue($entity, $currencyCode);
-
-        return $entity;
     }
 
-    public function composeCompositeProperty(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
+    public function composeCompositeProperty(&$entity, ReflectionProperty $reflectionProperty, CompositeProperty $annotation)
     {
-        $annotation->init();
-        $mappedProperties = $annotation->getMap();
-        $options = $annotation->getOptions();
+        /**
+         * @var $annotation \Matmar10\Bundle\MoneyBundle\Annotation\Money
+         */
 
-        // lookup the currency code and amountInteger field names based on the provided mapping
-        $amountIntegerPropertyName = $mappedProperties['amountInteger'];
-        $currencyCodePropertyName = $mappedProperties['currencyCode'];
-
-        $amountIntegerReflectionProperty = new ReflectionProperty($entity, $amountIntegerPropertyName);
+        $amountIntegerReflectionProperty = new ReflectionProperty($entity, $annotation->getAmountInteger());
         $amountIntegerReflectionProperty->setAccessible(true);
         $amountInteger = $amountIntegerReflectionProperty->getValue($entity);
         if(is_null($amountInteger) || '' === $amountInteger) {
             // ignore if nullable and currency instance is null
-            if($options['nullable']) {
+            if($annotation->getNullable()) {
                 return $entity;
             }
-            throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity), $amountIntegerPropertyName));
+            throw new NullPropertyException();
         }
 
-        $currencyCodeReflectionProperty = new ReflectionProperty($entity, $currencyCodePropertyName);
+        $currencyCodeReflectionProperty = new ReflectionProperty($entity, $annotation->getCurrencyCode());
         $currencyCodeReflectionProperty->setAccessible(true);
         $currencyCode = $currencyCodeReflectionProperty->getValue($entity);
         if(is_null($currencyCode) || '' === $currencyCode) {
             // ignore if nullable and currency instance is null
-            if($options['nullable']) {
+            if($annotation->getNullable()) {
                 return $entity;
             }
-            throw new InvalidArgumentException(sprintf(self::$nullPropertyExceptionMessage, get_class($entity), $currencyCodePropertyName));
+            throw new NullPropertyException();
         }
 
         // build the currency instance from the currency manager using provided code

@@ -26,4 +26,12 @@ interface CompositeProperty
      */
     public function getMap();
 
+
+    /**
+     * Returns whether this composite property is allowed to be null
+     *
+     * @abstract
+     * @return boolean
+     */
+    public function getNullable();
 }

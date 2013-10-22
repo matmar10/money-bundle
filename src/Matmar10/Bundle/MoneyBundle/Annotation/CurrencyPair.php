@@ -43,4 +43,20 @@ class CurrencyPair extends BaseCompositeProperty implements CompositeProperty
             'toCurrencyCode' => $this->toCurrencyCode,
         );
     }
+
+    /**
+     * @return string
+     */
+    public function getFromCurrencyCode()
+    {
+        return $this->fromCurrencyCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToCurrencyCode()
+    {
+        return $this->toCurrencyCode;
+    }
 }

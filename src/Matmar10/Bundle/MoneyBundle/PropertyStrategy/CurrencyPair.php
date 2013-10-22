@@ -3,11 +3,10 @@
 namespace Matmar10\Bundle\MoneyBundle\PropertyStrategy;
 
 use InvalidArgumentException;
-use Matmar10\Bundle\MoneyBundle\Annotation\MappedPropertyAnnotationInterface;
-use Matmar10\Bundle\MoneyBundle\Exception\NullFieldMappingException;
+use Matmar10\Bundle\MoneyBundle\Annotation\CompositeProperty;
+use Matmar10\Bundle\MoneyBundle\Exception\NullPropertyException;
 use Matmar10\Bundle\MoneyBundle\PropertyStrategy\CompositePropertyStrategy;
 use Matmar10\Bundle\MoneyBundle\Service\CurrencyManager;
-use Matmar10\Money\Entity\CurrencyPair as CurrencyPairEntity;
 use ReflectionObject;
 use ReflectionProperty;
 
@@ -24,10 +23,14 @@ class CurrencyPair implements CompositePropertyStrategy
         $this->currencyManager = $currencyManager;
     }
 
-    public function flattenCompositeProperty(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
+    /**
+     * {inheritDoc}
+     */
+    public function flattenCompositeProperty(&$entity, ReflectionProperty $reflectionProperty, CompositeProperty $annotation)
     {
-        $annotation->init();
-        $mappedProperties = $annotation->getMap();
+        /**
+         * @var $annotation \Matmar10\Bundle\MoneyBundle\Annotation\CurrencyPair
+         */
 
         // get the currency code from the currency instance
         $reflectionProperty->setAccessible(true);
@@ -39,69 +42,61 @@ class CurrencyPair implements CompositePropertyStrategy
 
         // ignore if nullable and currency instance is null
         if(is_null($currencyPairInstance)) {
-            $options = $annotation->getOptions();
-            if($options['nullable']) {
-                return $entity;
+            if($annotation->getNullable()) {
+                return;
             }
-            throw new NullFieldMappingException(sprintf("Mapped property '%s' cannot be null (to allow null value, use nullable=true)", $reflectionProperty->getName()));
+            throw new NullPropertyException();
         }
 
         $fromCurrency = $currencyPairInstance->getFromCurrency();
         if(is_null($fromCurrency)) {
-            throw new NullFieldMappingException(sprintf('Cannot apply post persist property mapping for %s instance: required field %s is null', get_class($entity), 'fromCurrency'));
+            throw new NullPropertyException();
         }
         $toCurrency = $currencyPairInstance->getToCurrency();
         if(is_null($toCurrency)) {
-            throw new NullFieldMappingException(sprintf('Cannot apply post persist property mapping for %s instance: required field %s is null', get_class($entity), 'toCurrency'));
+            throw new NullPropertyException();
         }
 
-        // lookup the currency code's field name based on the provided mapping
-        $fromCurrencyCodePropertyName = $mappedProperties['fromCurrencyCode'];
-        $toCurrencyCodePropertyName = $mappedProperties['toCurrencyCode'];
-
-        $fromCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $fromCurrencyCodePropertyName);
+        $fromCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $annotation->getFromCurrencyCode());
         $fromCurrencyCodeReflectionProperty->setAccessible(true);
         $fromCurrencyCodeReflectionProperty->setValue($entity, $fromCurrency->getCurrencyCode());
 
-        $toCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $toCurrencyCodePropertyName);
+        $toCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $annotation->getToCurrencyCode());
         $toCurrencyCodeReflectionProperty->setAccessible(true);
         $toCurrencyCodeReflectionProperty->setValue($entity, $toCurrency->getCurrencyCode());
-
-        return $entity;
     }
 
-    public function composeCompositeProperty(&$entity, ReflectionProperty $reflectionProperty, MappedPropertyAnnotationInterface $annotation)
+    /**
+     * {inheritDoc}
+     */
+    public function composeCompositeProperty(&$entity, ReflectionProperty $reflectionProperty, CompositeProperty $annotation)
     {
-        $annotation->init();
-        $mappedProperties = $annotation->getMap();
+        /**
+          * @var $annotation \Matmar10\Bundle\MoneyBundle\Annotation\CurrencyPair
+          */
 
-        // lookup the currency code's field name based on the provided mapping
-        $fromCurrencyCodePropertyName = $mappedProperties['fromCurrencyCode'];
-        $toCurrencyCodePropertyName = $mappedProperties['toCurrencyCode'];
-
-        $fromCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $fromCurrencyCodePropertyName);
+        $fromCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $annotation->getFromCurrencyCode());
         $fromCurrencyCodeReflectionProperty->setAccessible(true);
         $fromCurrencyCode = $fromCurrencyCodeReflectionProperty->getValue($entity);
         if(is_null($fromCurrencyCode) || '' === $fromCurrencyCode) {
-            throw new NullFieldMappingException(sprintf('Cannot apply post persist property mapping for %s instance: required field %s is null or blank', get_class($entity), $fromCurrencyCodePropertyName));
+            throw new NullPropertyException();
         }
 
-        $toCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $toCurrencyCodePropertyName);
+        $toCurrencyCodeReflectionProperty = new ReflectionProperty($entity, $annotation->getToCurrencyCode());
         $toCurrencyCodeReflectionProperty->setAccessible(true);
         $toCurrencyCode = $toCurrencyCodeReflectionProperty->getValue($entity);
         if(is_null($fromCurrencyCode) || '' === $fromCurrencyCode) {
-            throw new NullFieldMappingException(sprintf('Cannot apply post persist property mapping for %s instance: required field %s is null or blank', get_class($entity), $toCurrencyCodePropertyName));
+            throw new NullPropertyException();
         }
 
         // build the currency instance from the currency manager using provided code
         $fromCurrency = $this->currencyManager->getCurrency($fromCurrencyCode);
         $toCurrency = $this->currencyManager->getCurrency($toCurrencyCode);
-        $currencyPairInstance = new CurrencyPairEntity($fromCurrency, $toCurrency);
+        $className = $annotation->getClass();
+        $currencyPairInstance = new $className($fromCurrency, $toCurrency);
 
         // set the currency instance on the original entities field
         $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($entity, $currencyPairInstance);
-
-        return $entity;
     }
 }
