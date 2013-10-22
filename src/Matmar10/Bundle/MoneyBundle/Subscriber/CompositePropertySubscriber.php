@@ -53,6 +53,6 @@ class CompositePropertySubscriber implements EventSubscriber
         if(!$this->compositePropertyService->entityContainsMappedProperties($entity)) {
             return;
         }
-        $this->compositePropertyService->composeCompoundProperties($entity);
+        $this->compositePropertyService->composeCompositeProperties($entity);
     }
 }
