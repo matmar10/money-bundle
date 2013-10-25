@@ -2,6 +2,8 @@
 
 namespace Matmar10\Bundle\MoneyBundle\Annotation;
 
+use ReflectionProperty;
+
 /**
  * MappedPropertyAnnotationInterface
  *
@@ -24,7 +26,7 @@ interface CompositeProperty
      * @abstract
      * @return array The mapping of compound from entities properties to root-level entity properties
      */
-    public function getMap();
+    public function getMap(ReflectionProperty $reflectionProperty);
 
 
     /**

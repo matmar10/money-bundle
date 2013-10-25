@@ -5,7 +5,6 @@ namespace Matmar10\Bundle\MoneyBundle\Tests\Service;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Matmar10\Bundle\MoneyBundle\Tests\Fixtures\Entity\AnnotatedTestEntity;
 use Matmar10\Bundle\MoneyBundle\Tests\Fixtures\Entity\ImproperlyCurrencyAnnotatedTestEntity;
-use Matmar10\Bundle\MoneyBundle\Tests\Fixtures\Entity\NullCurrencyAnnotatedTestEntity;
 use Matmar10\Money\Entity\CurrencyPair;
 use Matmar10\Money\Entity\ExchangeRate;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -38,17 +37,20 @@ class CompositePropertyServiceTest extends WebTestCase
         // set Currency
         $btc = $this->currencyManager->getCurrency('BTC');
         $entity->setExampleCurrency($btc);
+        $entity->setExampleCurrencyUsingDefaultMap($btc);
 
         // set Money
         $usdAmount = $this->currencyManager->getMoney('USD');
         $usdAmount->setAmountFloat(1.99);
         $entity->setExampleMoney($usdAmount);
+        $entity->setExampleMoneyUsingDefaultMap($usdAmount);
 
         // set CurrencyPair
         $gbp = $this->currencyManager->getCurrency('GBP');
         $eur = $this->currencyManager->getCurrency('EUR');
         $currencyPair = new CurrencyPair($gbp, $eur);
         $entity->setExampleCurrencyPair($currencyPair);
+        $entity->setExampleCurrencyPairUsingDefaultMap($currencyPair);
 
         // set ExchangeRate
         $mad = $this->currencyManager->getCurrency('MAD');
@@ -56,25 +58,33 @@ class CompositePropertyServiceTest extends WebTestCase
         $multiplier = 11.75;
         $exchangeRate = new ExchangeRate($mad, $jpy, $multiplier);
         $entity->setExampleExchangeRate($exchangeRate);
+        $entity->setExampleExchangeRateUsingDefaultMap($exchangeRate);
 
         // process the field mappings
         $this->compositePropertyService->flattenCompositeProperties($entity);
 
         // test Currency
         $this->assertEquals('BTC', $entity->getExampleCurrencyCode());
-
+        $this->assertEquals('BTC', $entity->exampleCurrencyUsingDefaultMapCurrencyCode);
         // test Money
         $this->assertEquals(199, $entity->getExampleMoneyAmountInteger());
+        $this->assertEquals(199, $entity->exampleMoneyUsingDefaultMapAmountInteger);
         $this->assertEquals('USD', $entity->getExampleMoneyCurrencyCode());
+        $this->assertEquals('USD', $entity->exampleMoneyUsingDefaultMapCurrencyCode);
 
         // test CurrencyPair
         $this->assertEquals('GBP', $entity->getExampleCurrencyPairFromCurrencyCode());
+        $this->assertEquals('GBP', $entity->exampleCurrencyPairUsingDefaultMapFromCurrencyCode);
         $this->assertEquals('EUR', $entity->getExampleCurrencyPairToCurrencyCode());
+        $this->assertEquals('EUR', $entity->exampleCurrencyPairUsingDefaultMapToCurrencyCode);
 
         // test ExchangeRate
         $this->assertEquals('MAD', $entity->getExampleExchangeRateFromCurrencyCode());
+        $this->assertEquals('MAD', $entity->exampleExchangeRateUsingDefaultMapFromCurrencyCode);
         $this->assertEquals('JPY', $entity->getExampleExchangeRateToCurrencyCode());
+        $this->assertEquals('JPY', $entity->exampleExchangeRateUsingDefaultMapToCurrencyCode);
         $this->assertEquals($multiplier, $entity->getExampleExchangeRateMultiplier());
+        $this->assertEquals($multiplier, $entity->exampleExchangeRateUsingDefaultMapMultiplier);
 
         // test nullable ExchangeRate
         $this->assertEquals(null, $entity->getExampleNullableExchangeRateFromCurrencyCode());
@@ -89,19 +99,27 @@ class CompositePropertyServiceTest extends WebTestCase
 
         // set Currency related fields
         $entity->setExampleCurrencyCode('BTC');
+        $entity->exampleCurrencyUsingDefaultMapCurrencyCode = 'BTC';
 
         // set Money related fields
         $entity->setExampleMoneyAmountInteger(321);
+        $entity->exampleMoneyUsingDefaultMapAmountInteger = 312;
         $entity->setExampleMoneyCurrencyCode('USD');
+        $entity->exampleMoneyUsingDefaultMapCurrencyCode = 'USD';
 
         // set CurrencyPair related fields
         $entity->setExampleCurrencyPairFromCurrencyCode('GBP');
+        $entity->exampleCurrencyPairUsingDefaultMapFromCurrencyCode = 'GBP';
         $entity->setExampleCurrencyPairToCurrencyCode('EUR');
+        $entity->exampleCurrencyPairUsingDefaultMapToCurrencyCode = 'EUR';
 
         // set ExchangeRate related fields
         $entity->setExampleExchangeRateFromCurrencyCode('MAD');
+        $entity->exampleExchangeRateUsingDefaultMapFromCurrencyCode = 'MAD';
         $entity->setExampleExchangeRateToCurrencyCode('JPY');
+        $entity->exampleExchangeRateUsingDefaultMapToCurrencyCode = 'JPY';
         $entity->setExampleExchangeRateMultiplier(11.75);
+        $entity->exampleExchangeRateUsingDefaultMapMultiplier = 11.75;
 
         // process the field mappings
         $this->compositePropertyService->composeCompositeProperties($entity);
@@ -136,17 +154,6 @@ class CompositePropertyServiceTest extends WebTestCase
     public function testImproperCurrency()
     {
         $entity = new ImproperlyCurrencyAnnotatedTestEntity();
-
-        // process the field mappings
-        $this->compositePropertyService->flattenCompositeProperties($entity);
-    }
-
-    /**
-     * @expectedException Matmar10\Bundle\MoneyBundle\Exception\NullPropertyMappingException
-     */
-    public function testNullFieldMappingException()
-    {
-        $entity = new NullCurrencyAnnotatedTestEntity();
 
         // process the field mappings
         $this->compositePropertyService->flattenCompositeProperties($entity);

@@ -6,10 +6,10 @@ use Matmar10\Money\Entity\Currency as CurrencyEntity;
 use Matmar10\Money\Entity\CurrencyPair as CurrencyPairEntity;
 use Matmar10\Money\Entity\ExchangeRate as ExchangeRateEntity;
 use Matmar10\Money\Entity\Money as MoneyEntity;
-use Matmar10\Bundle\MoneyBundle\Annotation as CPS;
+use Matmar10\Bundle\MoneyBundle\Annotation as CompositeProperty;
 
 /**
- * @CPS\Entity
+ * @CompositeProperty\Entity
  */
 class AnnotatedTestEntity
 {
@@ -17,7 +17,7 @@ class AnnotatedTestEntity
     /**
      * @var \Matmar10\Money\Entity\Currency
      *
-     * @CPS\Currency(currencyCode="exampleCurrencyCode")
+     * @CompositeProperty\Currency(currencyCode="exampleCurrencyCode")
      */
     protected $exampleCurrency;
     protected $exampleCurrencyCode;
@@ -25,7 +25,7 @@ class AnnotatedTestEntity
     /**
      * @var \Matmar10\Bundle\MoneyBundle\Annotation\Money
      *
-     * @CPS\Money(amountInteger="exampleMoneyAmountInteger",
+     * @CompositeProperty\Money(amountInteger="exampleMoneyAmountInteger",
      *      currencyCode="exampleMoneyCurrencyCode")
      */
     protected $exampleMoney;
@@ -35,7 +35,7 @@ class AnnotatedTestEntity
     /**
      * @var \Matmar10\Money\Entity\CurrencyPair
      *
-     * @CPS\CurrencyPair(fromCurrencyCode="exampleCurrencyPairFromCurrencyCode",
+     * @CompositeProperty\CurrencyPair(fromCurrencyCode="exampleCurrencyPairFromCurrencyCode",
      *      toCurrencyCode="exampleCurrencyPairToCurrencyCode")
      */
     protected $exampleCurrencyPair;
@@ -45,7 +45,7 @@ class AnnotatedTestEntity
     /**
      * @var \Matmar10\Money\Entity\ExchangeRate
      *
-     * @CPS\ExchangeRate(fromCurrencyCode="exampleExchangeRateFromCurrencyCode",
+     * @CompositeProperty\ExchangeRate(fromCurrencyCode="exampleExchangeRateFromCurrencyCode",
      *      toCurrencyCode="exampleExchangeRateToCurrencyCode",
      *      multiplier="exampleExchangeRateMultiplier")
      */
@@ -57,7 +57,7 @@ class AnnotatedTestEntity
     /**
      * @var \Matmar10\Money\Entity\ExchangeRate
      *
-     * @CPS\ExchangeRate(fromCurrencyCode="exampleNullableExchangeRateFromCurrencyCode",
+     * @CompositeProperty\ExchangeRate(fromCurrencyCode="exampleNullableExchangeRateFromCurrencyCode",
      *      toCurrencyCode="exampleNullableExchangeRateToCurrencyCode",
      *      multiplier="exampleNullableExchangeRateMultiplier",
      *      nullable=true)
@@ -66,6 +66,35 @@ class AnnotatedTestEntity
     protected $exampleNullableExchangeRateFromCurrencyCode;
     protected $exampleNullableExchangeRateToCurrencyCode;
     protected $exampleNullableExchangeRateMultiplier;
+
+    /**
+     * @var \Matmar10\Money\Entity\Currency
+     *
+     * @CompositeProperty\Currency()
+     */
+    protected $exampleCurrencyUsingDefaultMap;
+
+    /**
+     * @var \Matmar10\Money\Entity\Money
+     *
+     * @CompositeProperty\Money()
+     */
+    protected $exampleMoneyUsingDefaultMap;
+
+    /**
+     * @var \Matmar10\Money\Entity\CurrencyPair
+     *
+     * @CompositeProperty\CurrencyPair()
+     */
+    protected $exampleCurrencyPairUsingDefaultMap;
+
+    /**
+     * @var \Matmar10\Money\Entity\ExchangeRate
+     *
+     * @CompositeProperty\ExchangeRate()
+     */
+    protected $exampleExchangeRateUsingDefaultMap;
+
 
     public function setExampleCurrency(CurrencyEntity $exampleCurrency)
     {
@@ -231,5 +260,69 @@ class AnnotatedTestEntity
     public function getExampleNullableExchangeRateToCurrencyCode()
     {
         return $this->exampleNullableExchangeRateToCurrencyCode;
+    }
+
+    /**
+     * @param \Matmar10\Money\Entity\Currency $exampleCurrencyUsingDefaultMap
+     */
+    public function setExampleCurrencyUsingDefaultMap($exampleCurrencyUsingDefaultMap)
+    {
+        $this->exampleCurrencyUsingDefaultMap = $exampleCurrencyUsingDefaultMap;
+    }
+
+    /**
+     * @return \Matmar10\Money\Entity\Currency
+     */
+    public function getExampleCurrencyUsingDefaultMap()
+    {
+        return $this->exampleCurrencyUsingDefaultMap;
+    }
+
+    /**
+     * @param \Matmar10\Money\Entity\CurrencyPair $exampleCurrencyPairUsingDefaultMap
+     */
+    public function setExampleCurrencyPairUsingDefaultMap($exampleCurrencyPairUsingDefaultMap)
+    {
+        $this->exampleCurrencyPairUsingDefaultMap = $exampleCurrencyPairUsingDefaultMap;
+    }
+
+    /**
+     * @return \Matmar10\Money\Entity\CurrencyPair
+     */
+    public function getExampleCurrencyPairUsingDefaultMap()
+    {
+        return $this->exampleCurrencyPairUsingDefaultMap;
+    }
+
+    /**
+     * @param \Matmar10\Money\Entity\ExchangeRate $exampleExchangeRateUsingDefaultMap
+     */
+    public function setExampleExchangeRateUsingDefaultMap($exampleExchangeRateUsingDefaultMap)
+    {
+        $this->exampleExchangeRateUsingDefaultMap = $exampleExchangeRateUsingDefaultMap;
+    }
+
+    /**
+     * @return \Matmar10\Money\Entity\ExchangeRate
+     */
+    public function getExampleExchangeRateUsingDefaultMap()
+    {
+        return $this->exampleExchangeRateUsingDefaultMap;
+    }
+
+    /**
+     * @param \Matmar10\Money\Entity\Money $exampleMoneyUsingDefaultMap
+     */
+    public function setExampleMoneyUsingDefaultMap($exampleMoneyUsingDefaultMap)
+    {
+        $this->exampleMoneyUsingDefaultMap = $exampleMoneyUsingDefaultMap;
+    }
+
+    /**
+     * @return \Matmar10\Money\Entity\Money
+     */
+    public function getExampleMoneyUsingDefaultMap()
+    {
+        return $this->exampleMoneyUsingDefaultMap;
     }
 }

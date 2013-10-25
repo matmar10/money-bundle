@@ -4,6 +4,7 @@ namespace Matmar10\Bundle\MoneyBundle\Subscriber;
 
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\Event\PreUpdateEventArgs;
+use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
 use Doctrine\Common\EventSubscriber;
 use Matmar10\Bundle\MoneyBundle\Service\CompositePropertyService;
 
@@ -26,33 +27,40 @@ class CompositePropertySubscriber implements EventSubscriber
             'prePersist',
             'preUpdate',
             'postLoad',
+            'loadClassMetadata',
         );
     }
 
     public function prePersist(LifecycleEventArgs $eventArgs)
     {
         $entity = $eventArgs->getObject();
-        if(!$this->compositePropertyService->entityContainsMappedProperties($entity)) {
-            return;
-        }
         $this->compositePropertyService->flattenCompositeProperties($entity);
     }
 
     public function preUpdate(PreUpdateEventArgs $eventArgs)
     {
         $entity = $eventArgs->getObject();
-        if(!$this->compositePropertyService->entityContainsMappedProperties($entity)) {
-            return;
-        }
         $this->compositePropertyService->flattenCompositeProperties($entity);
     }
 
     public function postLoad(LifecycleEventArgs $eventArgs)
     {
         $entity = $eventArgs->getObject();
-        if(!$this->compositePropertyService->entityContainsMappedProperties($entity)) {
-            return;
-        }
         $this->compositePropertyService->composeCompositeProperties($entity);
+    }
+
+    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
+    {
+        /**
+         * @var $classMetadata \Doctrine\Common\Persistence\Mapping\ClassMetadata
+         */
+        $classMetadata = $eventArgs->getClassMetadata();
+
+        /**
+         * @var $reflectionClass \ReflectionClass
+         */
+        $reflectionClass = $classMetadata->getReflectionClass();
+
+        $this->compositePropertyService->addCompositePropertiesClassMetadata($classMetadata, $reflectionClass);
     }
 }

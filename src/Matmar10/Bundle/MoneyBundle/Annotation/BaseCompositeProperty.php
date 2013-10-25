@@ -3,6 +3,7 @@
 namespace Matmar10\Bundle\MoneyBundle\Annotation;
 
 use Matmar10\Bundle\MoneyBundle\Annotation\CompositeProperty;
+use ReflectionProperty;
 
 abstract class BaseCompositeProperty implements CompositeProperty
 {
@@ -15,7 +16,7 @@ abstract class BaseCompositeProperty implements CompositeProperty
     /**
      * {inheritDoc}
      */
-    abstract public function getMap();
+    abstract public function getMap(ReflectionProperty $reflectionProperty);
 
     /**
      * {inheritDoc}

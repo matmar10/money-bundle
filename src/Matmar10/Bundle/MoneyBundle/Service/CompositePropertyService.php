@@ -5,6 +5,8 @@ namespace Matmar10\Bundle\MoneyBundle\Service;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\Event\PreUpdateEventArgs;
 use Doctrine\Common\Annotations\Reader as AnnotationReader;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\Builder\ClassMetadataBuilder;
 use InvalidArgumentException;
 use Matmar10\Bundle\MoneyBundle\Annotation\CompositeProperty;
 use Matmar10\Bundle\MoneyBundle\Service\CurrencyManager;
@@ -38,6 +40,30 @@ class CompositePropertyService
     }
 
     /**
+     * Adds the mapped properties of the composite property
+     *
+     * @param \ReflectionClass $reflectionClass
+     * @param \Doctrine\ORM\Mapping\ClassMetadata $classMetadata
+     * @return null
+     */
+    public function addCompositePropertiesClassMetadata(ReflectionClass $reflectionClass, ClassMetadata $classMetadata)
+    {
+        if(!$this->classContainsMappedProperties($reflectionClass)) {
+            return;
+        }
+
+        $this->walkCompositePropertiesAnnotations($reflectionClass, function($reflectionProperty, $annotation) use ($classMetadata) {
+            /**
+             * @var $annotation \Matmar10\Bundle\MoneyBundle\Annotation\CompositeProperty
+             */
+            $mappings = $annotation->getMap($reflectionProperty);
+            foreach($mappings as $map) {
+                $classMetadata->mapField($map);
+            }
+        });
+    }
+
+    /**
      * Flattens all annotated properties into the mapped scalar values
      *
      * @param object $entity The entity to flatten
@@ -45,26 +71,18 @@ class CompositePropertyService
      */
     public function flattenCompositeProperties(&$entity)
     {
-        $reflectionObject = new ReflectionObject($entity);
-        $properties = $reflectionObject->getProperties();
-        foreach($properties as $fromReflectionProperty) {
-
-            // set primitive fields from all annotated fields
-            $annotations = $this->annotationReader->getPropertyAnnotations($fromReflectionProperty);
-            foreach($annotations as $annotation) {
-
-                // only process mapped entity annotations
-                if(!($annotation instanceof CompositeProperty)) {
-                    continue;
-                }
-
-                /**
-                 * @var $strategy \Matmar10\Bundle\MoneyBundle\PropertyStrategy\CompositePropertyStrategy
-                 */
-                $strategy = $this->getStrategyForAnnotation($annotation);
-                $strategy->flattenCompositeProperty($entity, $fromReflectionProperty, $annotation);
-            }
+        $reflectionClass = new ReflectionClass($entity);
+        if(!$this->classContainsMappedProperties($reflectionClass)) {
+            return;
         }
+
+        $this->walkCompositePropertiesAnnotations($reflectionClass, function($reflectionProperty, $annotation) use ($entity) {
+            /**
+             * @var $strategy \Matmar10\Bundle\MoneyBundle\PropertyStrategy\CompositePropertyStrategy
+             */
+            $strategy = $this->getStrategyForAnnotation($annotation);
+            $strategy->flattenCompositeProperty($entity, $reflectionProperty, $annotation);
+        });
     }
 
     /**
@@ -75,12 +93,33 @@ class CompositePropertyService
      */
     public function composeCompositeProperties(&$entity)
     {
-        $reflectionObject = new ReflectionObject($entity);
-        $properties = $reflectionObject->getProperties();
-        foreach($properties as $fromReflectionProperty) {
+        $reflectionClass = new ReflectionClass($entity);
+        if(!$this->classContainsMappedProperties($reflectionClass)) {
+            return;
+        }
+
+        $this->walkCompositePropertiesAnnotations($reflectionClass, function($reflectionProperty, $annotation) use ($entity)  {
+            /**
+             * @var $strategy \Matmar10\Bundle\MoneyBundle\PropertyStrategy\CompositePropertyStrategy
+             */
+            $strategy = $this->getStrategyForAnnotation($annotation);
+            $strategy->composeCompositeProperty($entity, $reflectionProperty, $annotation);
+        });
+    }
+
+    /**
+     * Apply a callback to each composite property annotation
+     *
+     * @param \ReflectionClass $reflectionClass The class to walk
+     * @param callable $callback The callback to apply to each composite property annotation
+     */
+    public function walkCompositePropertiesAnnotations(ReflectionClass $reflectionClass, callable $callback)
+    {
+        $properties = $reflectionClass->getProperties();
+        foreach($properties as $reflectionProperty) {
 
             // set primitive fields from all annotated fields
-            $annotations = $this->annotationReader->getPropertyAnnotations($fromReflectionProperty);
+            $annotations = $this->annotationReader->getPropertyAnnotations($reflectionProperty);
             foreach($annotations as $annotation) {
 
                 // only process mapped entity annotations
@@ -88,11 +127,7 @@ class CompositePropertyService
                     continue;
                 }
 
-                /**
-                 * @var $strategy \Matmar10\Bundle\MoneyBundle\PropertyStrategy\CompositePropertyStrategy
-                 */
-                $strategy = $this->getStrategyForAnnotation($annotation);
-                $strategy->composeCompositeProperty($entity, $fromReflectionProperty, $annotation);
+                call_user_func($callback, $reflectionProperty, $annotation);
             }
         }
     }
@@ -100,12 +135,11 @@ class CompositePropertyService
     /**
      * Checks if the entity contains the class level annotation
      *
-     * @param object $entity The entity to check
+     * @param ReflectionClass $reflectionClass The entity to check
      * @return boolean Whether the entity contains the composite property annotation
      */
-    public function entityContainsMappedProperties($entity)
+    public function classContainsMappedProperties(ReflectionClass $reflectionClass)
     {
-        $reflectionClass = new ReflectionClass($entity);
         $isMappedEntity = $this->annotationReader->getClassAnnotation($reflectionClass, 'Matmar10\\Bundle\\MoneyBundle\\Annotation\\Entity');
         if($isMappedEntity) {
             return true;

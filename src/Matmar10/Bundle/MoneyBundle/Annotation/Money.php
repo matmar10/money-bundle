@@ -5,6 +5,7 @@ namespace Matmar10\Bundle\MoneyBundle\Annotation;
 use Matmar10\Bundle\MoneyBundle\Annotation\BaseCompositeProperty;
 use Matmar10\Bundle\MoneyBundle\Annotation\CompositeProperty;
 use Matmar10\Bundle\MoneyBundle\Exception\InvalidArgumentException;
+use ReflectionProperty;
 
 /**
  * Money
@@ -20,12 +21,12 @@ class Money extends BaseCompositeProperty implements CompositeProperty
     /**
      * @var string
      */
-    public $currencyCode;
+    public $currencyCode = null;
 
     /**
-     * @var integer
+     * @var string
      */
-    public $amountInteger;
+    public $amountInteger = null;
 
     /**
      * {inheritDoc}
@@ -38,11 +39,26 @@ class Money extends BaseCompositeProperty implements CompositeProperty
     /**
      * {inheritDoc}
      */
-    public function getMap()
+    public function getMap(ReflectionProperty $reflectionProperty)
     {
+        $currencyCodePropertyName = (is_null($this->currencyCode)) ?
+            $reflectionProperty->getName() . 'CurrencyCode' :
+            $this->currencyCode;
+        $amountIntegerPropertyName = (is_null($this->amountInteger)) ?
+            $reflectionProperty->getName() . 'AmountInteger' :
+            $this->amountInteger;
         return array(
-            'currencyCode' => $this->currencyCode,
-            'amountInteger' => $this->amountInteger,
+            'currencyCode' => array(
+                 'length' => 3,
+                 'fieldName' => $currencyCodePropertyName,
+                 'nullable' => $this->nullable,
+                 'type' => 'string',
+             ),
+            'amountInteger' => array(
+                'fieldName' => $amountIntegerPropertyName,
+                'nullable' => $this->nullable,
+                'type' => 'bigint',
+            ),
         );
     }
 

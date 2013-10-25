@@ -4,6 +4,7 @@ namespace Matmar10\Bundle\MoneyBundle\Annotation;
 
 use Matmar10\Bundle\MoneyBundle\Annotation\BaseCompositeProperty;
 use Matmar10\Bundle\MoneyBundle\Annotation\CompositeProperty;
+use ReflectionProperty;
 
 /**
  * ExchangeRate annotation
@@ -18,17 +19,17 @@ class ExchangeRate extends BaseCompositeProperty implements CompositeProperty
     /**
      * @var string
      */
-    public $fromCurrencyCode;
+    public $fromCurrencyCode = null;
 
     /**
      * @var string
      */
-    public $toCurrencyCode;
+    public $toCurrencyCode = null;
 
     /**
      * @var string
      */
-    public $multiplier;
+    public $multiplier = null;
 
     /**
      * {inheritDoc}
@@ -41,12 +42,36 @@ class ExchangeRate extends BaseCompositeProperty implements CompositeProperty
     /**
      * {inheritDoc}
      */
-    public function getMap()
+    public function getMap(ReflectionProperty $reflectionProperty)
     {
+        $fromCurrencyCodePropertyName = (is_null($this->fromCurrencyCode)) ?
+            $reflectionProperty->getName() . 'FromCurrencyCode' :
+            $this->fromCurrencyCode;
+        $toCurrencyCodePropertyName = (is_null($this->toCurrencyCode)) ?
+            $reflectionProperty->getName() . 'ToCurrencyCode' :
+            $this->toCurrencyCode;
+        $multiplierPropertyName = (is_null($this->multiplier)) ?
+            $reflectionProperty->getName() . 'Multiplier' :
+            $this->multiplier;
+
         return array(
-            'fromCurrencyCode' => $this->fromCurrencyCode,
-            'toCurrencyCode' => $this->toCurrencyCode,
-            'multiplier' => $this->multiplier,
+            'fromCurrencyCode' => array(
+                'length' => 3,
+                'fieldName' => $fromCurrencyCodePropertyName,
+                'nullable' => $this->nullable,
+                'type' => 'string',
+            ),
+            'toCurrencyCode' => array(
+                'length' => 3,
+                'fieldName' => $toCurrencyCodePropertyName,
+                'nullable' => $this->nullable,
+                'type' => 'string',
+            ),
+            'multiplier' => array(
+                'fieldName' => $multiplierPropertyName,
+                'nullable' => $this->nullable,
+                'type' => 'float',
+            ),
         );
     }
 

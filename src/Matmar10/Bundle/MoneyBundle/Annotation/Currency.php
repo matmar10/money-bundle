@@ -4,6 +4,7 @@ namespace Matmar10\Bundle\MoneyBundle\Annotation;
 
 use Matmar10\Bundle\MoneyBundle\Annotation\BaseCompositeProperty;
 use Matmar10\Bundle\MoneyBundle\Annotation\CompositeProperty;
+use ReflectionProperty;
 
 /**
  * Currency annotation
@@ -15,7 +16,7 @@ use Matmar10\Bundle\MoneyBundle\Annotation\CompositeProperty;
  */
 class Currency extends BaseCompositeProperty implements CompositeProperty
 {
-    public $currencyCode;
+    public $currencyCode = null;
 
     /**
      * {inheritDoc}
@@ -28,10 +29,18 @@ class Currency extends BaseCompositeProperty implements CompositeProperty
     /**
      * {inheritDoc}
      */
-    public function getMap()
+    public function getMap(ReflectionProperty $reflectionProperty)
     {
+        $currencyCodePropertyName = (is_null($this->currencyCode)) ?
+            $reflectionProperty->getName() . 'CurrencyCode' :
+            $this->currencyCode;
         return array(
-            'currencyCode' => $this->currencyCode,
+            'currencyCode' => array(
+                'fieldName' => $currencyCodePropertyName,
+                'length' => 3,
+                'nullable' => $this->nullable,
+                'type' => 'string',
+            ),
         );
     }
 
