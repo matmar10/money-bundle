@@ -22,7 +22,7 @@
         "doctrine/orm": "*",
         "jms/serializer": "0.12.*",
         "jms/aop-bundle": "1.0.0",
-        "matmar10/lib-money": "1.0.0"
+        "matmar10/lib-money": "dev-master"
     },
     "autoload": {
         "psr-0": {

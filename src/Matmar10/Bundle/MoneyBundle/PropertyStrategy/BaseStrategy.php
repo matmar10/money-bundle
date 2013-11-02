@@ -45,7 +45,8 @@ abstract class BaseStrategy implements CompositePropertyStrategy
                 if($propertyMapping['nullable']) {
                     continue;
                 }
-                throw new NullPropertyException();
+                $message = '%s entity has null value for required property %s';
+                throw new NullPropertyException(sprintf($message, get_class($entity), $propertyMapping['fieldName']));
             }
             if('string' === $propertyMapping['type']) {
                 if('' === $value) {

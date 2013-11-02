@@ -2,9 +2,9 @@
 
 namespace Matmar10\Bundle\MoneyBundle\Subscriber;
 
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Doctrine\Common\Persistence\Event\PreUpdateEventArgs;
-use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\Common\EventSubscriber;
 use Matmar10\Bundle\MoneyBundle\Service\CompositePropertyService;
 
@@ -31,25 +31,25 @@ class CompositePropertySubscriber implements EventSubscriber
         );
     }
 
-    public function prePersist(LifecycleEventArgs $eventArgs)
+    public function prePersist(LifecycleEventArgs &$eventArgs)
     {
-        $entity = $eventArgs->getObject();
+        $entity = $eventArgs->getEntity();
         $this->compositePropertyService->flattenCompositeProperties($entity);
     }
 
-    public function preUpdate(PreUpdateEventArgs $eventArgs)
+    public function preUpdate(PreUpdateEventArgs &$eventArgs)
     {
-        $entity = $eventArgs->getObject();
+        $entity = $eventArgs->getEntity();
         $this->compositePropertyService->flattenCompositeProperties($entity);
     }
 
-    public function postLoad(LifecycleEventArgs $eventArgs)
+    public function postLoad(LifecycleEventArgs &$eventArgs)
     {
-        $entity = $eventArgs->getObject();
+        $entity = $eventArgs->getEntity();
         $this->compositePropertyService->composeCompositeProperties($entity);
     }
 
-    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
+    public function loadClassMetadata(LoadClassMetadataEventArgs &$eventArgs)
     {
         /**
          * @var $classMetadata \Doctrine\Common\Persistence\Mapping\ClassMetadata
@@ -61,6 +61,6 @@ class CompositePropertySubscriber implements EventSubscriber
          */
         $reflectionClass = $classMetadata->getReflectionClass();
 
-        $this->compositePropertyService->addCompositePropertiesClassMetadata($classMetadata, $reflectionClass);
+        $this->compositePropertyService->addCompositePropertiesClassMetadata($reflectionClass, $classMetadata);
     }
 }

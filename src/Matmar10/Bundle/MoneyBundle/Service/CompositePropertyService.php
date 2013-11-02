@@ -46,15 +46,17 @@ class CompositePropertyService
      * @param \Doctrine\ORM\Mapping\ClassMetadata $classMetadata
      * @return null
      */
-    public function addCompositePropertiesClassMetadata(ReflectionClass $reflectionClass, ClassMetadata $classMetadata)
+    public function addCompositePropertiesClassMetadata(ReflectionClass $reflectionClass, ClassMetadata &$classMetadata)
     {
         if(!$this->classContainsMappedProperties($reflectionClass)) {
             return;
         }
 
-        $this->walkCompositePropertiesAnnotations($reflectionClass, function($reflectionProperty, $annotation) use ($classMetadata) {
+        $this->walkCompositePropertiesAnnotations($reflectionClass, function($reflectionProperty, $annotation) use ($reflectionClass, $classMetadata) {
             /**
              * @var $annotation \Matmar10\Bundle\MoneyBundle\Annotation\CompositeProperty
+             * @var $reflectionClass \ReflectionClass
+             * @var $classMetadata \Doctrine\ORM\Mapping\ClassMetadata
              */
             $mappings = $annotation->getMap($reflectionProperty);
             foreach($mappings as $map) {
