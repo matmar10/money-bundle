@@ -12,6 +12,7 @@ parameters:
 
     # doctrine event subscriber
     matmar10_money.composite_property_subscriber.class: Matmar10\Bundle\MoneyBundle\Subscriber\CompositePropertySubscriber
+    matmar10_money.composite_property_subscriber.service_tags: []
 
     # composite property service
     matmar10_money.composite_property_service.class: Matmar10\Bundle\MoneyBundle\Service\CompositePropertyService
@@ -65,13 +66,11 @@ services:
             - { name: validator.constraint_validator, alias: money_validator }
 
     ##
-    # doctrine event subscriber
+    # doctrine event subscriber - automatically tagged as a doctrine subscriber during extension loading
     ##
     matmar10_money.composite_property_subscriber:
         class: "%matmar10_money.composite_property_subscriber.class%"
         arguments: [ @matmar10_money.composite_property_service ]
-        tags:
-            - { name: doctrine.event_subscriber, connection: default }
 
     ##
     # composite property service

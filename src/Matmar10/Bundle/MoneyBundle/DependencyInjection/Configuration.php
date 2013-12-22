@@ -12,9 +12,23 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('lmh_money');
 
+/*
+    matmar10_money.composite_property_subscriber:
+        class: "%matmar10_money.composite_property_subscriber.class%"
+        arguments: [ @matmar10_money.composite_property_service ]
+        # tags:
+            # - { name: doctrine.event_subscriber }
+            # - { name: doctrine.event_subscriber, connection: default }
+ */
+
+
         $rootNode
             ->fixXmlConfig('currency', 'currencies')
             ->children()
+                ->arrayNode('doctrine_connections')
+                    ->info('Connections that the composite property subscriber should listen for')
+                    ->prototype('scalar')->end()
+                ->end()
                 ->scalarNode('currency_configuration_filename')
                     ->info('The base currency configuration filename')
                     ->isRequired()

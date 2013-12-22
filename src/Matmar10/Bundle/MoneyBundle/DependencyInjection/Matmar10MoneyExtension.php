@@ -33,6 +33,16 @@ class Matmar10MoneyExtension extends Extension {
         // load the services now that configurations have been loaded
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+
+        // add doctrine subscriber tags to our subscriber for all user requested connections
+        if(array_key_exists('doctrine_connections', $config)) {
+            $compositePropertySubscriberDefinition = $container->getDefinition('matmar10_money.composite_property_subscriber');
+            foreach($config['doctrine_connections'] as $connectionName) {
+                $compositePropertySubscriberDefinition->addTag('doctrine.event_subscriber', array(
+                    'connection' => $connectionName,
+                ));
+            }
+        }
     }
 
     public function getAlias()
