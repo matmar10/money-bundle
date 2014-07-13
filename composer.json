@@ -4,6 +4,7 @@
     "keywords": ["currency", "money", "currency code", "integer math", "iso4217", "validator"],
     "type": "symfony-bundle",
     "license": "Apache",
+    "version": "2.0.0",
     "authors": [
         {
             "name": "Matthew J. Martin",
