@@ -23,7 +23,7 @@
         "doctrine/orm": "*",
         "jms/serializer": "~0.15",
         "jms/aop-bundle": "~1.0",
-        "matmar10/lib-money": "~1.0.2"
+        "matmar10/lib-money": "~1.0.2@dev"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"
