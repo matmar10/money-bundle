@@ -18,8 +18,8 @@
         }
     ],
     "require": {
-        "symfony/symfony": "2.4.*",
-        "symfony/framework-bundle": "2.4.*",
+        "symfony/symfony": ">=2.4.*",
+        "symfony/framework-bundle": ">=2.4.*",
         "doctrine/orm": "*",
         "jms/serializer": "~0.15",
         "jms/aop-bundle": "~1.0",
