@@ -176,6 +176,10 @@ class CurrencyManager
     {
         // helper function to build new currency from meta ata
         $buildCurrencyCode = function($currencyData, $currencyCode) {
+            if(isset($currencyData[$currencyCode]['alias']) && $currencyData[$currencyCode]['alias']) {
+                //todo: prevent a endles loop, but i dont know how :|
+                return $this->searchCurrency($currencyData[$currencyCode]['alias']);
+            }
             $calculationPrecision = $currencyData[$currencyCode]['calculationPrecision'];
             $displayPrecision = $currencyData[$currencyCode]['displayPrecision'];
             $symbol = $currencyData[$currencyCode]['symbol'];
