@@ -55,7 +55,18 @@ class Configuration implements ConfigurationInterface
                             ->arrayNode('regions')
                                 ->prototype('scalar')->end()
                             ->end()
+                            ->scalarNode('alias')
                         ->end()
+                    ->end()
+                    ->beforeNormalization()
+                        ->ifTrue(function($v) {
+                            return isset($v['alias']);
+                        })
+                        ->then(function($v) {
+                            //set a value, because this fields are require
+                            $v['calculationPrecision'] = $v['displayPrecision'] = 0;
+                            return $v;
+                        })
                     ->end()
                 ->end()
             ->end();
