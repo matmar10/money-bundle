@@ -47,12 +47,13 @@ class CurrencyManager
      * Build a Money object based on the provided country or currency code
      *
      * @param string $currencyCodeOrCountryCode The currency or country code to build a Money object from
+     * @param mixed  $amount money amount as float or int
      * @return \Matmar10\Money\Entity\Money
      */
-    public function getMoney($currencyCodeOrCountryCode)
+    public function getMoney($currencyCodeOrCountryCode, $amount = null)
     {
         $currency = $this->getCurrency($currencyCodeOrCountryCode);
-        return new Money($currency);
+        return new Money($currency, $amount);
     }
 
     /**
