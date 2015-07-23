@@ -100,13 +100,15 @@ class CurrencyManager
         // search first in the on-the-fly added currencies
         $currency = $this->searchAddedCurrencies($currencyCodeOrCountryCode);
         if(false !== $currency) {
-            return $this->addedCurrencies[$currencyCodeOrCountryCode] = $currency; //add to "addedCurrencies" will speed up the next search
+            $this->addedCurrencies[$currencyCodeOrCountryCode] = $currency; //add to "addedCurrencies" will speed up the next search
+            return $currency;
         }
 
         // search first in additional configured currencies (since those are likely important to the end user of the Bundle
         $currency = $this->searchAdditionalConfiguredCurrencies($currencyCodeOrCountryCode);
         if(false !== $currency) {
-            return $this->addedCurrencies[$currencyCodeOrCountryCode] = $currency; //add to "addedCurrencies" will speed up the next search
+            $this->addedCurrencies[$currencyCodeOrCountryCode] = $currency; //add to "addedCurrencies" will speed up the next search
+            return $currency;
         }
 
         // not present in the user configured currencies, look it up in the default XML based currency configuration
@@ -128,7 +130,8 @@ class CurrencyManager
             $currency->setSymbol($symbol);
         }
 
-        return $this->addedCurrencies[$currencyCodeOrCountryCode] = $currency; //add to "addedCurrencies" will speed up the next search
+        $this->addedCurrencies[$currencyCodeOrCountryCode] = $currency; //add to "addedCurrencies" will speed up the next search
+        return $currency;
     }
 
     protected function getCurrencyNodeData($currencyCodeOrCountryCode)
