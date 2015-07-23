@@ -179,7 +179,7 @@ Currency Alias
 
 Alias handling for currencies, to set the currency settings "Euro" equel to "EUR", extend the config like this:
 
-```
+```yaml
 matmar10_money:
     currencies:
         Euro:
@@ -240,7 +240,7 @@ Money object is prepared to handle doctrine embedded style: http://doctrine-orm.
 
 Add this to your config:
 
-```
+```yaml
 doctrine:
     orm:
         mappings:
