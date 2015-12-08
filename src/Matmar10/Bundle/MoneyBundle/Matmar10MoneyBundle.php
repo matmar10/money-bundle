@@ -20,9 +20,8 @@ class Matmar10MoneyBundle extends Bundle
 
     public function boot()
     {
-        Type::addType(CurrencyType::NAME, CurrencyType::class);
         /** @var CurrencyType $currencyType */
-        $currencyType = Type::getType(CurrencyType::NAME);
+        $currencyType = CurrencyType::boot();
 
         /**
          * @todo maybe to expensiv ? alternate way?

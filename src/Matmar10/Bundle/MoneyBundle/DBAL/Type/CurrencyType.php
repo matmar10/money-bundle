@@ -33,7 +33,7 @@ class CurrencyType extends Type {
      * Gets the SQL declaration snippet for a field of this type.
      *
      * @param array                                     $fieldDeclaration The field declaration.
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform         The currently used database platform.
+     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform The currently used database platform.
      *
      * @return string
      */
@@ -74,5 +74,16 @@ class CurrencyType extends Type {
      */
     public function getName() {
         return static::NAME;
+    }
+
+    /**
+     * @return CurrencyType
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public static function boot() {
+        if (!static::hasType(static::NAME)) {
+            static::addType(static::NAME, static::class);
+        }
+        return static::getType(static::NAME);
     }
 }
