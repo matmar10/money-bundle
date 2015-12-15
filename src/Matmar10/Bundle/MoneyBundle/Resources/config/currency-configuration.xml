@@ -195,6 +195,7 @@
   </currency>
   <currency code="GBP" calculationPrecision="2" displayPrecision="2" symbol="&amp;#163;">
     <region code="UK"/>
+    <region code="EN"/>
     <region code="GB"/>
     <region code="GG"/>
     <region code="GS"/>
