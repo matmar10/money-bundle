@@ -29,6 +29,22 @@ class CurrencyManager
     }
 
     /**
+     * @param string $input try to parse given input to money object
+     * @return Money
+     * @throws \Matmar10\Bundle\MoneyBundle\Exception\InvalidArgumentException
+     */
+    public function parse($input) {
+        $input = trim(strip_tags(str_replace([' ', ','], ['', '.'], $input))); //normalize
+        $parsedCurrency = preg_replace('![^a-z|฿|₵|¢|₡|₫|€|ƒ|₲|₭|£|₤|₺|₼|₥|₦|₱|₽|₹|₨|৲|৳|$|₮|₩|¥|₴|₪|〒]+!iu', '', $input); //rudiment currency detection - https://de.wikipedia.org/wiki/Vorlage:W%C3%A4hrungssymbole
+        if ($parsedCurrency) {
+            if (preg_match('!([\d\.]+)!', $input, $matches)) {
+                $parsedAmount = preg_replace('!\.(?=.*\.)!', '', $matches[0]); //remove all dots except last one
+                return $this->getMoney($parsedCurrency, (float)$parsedAmount);
+            }
+        }
+    }
+
+    /**
      * Build a CurrencyPair based on the provided from and to currencies at the specified multiplier rate
      *
      * @param string $fromCurrencyOrCountryCode From currency
