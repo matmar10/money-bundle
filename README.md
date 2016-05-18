@@ -1,7 +1,7 @@
 Money Bundle
 ============
 
-[![Build Status](http://ci.asedik.com/buildStatus/icon?job=money-bundle)](http://ci.asedik.com/job/money-bundle/)
+** MAINTAINER WANTER - issue reports and pull requests will not be actively investigated. I am happy to advise, but I'm not longer actively using/maintaing this library. Please let me know if you're interested in taking over ownership of the repo.
 
 Overview
 --------
