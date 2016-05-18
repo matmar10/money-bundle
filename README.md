@@ -167,11 +167,23 @@ This is useful, for example to add alternative currencies such as Litecoin and R
 
 // inside a config file, such as app/config/config.yml
 
-lmh_money:
+matmar10_money:
     currencies:
         LTC: { displayPrecision: 5, calculationPrecision: 8, symbol: '&#0321;' }
         XRP: { displayPrecision: 8, calculationPrecision: 8 }
 
+```
+
+Currency Alias
+--------------
+
+Alias handling for currencies, to set the currency settings "Euro" equel to "EUR", extend the config like this:
+
+```yaml
+matmar10_money:
+    currencies:
+        Euro:
+            alias: EUR
 ```
 
 Currency Validator
@@ -218,3 +230,48 @@ $validator = Validation::createValidatorBuilder()
 $purchase = new Purchase()
 $purchase->currency = 'invalid-this-is-not-a-code';
 $violations = $validator->validate($purchase);
+
+```
+
+Embedded Money object in a Doctrine Entity
+------------------------------------------
+
+Money object is prepared to handle doctrine embedded style: http://doctrine-orm.readthedocs.org/en/latest/tutorials/embeddables.html
+
+Add this to your config:
+
+```yaml
+doctrine:
+    orm:
+        mappings:
+            Matmar10MoneyBundle:
+                type: annotation
+                dir: %kernel.root_dir%/../vendor/matmar10/lib-money/src/Matmar10/Money/Entity
+                is_bundle: false
+                prefix: 'Matmar10\Money\Entity'
+```
+
+Inside your entity:
+
+```php
+<?php
+
+namespace foo\bar;
+
+use Doctrine\ORM\Mapping as ORM;
+
+class Invoice {
+
+    /**
+	 * @var \Matmar10\Money\Entity\Money
+	 * @ORM\Embedded(columnPrefix="price_", class="Matmar10\Money\Entity\Money")
+	 */
+    private $price;
+
+}
+```
+
+your table should now these two new columns:
+
+* price_amount // price as INTEGER value
+* price_currency // currency code like "EUR"

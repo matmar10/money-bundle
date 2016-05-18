@@ -29,6 +29,22 @@ class CurrencyManager
     }
 
     /**
+     * @param string $input try to parse given input to money object
+     * @return Money
+     * @throws \Matmar10\Bundle\MoneyBundle\Exception\InvalidArgumentException
+     */
+    public function parse($input) {
+        $input = trim(strip_tags(str_replace([' ', ','], ['', '.'], $input))); //normalize
+        $parsedCurrency = preg_replace('![^a-z|฿|₵|¢|₡|₫|€|ƒ|₲|₭|£|₤|₺|₼|₥|₦|₱|₽|₹|₨|৲|৳|$|₮|₩|¥|₴|₪|〒]+!iu', '', $input); //rudiment currency detection - https://de.wikipedia.org/wiki/Vorlage:W%C3%A4hrungssymbole
+        if ($parsedCurrency) {
+            if (preg_match('!([\d\.]+)!', $input, $matches)) {
+                $parsedAmount = preg_replace('!\.(?=.*\.)!', '', $matches[0]); //remove all dots except last one
+                return $this->getMoney($parsedCurrency, (float)$parsedAmount);
+            }
+        }
+    }
+
+    /**
      * Build a CurrencyPair based on the provided from and to currencies at the specified multiplier rate
      *
      * @param string $fromCurrencyOrCountryCode From currency
@@ -47,12 +63,13 @@ class CurrencyManager
      * Build a Money object based on the provided country or currency code
      *
      * @param string $currencyCodeOrCountryCode The currency or country code to build a Money object from
+     * @param mixed  $amount money amount as float or int
      * @return \Matmar10\Money\Entity\Money
      */
-    public function getMoney($currencyCodeOrCountryCode)
+    public function getMoney($currencyCodeOrCountryCode, $amount = null)
     {
         $currency = $this->getCurrency($currencyCodeOrCountryCode);
-        return new Money($currency);
+        return new Money($currency, $amount);
     }
 
     /**
@@ -99,12 +116,14 @@ class CurrencyManager
         // search first in the on-the-fly added currencies
         $currency = $this->searchAddedCurrencies($currencyCodeOrCountryCode);
         if(false !== $currency) {
+            $this->addedCurrencies[$currencyCodeOrCountryCode] = $currency; //add to "addedCurrencies" will speed up the next search
             return $currency;
         }
 
         // search first in additional configured currencies (since those are likely important to the end user of the Bundle
         $currency = $this->searchAdditionalConfiguredCurrencies($currencyCodeOrCountryCode);
         if(false !== $currency) {
+            $this->addedCurrencies[$currencyCodeOrCountryCode] = $currency; //add to "addedCurrencies" will speed up the next search
             return $currency;
         }
 
@@ -127,6 +146,7 @@ class CurrencyManager
             $currency->setSymbol($symbol);
         }
 
+        $this->addedCurrencies[$currencyCodeOrCountryCode] = $currency; //add to "addedCurrencies" will speed up the next search
         return $currency;
     }
 
@@ -176,6 +196,10 @@ class CurrencyManager
     {
         // helper function to build new currency from meta ata
         $buildCurrencyCode = function($currencyData, $currencyCode) {
+            if(isset($currencyData[$currencyCode]['alias']) && $currencyData[$currencyCode]['alias']) {
+                //todo: prevent a endles loop, but i dont know how :|
+                return $this->searchCurrency($currencyData[$currencyCode]['alias']);
+            }
             $calculationPrecision = $currencyData[$currencyCode]['calculationPrecision'];
             $displayPrecision = $currencyData[$currencyCode]['displayPrecision'];
             $symbol = $currencyData[$currencyCode]['symbol'];
